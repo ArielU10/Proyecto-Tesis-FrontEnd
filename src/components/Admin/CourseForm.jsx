@@ -1,7 +1,7 @@
-// src/components/Admin/CourseForm.jsx
 import React, { useState } from 'react';
 import '../../styles/components/courseForm.css';
 import axios from 'axios';
+import { toast } from 'react-toastify'; // ✅ Importar toast
 
 const niveles = {
   "Inicial": ["2 años", "3 años", "4 años"],
@@ -27,7 +27,7 @@ const CourseForm = ({ onClose }) => {
     setFormData((prev) => ({
       ...prev,
       level: nivel,
-      courseName: '', // reset grado al cambiar nivel
+      courseName: '',
     }));
   };
 
@@ -51,11 +51,11 @@ const CourseForm = ({ onClose }) => {
 
     try {
       await axios.post('http://localhost:3000/api/courses', formData);
-      alert("✅ Curso registrado con éxito");
+      toast.success("✅ Curso registrado con éxito"); // ✅ Notificación exitosa
       onClose();
     } catch (error) {
       console.error("❌ Error al guardar curso:", error);
-      alert("Hubo un error al guardar el curso.");
+      toast.error("❌ Hubo un error al guardar el curso."); // ✅ Notificación de error
     }
   };
 
@@ -63,7 +63,6 @@ const CourseForm = ({ onClose }) => {
     <form onSubmit={handleSubmit} className="admin-form">
       <h2>Agregar Curso</h2>
 
-      {/* Nivel Educativo */}
       <select name="level" value={formData.level} onChange={handleMainLevelChange} required>
         <option value="">-- Selecciona el nivel educativo --</option>
         {Object.keys(niveles).map(n => (
@@ -72,7 +71,6 @@ const CourseForm = ({ onClose }) => {
       </select>
       {errores.level && <p className="error-message">{errores.level}</p>}
 
-      {/* Grado del curso */}
       <select
         name="courseName"
         value={formData.courseName}
@@ -88,7 +86,6 @@ const CourseForm = ({ onClose }) => {
       </select>
       {errores.courseName && <p className="error-message">{errores.courseName}</p>}
 
-      {/* Paralelo */}
       <select
         name="description"
         value={formData.description}

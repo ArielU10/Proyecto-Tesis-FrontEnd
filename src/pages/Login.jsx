@@ -28,24 +28,31 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+  
     try {
       const response = await axios.post('http://localhost:3000/api/auth/login', {
-        user_name: email, // usamos "email" como identificador, mapeado a "user_name"
+        user_name: email,
         password
       });
-
-      const { role } = response.data;
-
+  
+      const { role, user } = response.data;
+  
+      // ✅ Guardar datos en localStorage
+      localStorage.setItem('user', JSON.stringify(user));
+      localStorage.setItem('role', role);
+  
+      // ✅ Redirección según rol
       if (role === 'administrative') navigate('/admin');
       else if (role === 'professor') navigate('/professor');
       else if (role === 'legalRepresentative') navigate('/padre');
       else alert('Rol no reconocido');
+      
     } catch (err) {
       alert('Credenciales inválidas o error del servidor');
       console.error(err);
     }
   };
+  
 
   return (
     <div className="login-page">

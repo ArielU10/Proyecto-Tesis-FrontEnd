@@ -1,12 +1,16 @@
-// src/components/Admin/StudentForm.jsx
 import React, { useEffect, useState } from 'react';
 import '../../styles/components/studentForm.css';
 import axios from 'axios';
+import {
+  validateCedula,
+  validatePhone,
+  handleLetterInput,
+  handleUppercaseChange
+} from '../../services/validationService';
 
 const StudentForm = ({ formData, onChange, onSubmit, onCancel }) => {
   const [courses, setCourses] = useState([]);
   const [errors, setErrors] = useState({});
-  
 
   useEffect(() => {
     const fetchCourses = async () => {
@@ -20,36 +24,6 @@ const StudentForm = ({ formData, onChange, onSubmit, onCancel }) => {
     fetchCourses();
   }, []);
 
-  const validateCedula = (cedula) => {
-    if (!/^\d{10}$/.test(cedula)) return false;
-    const digits = cedula.split('').map(Number);
-    const province = parseInt(cedula.substring(0, 2), 10);
-    const thirdDigit = digits[2];
-    if (province < 1 || province > 24 || thirdDigit >= 6) return false;
-
-    const coef = [2, 1, 2, 1, 2, 1, 2, 1, 2];
-    const verifier = digits[9];
-    const total = digits.slice(0, 9).reduce((sum, digit, index) => {
-      let mult = digit * coef[index];
-      if (mult > 9) mult -= 9;
-      return sum + mult;
-    }, 0);
-    const checkDigit = (10 - (total % 10)) % 10;
-    return checkDigit === verifier;
-  };
-
-  const handleLetterInput = (e) => {
-    const key = e.key;
-    if (!/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]$/.test(key)) {
-      e.preventDefault();
-    }
-  };
-
-  const handleUppercaseChange = (e) => {
-    const { name, value } = e.target;
-    onChange({ target: { name, value: value.toUpperCase() } });
-  };
-
   return (
     <form onSubmit={onSubmit} className="admin-form">
       <h2>Registrar Estudiante</h2>
@@ -60,7 +34,7 @@ const StudentForm = ({ formData, onChange, onSubmit, onCancel }) => {
         placeholder="Nombres del estudiante"
         value={formData.firstName}
         onKeyPress={handleLetterInput}
-        onChange={handleUppercaseChange}
+        onChange={(e) => handleUppercaseChange(e, onChange)}
         required
       />
 
@@ -70,7 +44,7 @@ const StudentForm = ({ formData, onChange, onSubmit, onCancel }) => {
         placeholder="Apellidos del estudiante"
         value={formData.lastName}
         onKeyPress={handleLetterInput}
-        onChange={handleUppercaseChange}
+        onChange={(e) => handleUppercaseChange(e, onChange)}
         required
       />
 
@@ -122,7 +96,7 @@ const StudentForm = ({ formData, onChange, onSubmit, onCancel }) => {
         placeholder="Nombres del representante"
         value={formData.rep_firstName}
         onKeyPress={handleLetterInput}
-        onChange={handleUppercaseChange}
+        onChange={(e) => handleUppercaseChange(e, onChange)}
         required
       />
 
@@ -132,7 +106,7 @@ const StudentForm = ({ formData, onChange, onSubmit, onCancel }) => {
         placeholder="Apellidos del representante"
         value={formData.rep_lastName}
         onKeyPress={handleLetterInput}
-        onChange={handleUppercaseChange}
+        onChange={(e) => handleUppercaseChange(e, onChange)}
         required
       />
 
@@ -169,7 +143,7 @@ const StudentForm = ({ formData, onChange, onSubmit, onCancel }) => {
             }
           }}
           onBlur={() => {
-            const isValid = /^\d{9}$/.test(formData.rep_phone);
+            const isValid = validatePhone(formData.rep_phone);
             setErrors((prev) => ({
               ...prev,
               rep_phone: isValid ? '' : 'Número incorrecto (debe contener 9 dígitos)'
@@ -195,7 +169,7 @@ const StudentForm = ({ formData, onChange, onSubmit, onCancel }) => {
         name="rep_address"
         placeholder="Dirección"
         value={formData.rep_address}
-        onChange={handleUppercaseChange}
+        onChange={(e) => handleUppercaseChange(e, onChange)}
         required
       />
 

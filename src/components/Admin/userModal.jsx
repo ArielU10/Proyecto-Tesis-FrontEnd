@@ -1,4 +1,3 @@
-// src/components/Admin/userModal.jsx
 import React, { useState } from 'react';
 import '../../styles/components/userModal.css';
 
@@ -7,12 +6,10 @@ import ProfessorForm from './ProfessorForm';
 import StudentForm from './StudentForm';
 
 import axios from 'axios';
+import { toast } from 'react-toastify';
 
 const UserWizardModal = ({ isOpen, onClose }) => {
-  const [step, setStep] = useState(1);
-  const [selectedType, setSelectedType] = useState('');
-
-  const [formData, setFormData] = useState({
+  const initialFormData = {
     firstName: '',
     lastName: '',
     birthDate: '',
@@ -28,9 +25,26 @@ const UserWizardModal = ({ isOpen, onClose }) => {
     email: '',
     phone: '',
     identification: ''
-  });
+  };
+
+  const [step, setStep] = useState(1);
+  const [selectedType, setSelectedType] = useState('');
+  const [formData, setFormData] = useState(initialFormData);
 
   if (!isOpen) return null;
+
+  const resetFormState = () => {
+    setFormData(initialFormData);
+    setStep(1);
+    setSelectedType('');
+  };
+
+  // Solo para el botón Cancelar (manual)
+  const handleClose = () => {
+    toast.info('Formulario cancelado');
+    onClose();
+    resetFormState();
+  };
 
   const handleSelectType = (type) => {
     setSelectedType(type);
@@ -52,7 +66,9 @@ const UserWizardModal = ({ isOpen, onClose }) => {
           email: formData.email,
           phone: formData.phone
         });
-        alert('✅ Administrativo creado correctamente');
+        toast.success('✅ Administrativo creado correctamente');
+        onClose();
+        resetFormState(); // sin toast
       }
 
       if (selectedType === 'professor') {
@@ -63,12 +79,12 @@ const UserWizardModal = ({ isOpen, onClose }) => {
           email: formData.email,
           phone: formData.phone
         });
-        alert('✅ Profesor creado correctamente');
+        toast.success('✅ Profesor creado correctamente');
+        onClose();
+        resetFormState(); // sin toast
       }
 
       if (selectedType === 'student') {
-        console.log('📥 Registrando representante legal...');
-      
         const repResponse = await axios.post('http://localhost:3000/api/legal-representatives', {
           firstName: formData.rep_firstName,
           lastName: formData.rep_lastName,
@@ -77,22 +93,14 @@ const UserWizardModal = ({ isOpen, onClose }) => {
           email: formData.rep_email,
           address: formData.rep_address
         });
-      
-        if (!repResponse.data || !repResponse.data.id_representative) {
+
+        if (!repResponse.data?.id_representative) {
           throw new Error('La respuesta del backend no contiene id_representative');
         }
-      
-        const repId = repResponse.data.id_representative;
-        console.log('Representante creado →', repResponse.data);
 
-        if (isNaN(repId)) {
-          throw new Error('id_representative no es un número válido');
-        }
-      
-        console.log('🧾 ID del representante creado:', repId);
-      
-        await axios.post('http://localhost:3000/api/students',
-         {
+        const repId = repResponse.data.id_representative;
+
+        await axios.post('http://localhost:3000/api/students', {
           firstName: formData.firstName,
           lastName: formData.lastName,
           birthDate: formData.birthDate,
@@ -101,14 +109,16 @@ const UserWizardModal = ({ isOpen, onClose }) => {
           id_course: formData.id_course,
           id_legal_representative: repId
         });
-      
-        alert('✅ Estudiante y representante creados correctamente');
+
+        toast.success('✅ Estudiante y representante creados correctamente');
+        onClose();
+        resetFormState(); // sin toast
       }
-      
+
     } catch (err) {
       const serverMessage = err.response?.data?.error || err.message;
-      console.error('❌ Error durante creación de estudiante o representante:', serverMessage);
-      alert(`Error al guardar estudiante o representante:\n${serverMessage}`);
+      console.error('❌ Error durante creación:', serverMessage);
+      toast.error(`❌ Error al guardar:\n${serverMessage}`);
     }
   };
 
@@ -123,7 +133,7 @@ const UserWizardModal = ({ isOpen, onClose }) => {
               <button onClick={() => handleSelectType('professor')}>Profesor</button>
               <button onClick={() => handleSelectType('student')}>Estudiante</button>
             </div>
-            <button className="close-btn" onClick={onClose}>Cancelar</button>
+            <button className="close-btn" onClick={handleClose}>Cancelar</button>
           </>
         )}
 
