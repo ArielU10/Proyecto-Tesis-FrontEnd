@@ -1,4 +1,7 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+
 import '../styles/pages/login.css';
 import logo from '../assets/logoJN.png';
 
@@ -7,14 +10,12 @@ import img2 from '../assets/sliderLogin/img2.jpg';
 import img3 from '../assets/sliderLogin/img3.jpg';
 import img4 from '../assets/sliderLogin/img4.jpg';
 import img5 from '../assets/sliderLogin/img5.jpg';
-import img6 from '../assets/sliderLogin/img6.jpg';
-import img7 from '../assets/sliderLogin/img7.jpg';
-import img8 from '../assets/sliderLogin/img8.jpg';
-
 
 const images = [img1, img2, img3, img4, img5];
 
 const Login = () => {
+  const navigate = useNavigate();
+
   const [currentImage, setCurrentImage] = useState(0);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -22,13 +23,29 @@ const Login = () => {
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentImage((prev) => (prev + 1) % images.length);
-    }, 4000); // cambia cada 4 segundos
+    }, 4000);
     return () => clearInterval(interval);
   }, []);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log({ email, password });
+
+    try {
+      const response = await axios.post('http://localhost:3000/api/auth/login', {
+        user_name: email, // usamos "email" como identificador, mapeado a "user_name"
+        password
+      });
+
+      const { role } = response.data;
+
+      if (role === 'administrative') navigate('/admin');
+      else if (role === 'professor') navigate('/profesor');
+      else if (role === 'legalRepresentative') navigate('/padre');
+      else alert('Rol no reconocido');
+    } catch (err) {
+      alert('Credenciales inválidas o error del servidor');
+      console.error(err);
+    }
   };
 
   return (
@@ -44,8 +61,8 @@ const Login = () => {
         </ul>
         <form className="login-form" onSubmit={handleSubmit}>
           <input
-            type="email"
-            placeholder="Correo electrónico"
+            type="text"
+            placeholder="Nombre de Usuario"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
