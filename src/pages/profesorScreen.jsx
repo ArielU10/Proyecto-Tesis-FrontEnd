@@ -1,4 +1,9 @@
 export default function ProfesorScreen() {
-    return <h1>Hola, Profesor</h1>;
+    return <h1>Hola, Profesor
+
+      Rama para features
+      
+    </h1>;
   }
   
+
