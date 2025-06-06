@@ -1,145 +1,129 @@
-/* Fondo general */
-html, body {
-    margin: 0;
-    padding: 0;
-    height: 100%;
-    width: 100%;
-    overflow-x: hidden; /* ✅ Bloquea desbordamientos laterales */
-    background-color: #5f1717;
-  }
-  
-  
-  /* Contenedor principal en Grid */
+/* Contenedor principal */
+.login-page {
+  display: grid;
+  grid-template-columns: 1fr 2fr; /* 1/3 y 2/3 */
+  height: 100vh;
+  font-family: 'Segoe UI', sans-serif;
+  background-color: #ffffff; /* Aplica aquí, no en body ni otra clase */
+}
+
+/* Columna izquierda: formulario */
+.login-left {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+  background-color: white;
+  border-radius: 0 12px 12px 0;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  max-width: 500px;
+  width: 100%;
+  text-align: center;
+}
+
+/* Logo */
+.login-logo {
+  width: 150px;
+  margin-bottom: 5px;
+}
+
+/* Títulos */
+h1 {
+  font-size: 2.5rem;
+  margin-bottom: 10px;
+  color: #555;
+}
+
+.subtitle {
+  font-size: 1.2rem;
+  margin-bottom: 20px;
+  color: #555;
+}
+
+/* Beneficios */
+.features {
+  list-style: none;
+  padding: 0;
+  margin-bottom: 40px;
+  color: #333;
+}
+
+.features li {
+  margin-bottom: 10px;
+  font-size: 0.95rem;
+}
+
+/* Formulario */
+.login-form {
+  width: 100%;
+}
+
+.login-form input {
+  margin-bottom: 15px;
+  border: none;
+  background-color: #454141;
+  color: white;
+}
+
+.login-form input,
+.login-form button {
+  width: 100%;
+  padding: 12px;
+  border-radius: 6px;
+  box-sizing: border-box; /* ← CLAVE para que padding no rompa el width */
+  font-size: 1rem;
+}
+
+
+.login-form input::placeholder {
+  color: #cccccc;
+}
+
+.login-form button {
+  background-color: #d09c00;
+  border: none;
+  font-weight: bold;
+  color: #1a1a1a;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.login-form button:hover {
+  background-color: #f6ca48;
+}
+
+/* Columna derecha: imagen vino */
+.login-right {
+  background-color: #a42e3f;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+.slider-image {
+  max-width: 90%;
+  max-height: 90%;
+  object-fit: contain;
+  border-radius: 10px;
+  transition: opacity 1s ease-in-out;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
   .login-page {
-    display: grid;
-    grid-template-columns: 1fr 2fr; /* ✅ 1/3 y 2/3 */
-    height: 100vh;
-    font-family: 'Segoe UI', sans-serif;
-    background-color: #f2f2f2;
+    grid-template-columns: 1fr;
   }
-  
-  
-  /* Columna izquierda: formulario */
+
+  .login-right {
+    display: none;
+  }
+
   .login-left {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 40px;
-    background-color: white;
-    border-radius: 0 12px 12px 0;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-    max-width: 500px;
-    width: 100%;
-    text-align: center;
+    border-radius: 0;
+    box-shadow: none;
+    padding: 20px;
   }
-
-  
-  /* Logo */
-  .login-logo {
-    width: 150px;
-    margin-bottom: 5px;
-  }
-  
-  /* Títulos */
-  h1 {
-    font-size: 2.5rem;
-    margin-bottom: 10px;
-    color: #555;
-  }
-  
-  .subtitle {
-    font-size: 1.2rem;
-    margin-bottom: 20px;
-    color: #555;
-  }
-  
-  /* Beneficios */
-  .features {
-    list-style: none;
-    padding: 0;
-    margin-bottom: 40px;
-    color: #333;
-  }
-  
-  .features li {
-    margin-bottom: 10px;
-    font-size: 0.95rem;
-  }
-  
-  /* Formulario */
-  .login-form {
-    width: 100%;
-  }
-  
-  .login-form input {
-    width: 100%;
-    margin-bottom: 15px;
-    padding: 12px;
-    border: none;
-    border-radius: 6px;
-    background-color: #3a3a3a;
-    color: white;
-  }
-  
-  .login-form input::placeholder {
-    color: #cccccc;
-  }
-  
-  .login-form button {
-    width: 100%;
-    background-color: #ffca2c;
-    border: none;
-    padding: 12px;
-    font-weight: bold;
-    border-radius: 6px;
-    color: #1a1a1a;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
-  
-  .login-form button:hover {
-    background-color: #ffd23c;
-  }
-  
-  /* Columna derecha: vino claro */
-  .login-right {
-    background-color: #a42e3f;
-    height: 100%;
-    width: 100%;
-    max-width: none;
-  }
-
-  @media (max-width: 768px) {
-    .login-page {
-      grid-template-columns: 1fr;
-    }
-  
-    .login-right {
-      display: none; /* Oculta la parte vino en móvil */
-    }
-  
-    .login-left {
-      border-radius: 0;
-      box-shadow: none;
-      padding: 20px;
-    }
-  }
-
-  .login-right {
-    background-color: #a42e3f;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    overflow: hidden;
-  }
-  
-  .slider-image {
-    max-width: 90%;
-    max-height: 90%;
-    object-fit: contain;
-    border-radius: 10px;
-    transition: opacity 1s ease-in-out;
-  }
-  
+}

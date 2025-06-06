@@ -1,0 +1,100 @@
+.admin-grid {
+  display: grid;
+  grid-template-areas: "sidebar main";
+  grid-template-columns: 200px 1fr;
+  min-height: 100vh; /* crece si hay más contenido */
+}
+
+.sidebar {
+  grid-area: sidebar;
+  background-color: #770521;
+  color: white;
+  padding: 2rem 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  min-height: 100vh;
+  border: 3px solid #d4af37; 
+  box-sizing: border-box;   
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  border-top-right-radius: 20px;  
+  border-bottom-right-radius: 20px;
+}
+
+.logo-image {
+  width: 60px;
+  height: auto;
+  margin: 0 auto;
+  display: block;
+  border-radius: 8px;
+}
+
+.sidebar-footer {
+  margin-top: auto;
+  text-align: center;
+  font-size: 0.85rem;
+  color: #eee;
+  padding-top: 2rem;
+  font-style: italic; 
+}
+
+.menu ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.menu li {
+  padding: 0.75rem 1rem;
+  margin: 0.25rem 0;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.menu li:hover {
+  background-color: #df5f7d;
+}
+
+.admin-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #ffffff;
+  padding: 1rem 2rem;
+  border-bottom: 1px solid #ddd;
+}
+
+.search-bar {
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  width: 250px;
+}
+
+.profile-section {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.username {
+  font-weight: 600;
+  color: #333;
+}
+
+.user-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+}
+
+.main {
+  grid-area: main;
+  background-color: #f5f6fa;
+  padding: 2rem;
+  min-height: 100vh;
+  box-sizing: border-box;
+}
+
