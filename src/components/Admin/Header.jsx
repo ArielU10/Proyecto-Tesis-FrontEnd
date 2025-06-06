@@ -11,12 +11,14 @@ export const Header = () => {
       />
       <div className="profile-section">
         <span className="username">Soledad Peñafiel</span>
-        <img
-          src="/src/assets/avatarMujer.png"
-          alt="Avatar"
-          className="user-avatar"
-        />
-      </div>
+        <div className="user-avatar-circle">
+            <img
+            src="/src/assets/avatarMujer.png"
+            alt="Avatar"
+            className="user-avatar"
+            />
+        </div>
+    </div>
     </header>
   );
 };
