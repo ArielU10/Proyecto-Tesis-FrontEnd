@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 // src/pages/adminScreen.jsx 
 import React from 'react';
 import { AdminDashboardLayout } from '../components/Admin/adminLayout';
@@ -11,7 +12,7 @@ const AdminScreen = () => {
       <div className="admin-screen-layout">
       <div className="welcome box">
         <div className="welcome-text">
-          <h2>Bienvenid@, Soledad!</h2>
+          <h2>Bienvenid@, Soledad !</h2>
           <p>al Portal de Seguridad y Comunicación Escolar.</p>
 
           <ul>
@@ -35,3 +36,9 @@ const AdminScreen = () => {
 };
 
 export default AdminScreen;
+=======
+export default function AdminScreen() {
+    return <h1>Bienvenida, Administrativa</h1>;
+  }
+  
+>>>>>>> bda717f (Inicio del frontend con login, redirección y diseño)
