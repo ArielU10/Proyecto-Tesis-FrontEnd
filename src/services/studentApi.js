@@ -1,7 +1,11 @@
-// src/services/studentApi.js
 import axios from "axios";
 
 export const getStudentsByCourse = async (courseId) => {
-  const res = await axios.get(`http://localhost:3000/api/students/course/${courseId}`);
-  return res.data;
+  try {
+    const response = await axios.get(`http://localhost:3000/api/by_course/${courseId}`);
+    return response.data;
+  } catch (error) {
+    console.error("Error al obtener estudiantes por curso:", error);
+    throw error;
+  }
 };

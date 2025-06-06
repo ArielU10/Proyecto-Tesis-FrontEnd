@@ -32,12 +32,17 @@ const ProfessorPage = () => {
     navigate("/");
   };
 
-  const handleCourseClick = (courseId) => {
-    setSelectedCourse(courseId);
-    getStudentsByCourse(courseId)
-      .then(setStudents)
-      .catch(console.error);
-  };
+const handleCourseClick = (courseId) => {
+  setSelectedCourse(courseId);
+  getStudentsByCourse(courseId)
+    .then((data) => {
+      console.log("Estudiantes recibidos:", data);
+      setStudents(data); 
+    })
+    .catch(console.error);
+};
+
+
 
   return (
     <div className="parent">
