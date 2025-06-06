@@ -1,0 +1,55 @@
+.custom-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.25); /* Menos oscuro */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(4px);
+  z-index: 9999;
+}
+
+.custom-modal {
+  background: #fff;
+  padding: 2rem;
+  border-radius: 12px;
+  width: 400px;
+  max-width: 90%;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+  z-index: 10000;
+  font-family: sans-serif;
+  color: #000;
+  text-align: center;
+}
+
+.user-type-options {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin: 1.5rem 0;
+}
+
+.close-btn{
+  padding: 0.75rem;
+  font-size: 1rem;
+  border-radius: 8px;
+  border: none;
+  background-color: rgb(104, 18, 8);
+  color: white;
+  cursor: pointer;
+}
+
+.user-type-options button {
+  padding: 0.75rem;
+  font-size: 1rem;
+  border-radius: 8px;
+  border: none;
+  background-color: rgb(222, 202, 199);
+  color: rgb(65, 2, 2);
+  cursor: pointer;
+}
+
+.user-type-options button:hover,
+.close-btn:hover {
+  background-color: #dd6e60;
+}

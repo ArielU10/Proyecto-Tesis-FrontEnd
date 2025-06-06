@@ -5,14 +5,14 @@ export const AdminDashboardLayout = ({ children }) => {
   return (
     <div className="admin-grid">
       <aside className="sidebar">
-        <img src="/src/assets/miniLogoJN.png" alt="Logo JN" className="logo-image" />
+        <img src="/src/assets/logo_jn.svg" alt="Logo JN" className="logo-image" />
         <nav className="menu">
           <ul>
             <li>Home</li>
-            <li>Asistencias</li>
-            <li>Observaciones</li>
-            <li>Atrasos</li>
-            <li>Gestión de Usuarios</li>
+            <li>Registro de Asistencias</li>
+            <li>Faltas y Observaciones</li>
+            <li>Usuarios</li>
+            <li>Cursos / Paralelos</li>
             <li>Cerrar Sesion</li>
           </ul>
         </nav>
@@ -22,7 +22,28 @@ export const AdminDashboardLayout = ({ children }) => {
       <div className="layout-content">
         <Header />
         <main className="main">{children}</main>
+
       </div>
+      <footer className="admin-footer">
+        <div className="footer-content">
+          <div className="footer-text">
+            <p>© 2025 Unidad Educativa Jesús de Nazareth. Todos los derechos reservados.</p>
+            <p>Desarrollado por TesisGroup · v1.0.0</p>
+          </div>
+
+          <div className="footer-icons">
+            <img src="/src/assets/logo_redes/wssp.svg" alt="WhatsApp" />
+            <img src="/src/assets/logo_redes/fb.svg" alt="Facebook" />
+            <img src="/src/assets/logo_redes/x.svg" alt="X" />
+            <img src="/src/assets/logo_redes/inst.svg" alt="Instagram" />
+            <img src="/src/assets/logo_redes/tiktok.svg" alt="TikTok" />
+          </div>
+        </div>
+      </footer>
+
+
+
+
     </div>
   );
 };
