@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
-import '../styles/pages/login.css';
+import '../styles/login.css';
 import logo from '../assets/logoJN.png';
 
 import img1 from '../assets/sliderLogin/img1.jpg';
@@ -39,7 +39,7 @@ const Login = () => {
       const { role } = response.data;
 
       if (role === 'administrative') navigate('/admin');
-      else if (role === 'professor') navigate('/profesor');
+      else if (role === 'professor') navigate('/professor');
       else if (role === 'legalRepresentative') navigate('/padre');
       else alert('Rol no reconocido');
     } catch (err) {
