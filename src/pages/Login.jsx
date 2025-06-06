@@ -4,7 +4,6 @@ import axios from 'axios';
 
 import '../styles/login.css';
 import logo from '../assets/logoJN.png';
-
 import img1 from '../assets/sliderLogin/img1.jpg';
 import img2 from '../assets/sliderLogin/img2.jpg';
 import img3 from '../assets/sliderLogin/img3.jpg';
