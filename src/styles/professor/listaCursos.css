@@ -1,0 +1,44 @@
+.lista-cursos {
+  background-color: #fff;
+  padding: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.05);
+}
+
+.titulo-seccion {
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+
+.cursos-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 1rem;
+}
+
+.curso-card {
+  background-color: #f8f9fa;
+  padding: 1rem;
+  border-radius: 8px;
+  transition: all 0.2s ease-in-out;
+  border: 1px solid transparent;
+  cursor: pointer;
+}
+
+.curso-card:hover {
+  background-color: #e9ecef;
+  border-color: #007bff;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+}
+
+.curso-nombre {
+  font-size: 1rem;
+  font-weight: bold;
+  margin: 0;
+}
+
+.curso-nivel {
+  font-size: 0.9rem;
+  color: #555;
+  margin-top: 4px;
+}

@@ -1,26 +1,25 @@
 import React from "react";
+import CourseCard from "./courseCard";
 
-const ListaCursos = ({ courses, selectedCourse, onSelectCourse }) => {
+const ListaCursos = ({ courses, onSelectCourse }) => {
   return (
-    <div className="bg-white p-3 rounded shadow-sm">
-      <h5 className="fw-bold">Cursos</h5>
-      {courses.length > 0 ? (
-        courses.map((course) => (
-          <p
-            key={course.id} // ✅ clave única
-            className={`curso-item ${selectedCourse === course.id ? "fw-bold text-primary" : ""}`}
-            style={{ cursor: "pointer", marginBottom: "0.5rem" }}
-            onClick={() => onSelectCourse(course.id)} // ✅ pasa el ID al padre
-          >
-            {course.name}
-          </p>
-        ))
-      ) : (
-        <p className="text-muted">No hay cursos disponibles</p>
-      )}
+    <div>
+      <h5 className="fw-bold mb-3">Cursos</h5>
+      <div className="d-flex flex-wrap gap-3">
+        {courses.length > 0 ? (
+          courses.map((course) => (
+            <CourseCard
+              key={course.id}
+              course={course}
+              onClick={onSelectCourse}
+            />
+          ))
+        ) : (
+          <p className="text-muted">No hay cursos disponibles</p>
+        )}
+      </div>
     </div>
   );
 };
 
 export default ListaCursos;
-

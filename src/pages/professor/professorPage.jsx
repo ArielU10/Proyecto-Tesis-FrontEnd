@@ -5,12 +5,13 @@ import "../../styles/professor/professorPage.css";
 import { getCourses } from "../../services/courseApi";
 import { getStudentsByCourse } from "../../services/studentApi";
 
+// Componentes
 import HeaderProfesor from "../../components/professor/headerProfessor";
 import BienvenidaCard from "../../components/professor/bienvenidaProfessor";
 import ListaCursos from "../../components/professor/listaCursos";
-import ListaEstudiantes from "../../components/professor/listaEstudiantes";
 import AccionesProfesor from "../../components/professor/accionesProfessor";
 import EstudiantesSeguimiento from "../../components/professor/estudianteSeguimiento";
+import ModalEstudiantes from "../../components/professor/modalStudents";
 
 const ProfessorPage = () => {
   const navigate = useNavigate();
@@ -18,31 +19,31 @@ const ProfessorPage = () => {
   const [courses, setCourses] = useState([]);
   const [students, setStudents] = useState([]);
   const [selectedCourse, setSelectedCourse] = useState(null);
+  const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
-  getCourses()
-    .then((data) => {
-      console.log("Cursos obtenidos:", data)
-      setCourses(data);
-    })
-    .catch(console.error);
-}, []);
+    getCourses()
+      .then((data) => {
+        console.log("Cursos obtenidos:", data);
+        setCourses(data);
+      })
+      .catch(console.error);
+  }, []);
 
   const handleLogout = () => {
     navigate("/");
   };
 
-const handleCourseClick = (courseId) => {
-  setSelectedCourse(courseId);
-  getStudentsByCourse(courseId)
-    .then((data) => {
-      console.log("Estudiantes recibidos:", data);
-      setStudents(data); 
-    })
-    .catch(console.error);
-};
-
-
+  const handleCourseClick = (courseId) => {
+    setSelectedCourse(courseId);
+    getStudentsByCourse(courseId)
+      .then((data) => {
+        console.log("Estudiantes recibidos:", data);
+        setStudents(data);
+        setShowModal(true);
+      })
+      .catch(console.error);
+  };
 
   return (
     <div className="parent">
@@ -52,20 +53,11 @@ const handleCourseClick = (courseId) => {
       {/* Panel izquierdo */}
       <div className="div2 p-4">
         <BienvenidaCard />
-
         <div className="row mt-4 g-3">
-          <div className="col-md-6">
+          <div className="col-md-12">
             <ListaCursos
               courses={courses}
-              selectedCourse={selectedCourse}
               onSelectCourse={handleCourseClick}
-            />
-          </div>
-
-          <div className="col-md-6">
-            <ListaEstudiantes
-              students={students}
-              selectedCourse={selectedCourse}
             />
           </div>
         </div>
@@ -76,6 +68,14 @@ const handleCourseClick = (courseId) => {
         <AccionesProfesor />
         <EstudiantesSeguimiento />
       </div>
+
+      {/* Modal con estudiantes */}
+      <ModalEstudiantes
+        show={showModal}
+        onHide={() => setShowModal(false)}
+        students={students}
+        courseId={selectedCourse}
+      />
     </div>
   );
 };
