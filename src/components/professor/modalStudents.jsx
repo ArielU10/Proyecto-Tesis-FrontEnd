@@ -28,12 +28,9 @@ const ModalEstudiantes = ({ show, onHide, students }) => {
                   <strong>{student.firstName} {student.lastName}</strong>
                 </div>
                 <div className="d-flex gap-2 flex-wrap mt-2">
-                  <Button variant="success" size="sm">Asistencia</Button>
-                  <Button variant="warning" size="sm">Falta</Button>
-                  <Button variant="secondary" size="sm">Atraso</Button>
-                  <Button
-                    variant="danger"
-                    size="sm"
+                  <Button size="sm">Falta</Button>
+                  <Button size="sm">Atraso</Button>
+                  <Button size="sm"
                     onClick={() => abrirModalIncidente(student)}
                   >
                     Incidente
@@ -45,11 +42,6 @@ const ModalEstudiantes = ({ show, onHide, students }) => {
             <p className="text-muted">No hay estudiantes en este curso.</p>
           )}
         </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={onHide}>
-            Cerrar
-          </Button>
-        </Modal.Footer>
       </Modal>
 
       {/* Modal para incidentes */}

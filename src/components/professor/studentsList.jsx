@@ -1,4 +1,3 @@
-// src/components/Profesor/ListaEstudiantes.jsx
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { getEstudiantes, postAsistencias } from '../../services/professorApi';
@@ -7,9 +6,8 @@ const ListaEstudiantes = () => {
   const [estudiantes, setEstudiantes] = useState([]);
   const [asistencia, setAsistencia] = useState({});
 
-  // Simular carga de estudiantes (GET desde backend)
   useEffect(() => {
-    axios.get('/api/estudiantes') // Reemplaza con tu ruta real
+    axios.get('/api/estudiantes')
       .then(response => {
         setEstudiantes(response.data);
         const inicial = {};
