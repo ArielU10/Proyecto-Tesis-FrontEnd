@@ -1,17 +1,17 @@
 import React from "react";
 
 const ListaEstudiantes = ({ students, selectedCourse }) => {
-  return (
+    return (
     <div className="bg-white p-3 rounded shadow-sm">
       <h5 className="fw-bold">Estudiantes</h5>
 
       {!selectedCourse ? (
         <p className="text-muted">Selecciona un curso</p>
-      ) : Array.isArray(students) && students.length > 0 ? (
+      ) : sortedStudents.length > 0 ? (
         <ul className="list-group">
-          {students.map((student) => (
-            <li key={student.id_student} className="list-group-item">
-              {student.firstName} {student.lastName}
+          {sortedStudents.map((student) => (
+            <li key={student.id_student} className="list-group-item fw-bold">
+              {student.lastName} {student.firstName}
             </li>
           ))}
         </ul>
