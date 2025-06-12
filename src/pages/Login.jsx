@@ -39,7 +39,7 @@ const Login = () => {
 
       if (role === 'administrative') navigate('/admin');
       else if (role === 'professor') navigate('/professor');
-      else if (role === 'legalRepresentative') navigate('/padre');
+      else if (role === 'legalRepresentative') navigate('/legal-representantive');
       else alert('Rol no reconocido');
     } catch (err) {
       alert('Credenciales inválidas o error del servidor');
