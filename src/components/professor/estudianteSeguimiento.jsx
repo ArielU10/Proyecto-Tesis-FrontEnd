@@ -1,24 +1,36 @@
-import React from "react";
-import { FaUser } from "react-icons/fa";
+import React, { useEffect, useState } from "react";
+import { getStudentsInFollowUp } from "../../services/studentFollowApi";
 
-const EstudiantesSeguimiento = () => (
-  <div className="seguimiento">
-    <h6 className="fw-bold">Estudiantes en seguimiento</h6>
-    <div className="d-flex gap-2 mt-2">
-      <div className="rounded-circle bg-primary text-white d-flex justify-content-center align-items-center" style={{ width: 40, height: 40 }}>
-        <FaUser />
+const EstudiantesSeguimiento = () => {
+  const [students, setStudents] = useState([]);
+
+  useEffect(() => {
+    getStudentsInFollowUp()
+      .then((data) => {
+        console.log("Seguimiento cargado:", data);
+        setStudents(data);
+      })
+      .catch((err) => {
+        console.error("Error al cargar estudiantes en seguimiento:", err);
+      });
+  }, []);
+
+  return (
+    <div className="seguimiento">
+      <h6 className="fw-bold">Estudiantes en seguimiento</h6>
+      <div className="list-group mt-2">
+        {students.length > 0 ? (
+          students.map((student) => (
+            <div key={student.id_student} className="list-group-item">
+              {student.lastName} {student.firstName}
+            </div>
+          ))
+        ) : (
+          <p className="text-muted">No hay estudiantes en seguimiento</p>
+        )}
       </div>
-      <div className="rounded-circle bg-success text-white d-flex justify-content-center align-items-center" style={{ width: 40, height: 40 }}>
-        <FaUser />
-      </div>
-      <div className="rounded-circle bg-danger text-white d-flex justify-content-center align-items-center" style={{ width: 40, height: 40 }}>
-        <FaUser />
-      </div>
-      <button className="btn btn-outline-secondary rounded-circle p-1" style={{ width: 40, height: 40 }}>
-        +
-      </button>
     </div>
-  </div>
-);
+  );
+};
 
 export default EstudiantesSeguimiento;
