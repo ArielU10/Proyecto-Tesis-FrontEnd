@@ -11,3 +11,13 @@ export const createIncident = async (incidentData) => {
     throw error;
   }
 };
+
+export const getAllIncidents = async () => {
+  try {
+    const response = await axios.get(`${API_URL}/incidents`);
+    return response.data;
+  } catch (error) {
+    console.error("Error al obtener los incidentes:", error.response?.data || error.message);
+    throw error;
+  }
+};
