@@ -5,10 +5,14 @@ import userAvatar from '../assets/avatarMujer.png';
 import '../styles/administrative/adminScreen.css';
 import UserModal from '../components/Admin/userModal';
 import CourseForm from '../components/Admin/CourseForm'; // ✅ importar el formulario
+import { useAuth } from '../context/AuthContext';
 
 const AdminScreen = () => {
   // Modal usuario
   const [isModalOpen, setModalOpen] = useState(false);
+
+  // Para utilizar datos de usuario logeado
+  const { user } = useAuth();
 
   // Modal curso
   const [showCourseModal, setShowCourseModal] = useState(false);
@@ -41,6 +45,9 @@ const AdminScreen = () => {
     }
   };
 
+console.log("👀 Usuario desde contexto:", user);
+
+
   return (
     <>
       {/* Modal de usuario */}
@@ -66,7 +73,7 @@ const AdminScreen = () => {
           {/* Sección de bienvenida */}
           <div className="welcome box">
             <div className="welcome-text">
-              <h2>Bienvenid@, Soledad !</h2>
+            <h2>Bienvenid@, {user?.firstName || 'Usuario'}!</h2>
               <p>al Portal de Seguridad y Comunicación Escolar.</p>
               <ul>
                 <li><FaQrcode /> Retiro seguro con códigos QR</li>

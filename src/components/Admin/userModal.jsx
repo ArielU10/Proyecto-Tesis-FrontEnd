@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import '../../styles/components/userModal.css';
+import { createUserByRole } from '../../services/userService'; // ✅ importamos el nuevo servicio
 
 import AdministrativeForm from './AdministrativeForm';
 import ProfessorForm from './ProfessorForm';
@@ -39,7 +40,6 @@ const UserWizardModal = ({ isOpen, onClose }) => {
     setSelectedType('');
   };
 
-  // Solo para el botón Cancelar (manual)
   const handleClose = () => {
     toast.info('Formulario cancelado');
     onClose();
@@ -60,28 +60,45 @@ const UserWizardModal = ({ isOpen, onClose }) => {
     e.preventDefault();
     try {
       if (selectedType === 'administrative') {
-        await axios.post('http://localhost:3000/api/administratives', {
-          firstName: formData.firstName,
-          lastName: formData.lastName,
-          email: formData.email,
-          phone: formData.phone
-        });
-        toast.success('✅ Administrativo creado correctamente');
-        onClose();
-        resetFormState(); // sin toast
-      }
-
-      if (selectedType === 'professor') {
-        await axios.post('http://localhost:3000/api/professors', {
+        const response = await axios.post('http://localhost:3000/api/administratives', {
           firstName: formData.firstName,
           lastName: formData.lastName,
           identification: formData.identification,
           email: formData.email,
           phone: formData.phone
         });
+
+        await createUserByRole({
+          role: 'administrative',
+          email: formData.email,
+          identification: formData.identification,
+          foreignId: response.data.id_administrative
+        });
+
+        toast.success('✅ Administrativo creado correctamente');
+        onClose();
+        resetFormState();
+      }
+
+      if (selectedType === 'professor') {
+        const response = await axios.post('http://localhost:3000/api/professors', {
+          firstName: formData.firstName,
+          lastName: formData.lastName,
+          identification: formData.identification,
+          email: formData.email,
+          phone: formData.phone
+        });
+
+        await createUserByRole({
+          role: 'professor',
+          email: formData.email,
+          identification: formData.identification,
+          foreignId: response.data.id_professor
+        });
+
         toast.success('✅ Profesor creado correctamente');
         onClose();
-        resetFormState(); // sin toast
+        resetFormState();
       }
 
       if (selectedType === 'student') {
@@ -100,6 +117,13 @@ const UserWizardModal = ({ isOpen, onClose }) => {
 
         const repId = repResponse.data.id_representative;
 
+        await createUserByRole({
+          role: 'legalRepresentative',
+          email: formData.rep_email,
+          identification: formData.rep_identification,
+          foreignId: repId
+        });
+
         await axios.post('http://localhost:3000/api/students', {
           firstName: formData.firstName,
           lastName: formData.lastName,
@@ -112,7 +136,7 @@ const UserWizardModal = ({ isOpen, onClose }) => {
 
         toast.success('✅ Estudiante y representante creados correctamente');
         onClose();
-        resetFormState(); // sin toast
+        resetFormState();
       }
 
     } catch (err) {

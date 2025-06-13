@@ -10,10 +10,13 @@ import img3 from '../assets/sliderLogin/img3.jpg';
 import img4 from '../assets/sliderLogin/img4.jpg';
 import img5 from '../assets/sliderLogin/img5.jpg';
 
+import { useAuth } from '../context/AuthContext';
+
 const images = [img1, img2, img3, img4, img5];
 
 const Login = () => {
   const navigate = useNavigate();
+  const { login } = useAuth();
 
   const [currentImage, setCurrentImage] = useState(0);
   const [email, setEmail] = useState('');
@@ -28,31 +31,39 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
+
     try {
       const response = await axios.post('http://localhost:3000/api/auth/login', {
         user_name: email,
         password
       });
-  
-      const { role, user } = response.data;
-  
-      // ✅ Guardar datos en localStorage
-      localStorage.setItem('user', JSON.stringify(user));
-      localStorage.setItem('role', role);
-  
-      // ✅ Redirección según rol
-      if (role === 'administrative') navigate('/admin');
-      else if (role === 'professor') navigate('/professor');
-      else if (role === 'legalRepresentative') navigate('/padre');
-      else alert('Rol no reconocido');
-      
+
+      const { user } = response.data;
+      console.log('🧠 Usuario recibido del backend:', user);
+
+      // Guarda directamente el usuario completo, ya incluye nombre y apellido
+      login(user);
+
+      // Redirección según rol
+      switch (user.role) {
+        case 'administrative':
+          navigate('/admin');
+          break;
+        case 'professor':
+          navigate('/professor');
+          break;
+        case 'legalRepresentative':
+          navigate('/padre');
+          break;
+        default:
+          alert('Rol no reconocido');
+      }
+
     } catch (err) {
       alert('Credenciales inválidas o error del servidor');
       console.error(err);
     }
   };
-  
 
   return (
     <div className="login-page">

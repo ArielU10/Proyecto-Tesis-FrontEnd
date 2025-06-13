@@ -3,7 +3,8 @@ import '../../styles/components/administrativeForm.css';
 import {
   handleLetterInput,
   handleUppercaseChange,
-  validatePhone
+  validatePhone,
+  validateCedula
 } from '../../services/validationService';
 
 const AdministrativeForm = ({ formData, onChange, onSubmit, onCancel }) => {
@@ -32,6 +33,29 @@ const AdministrativeForm = ({ formData, onChange, onSubmit, onCancel }) => {
         onChange={(e) => handleUppercaseChange(e, onChange)}
         required
       />
+
+      <input
+        type="text"
+        name="identification"
+        placeholder="Cédula"
+        value={formData.identification}
+        onChange={onChange}
+        onKeyPress={(e) => {
+          if (!/[0-9]/.test(e.key)) e.preventDefault();
+        }}
+        onBlur={() => {
+          if (formData.identification) {
+            const isValid = validateCedula(formData.identification);
+            setErrors((prev) => ({
+              ...prev,
+              identification: isValid ? '' : 'Cédula no válida'
+            }));
+          }
+        }}
+        maxLength={10}
+        required
+      />
+      {errors.identification && <p className="error-message">{errors.identification}</p>}
 
       <input
         type="email"
