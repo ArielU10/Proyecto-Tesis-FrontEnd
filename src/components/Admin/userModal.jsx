@@ -2,25 +2,32 @@
 import React, { useState } from 'react';
 import '../../styles/components/userModal.css';
 
-// Formularios según el tipo de usuario
 import AdministrativeForm from './AdministrativeForm';
-import LegalRepresentativeForm from './LegalRepresentativeForm';
 import ProfessorForm from './ProfessorForm';
+import StudentForm from './StudentForm';
 
 import axios from 'axios';
 
 const UserWizardModal = ({ isOpen, onClose }) => {
-  const [step, setStep] = useState(1); // Paso del wizard
-  const [selectedType, setSelectedType] = useState(''); // Tipo de usuario seleccionado
+  const [step, setStep] = useState(1);
+  const [selectedType, setSelectedType] = useState('');
 
-  // Form data que se comparte entre formularios
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
+    birthDate: '',
+    identityCard: '',
+    status: '',
+    id_course: '',
+    rep_firstName: '',
+    rep_lastName: '',
+    rep_identification: '',
+    rep_phone: '',
+    rep_email: '',
+    rep_address: '',
     email: '',
     phone: '',
-    identification: '',
-    address: ''
+    identification: ''
   });
 
   if (!isOpen) return null;
@@ -32,13 +39,12 @@ const UserWizardModal = ({ isOpen, onClose }) => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      // Enviar según el tipo de usuario
       if (selectedType === 'administrative') {
         await axios.post('http://localhost:3000/api/administratives', {
           firstName: formData.firstName,
@@ -47,18 +53,6 @@ const UserWizardModal = ({ isOpen, onClose }) => {
           phone: formData.phone
         });
         alert('✅ Administrativo creado correctamente');
-      }
-
-      if (selectedType === 'representative') {
-        await axios.post('http://localhost:3000/api/legal-representatives', {
-          firstName: formData.firstName,
-          lastName: formData.lastName,
-          identification: formData.identification,
-          phone: formData.phone,
-          email: formData.email,
-          address: formData.address
-        });
-        alert('✅ Padre de Familia creado correctamente');
       }
 
       if (selectedType === 'professor') {
@@ -72,21 +66,49 @@ const UserWizardModal = ({ isOpen, onClose }) => {
         alert('✅ Profesor creado correctamente');
       }
 
-      // Resetear estado
-      onClose();
-      setStep(1);
-      setSelectedType('');
-      setFormData({
-        firstName: '',
-        lastName: '',
-        email: '',
-        phone: '',
-        identification: '',
-        address: ''
-      });
-    } catch (error) {
-      console.error('❌ Error:', error);
-      alert('Error al guardar');
+      if (selectedType === 'student') {
+        console.log('📥 Registrando representante legal...');
+      
+        const repResponse = await axios.post('http://localhost:3000/api/legal-representatives', {
+          firstName: formData.rep_firstName,
+          lastName: formData.rep_lastName,
+          identification: formData.rep_identification,
+          phone: '+593' + formData.rep_phone,
+          email: formData.rep_email,
+          address: formData.rep_address
+        });
+      
+        if (!repResponse.data || !repResponse.data.id_representative) {
+          throw new Error('La respuesta del backend no contiene id_representative');
+        }
+      
+        const repId = repResponse.data.id_representative;
+        console.log('Representante creado →', repResponse.data);
+
+        if (isNaN(repId)) {
+          throw new Error('id_representative no es un número válido');
+        }
+      
+        console.log('🧾 ID del representante creado:', repId);
+      
+        await axios.post('http://localhost:3000/api/students',
+         {
+          firstName: formData.firstName,
+          lastName: formData.lastName,
+          birthDate: formData.birthDate,
+          identityCard: formData.identityCard,
+          status: formData.status,
+          id_course: formData.id_course,
+          id_legal_representative: repId
+        });
+      
+        alert('✅ Estudiante y representante creados correctamente');
+      }
+      
+    } catch (err) {
+      const serverMessage = err.response?.data?.error || err.message;
+      console.error('❌ Error durante creación de estudiante o representante:', serverMessage);
+      alert(`Error al guardar estudiante o representante:\n${serverMessage}`);
     }
   };
 
@@ -99,8 +121,7 @@ const UserWizardModal = ({ isOpen, onClose }) => {
             <div className="user-type-options">
               <button onClick={() => handleSelectType('administrative')}>Administrativo</button>
               <button onClick={() => handleSelectType('professor')}>Profesor</button>
-              <button onClick={() => handleSelectType('representative')}>Padre de Familia</button>
-              <button disabled>Estudiante</button>
+              <button onClick={() => handleSelectType('student')}>Estudiante</button>
             </div>
             <button className="close-btn" onClick={onClose}>Cancelar</button>
           </>
@@ -124,8 +145,8 @@ const UserWizardModal = ({ isOpen, onClose }) => {
           />
         )}
 
-        {step === 2 && selectedType === 'representative' && (
-          <LegalRepresentativeForm
+        {step === 2 && selectedType === 'student' && (
+          <StudentForm
             formData={formData}
             onChange={handleChange}
             onSubmit={handleSubmit}

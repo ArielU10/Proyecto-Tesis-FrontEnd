@@ -4,15 +4,61 @@ import { FaQrcode, FaBell, FaClipboardCheck, FaUserPlus, FaBookOpen, FaExclamati
 import userAvatar from '../assets/avatarMujer.png';
 import '../styles/administrative/adminScreen.css';
 import UserModal from '../components/Admin/userModal';
+import CourseForm from '../components/Admin/CourseForm'; // ✅ importar el formulario
 
 const AdminScreen = () => {
-  // Estado para controlar la apertura/cierre del modal
+  // Modal usuario
   const [isModalOpen, setModalOpen] = useState(false);
+
+  // Modal curso
+  const [showCourseModal, setShowCourseModal] = useState(false);
+  const [courseFormData, setCourseFormData] = useState({
+    courseName: '',
+    level: '',
+    description: ''
+  });
+
+  const handleCourseChange = (e) => {
+    const { name, value } = e.target;
+    setCourseFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleCourseSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const res = await fetch('http://localhost:3000/api/courses', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(courseFormData)
+      });
+      if (!res.ok) throw new Error('Error al guardar curso');
+      alert('✅ Curso creado correctamente');
+      setShowCourseModal(false);
+      setCourseFormData({ courseName: '', level: '', description: '' });
+    } catch (err) {
+      console.error('❌ Error:', err);
+      alert('Error al guardar el curso');
+    }
+  };
 
   return (
     <>
-      {/* Modal fuera del layout para que no sea afectado por z-index u overflow */}
+      {/* Modal de usuario */}
       <UserModal isOpen={isModalOpen} onClose={() => setModalOpen(false)} />
+
+      {/* Modal de curso */}
+      {showCourseModal && (
+        <div className="custom-modal-backdrop">
+          <div className="custom-modal">
+            <CourseForm
+              formData={courseFormData}
+              onChange={handleCourseChange}
+              onSubmit={handleCourseSubmit}
+              onClose={() => setShowCourseModal(false)}
+            />
+          </div>
+        </div>
+      )}
 
       <AdminDashboardLayout>
         <div className="admin-screen-layout">
@@ -38,7 +84,9 @@ const AdminScreen = () => {
           <div className="informacion box">Recientes</div>
 
           {/* Botones de acciones principales */}
-          <div className="card-boton"><FaBookOpen /> Agregar Curso</div>
+          <div className="card-boton" onClick={() => setShowCourseModal(true)}>
+            <FaBookOpen /> Agregar Curso
+          </div>
 
           <div className="card-boton" onClick={() => setModalOpen(true)}>
             <FaUserPlus /> Agregar Usuario
