@@ -1,94 +1,120 @@
 import React, { useEffect, useState } from "react";
-import { Modal, Button, Form } from "react-bootstrap";
+import { Modal, Button, Form, Card } from "react-bootstrap";
 import { getIncidentsByStudentId, updateIncident } from "../../services/incidentApi";
 
 const ModalSeguimiento = ({ show, onHide, student, onFollowUpUpdated }) => {
-  const [selectedIncident, setSelectedIncident] = useState(null);
-  const [resolution, setResolution] = useState("");
-  const [status, setStatus] = useState("pending");
+  const [incidents, setIncidents] = useState([]);
+  const [formData, setFormData] = useState({});
 
   useEffect(() => {
     if (student) {
       getIncidentsByStudentId(student.id_student).then((data) => {
-        if (data.length > 0) {
-          const incident = data[0];
-          setSelectedIncident(incident);
-          setResolution(incident.resolution || "");
-          setStatus(incident.status || "pending");
-        }
+        setIncidents(data);
+        const initialFormData = {};
+        data.forEach((incident) => {
+          initialFormData[incident.id_incident] = {
+            resolution: incident.resolution || "",
+            status: incident.status
+          };
+        });
+        setFormData(initialFormData);
       });
     }
   }, [student]);
 
-  const handleSave = async () => {
+  const handleFieldChange = (incidentId, field, value) => {
+    setFormData((prevState) => ({
+      ...prevState,
+      [incidentId]: {
+        ...prevState[incidentId],
+        [field]: value
+      }
+    }));
+  };
+
+  const handleSave = async (incidentId) => {
     try {
-      await updateIncident(selectedIncident.id_incident, {
-        type: selectedIncident.type,
-        description: selectedIncident.description,
-        date: selectedIncident.date,
-        id_student: selectedIncident.id_student,
-        id_professor: selectedIncident.id_professor,
-        status: status,
-        resolution: resolution,
+      const incident = incidents.find((inc) => inc.id_incident === incidentId);
+      const { resolution, status } = formData[incidentId];
+
+      await updateIncident(incidentId, {
+        type: incident.type,
+        description: incident.description,
+        date: incident.date,
+        id_student: incident.id_student,
+        id_professor: incident.id_professor,
+        status,
+        resolution,
       });
 
-      alert("Seguimiento actualizado correctamente");
-
-      onHide();
-      
-      setTimeout(() => {
-        if (status === "resolved" && onFollowUpUpdated) {
-          onFollowUpUpdated();
-        }
-      }, 300);
+      if (status === "resolved") {
+        onFollowUpUpdated();
+        onHide();
+      }
     } catch (error) {
       console.error("Error al actualizar seguimiento:", error);
     }
   };
 
+  // NUEVOS FORMATEADORES:
+  const formatDate = (dateStr) => {
+    const date = new Date(dateStr);
+    return date.toLocaleDateString();
+  };
+
+  const formatTime = (dateStr) => {
+    const date = new Date(dateStr);
+    return date.toLocaleTimeString();
+  };
+
   return (
-    <Modal show={show} onHide={onHide} centered>
+    <Modal show={show} onHide={onHide} size="lg" centered>
       <Modal.Header closeButton>
-        <Modal.Title>Seguimiento del Estudiante</Modal.Title>
+        <Modal.Title>Seguimiento de {student?.lastName} {student?.firstName}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <p>
-          <strong>Estudiante:</strong> {student.lastName} {student.firstName}
-        </p>
-
-        {selectedIncident ? (
-          <>
-            <p>
-              <strong>Incidente:</strong> {selectedIncident.description}
-            </p>
-
-            <Form.Group className="mb-3">
-              <Form.Label>Resolución</Form.Label>
-              <Form.Control
-                as="textarea"
-                rows={3}
-                value={resolution}
-                onChange={(e) => setResolution(e.target.value)}
-              />
-            </Form.Group>
-
-            <Form.Group className="mb-3">
-              <Form.Label>Estado</Form.Label>
-              <Form.Select
-                value={status}
-                onChange={(e) => setStatus(e.target.value)}
-              >
-                <option value="pending">Pendiente</option>
-                <option value="resolved">Resuelto</option>
-              </Form.Select>
-            </Form.Group>
-
-            <Button variant="success" onClick={handleSave}>
-              Guardar seguimiento
-            </Button>
-          </>
+        {incidents.length === 0 ? (
+          <p className="text-muted">No hay incidentes pendientes para este estudiante</p>
         ) : (
-          <p className="text-muted">No hay incidentes para este estudiante</p>
+          incidents.map((incident) => (
+            <Card key={incident.id_incident} className="mb-3">
+              <Card.Body>
+                <p><strong>Fecha:</strong> {formatDate(incident.date)}</p>
+                <p><strong>Hora:</strong> {formatTime(incident.date)}</p>
+                <p><strong>Profesor:</strong> {incident.professor?.firstName} {incident.professor?.lastName}</p>
+                <p><strong>Incidente:</strong> {incident.description}</p>
+
+                <Form.Group className="mb-3">
+                  <Form.Label>Resolución</Form.Label>
+                  <Form.Control
+                    as="textarea"
+                    rows={2}
+                    value={formData[incident.id_incident]?.resolution || ""}
+                    onChange={(e) =>
+                      handleFieldChange(incident.id_incident, "resolution", e.target.value)
+                    }
+                  />
+                </Form.Group>
+
+                <Form.Group className="mb-3">
+                  <Form.Label>Estado</Form.Label>
+                  <Form.Select
+                    value={formData[incident.id_incident]?.status || "pending"}
+                    onChange={(e) =>
+                      handleFieldChange(incident.id_incident, "status", e.target.value)
+                    }
+                  >
+                    <option value="pending">Pendiente</option>
+                    <option value="resolved">Resuelto</option>
+                  </Form.Select>
+                </Form.Group>
+
+                <Button variant="success" onClick={() => handleSave(incident.id_incident)}>
+                  Guardar seguimiento
+                </Button>
+              </Card.Body>
+            </Card>
+          ))
         )}
       </Modal.Body>
     </Modal>

@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import { Modal, Button } from "react-bootstrap";
 import ModalIncidente from "./modalIncidente";
-import { createAsistance } from "../../services/asistanceApi"; 
- 
-const ModalEstudiantes = ({ show, onHide, students }) => {
+import { createAsistance } from "../../services/asistanceApi";
+
+const ModalEstudiantes = ({ show, onHide, students, courseId }) => {
   const [showIncidenteModal, setShowIncidenteModal] = useState(false);
   const [selectedStudent, setSelectedStudent] = useState(null);
-  const [asistencias, setAsistencias] = useState({}); 
+  const [asistencias, setAsistencias] = useState({});
 
   const abrirModalIncidente = (student) => {
     setSelectedStudent(student);
@@ -27,7 +27,8 @@ const ModalEstudiantes = ({ show, onHide, students }) => {
       for (let [studentId, status] of registros) {
         const asistenciaData = {
           id_student: parseInt(studentId),
-          id_professor: 1,  // verificar con el back de prode id
+          id_professor: 1,  // ✅ profesor fijo por ahora
+          id_course: courseId,  // ✅ aquí agregamos el curso
           status: status,
           justification: null,
           news: null,

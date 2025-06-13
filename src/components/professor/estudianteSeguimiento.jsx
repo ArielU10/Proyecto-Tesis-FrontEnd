@@ -1,70 +1,52 @@
 import React, { useEffect, useState } from "react";
-import { ListGroup, Spinner } from "react-bootstrap";
+import { Button, ListGroup } from "react-bootstrap";
 import { getStudentsInFollowUp } from "../../services/incidentApi";
 import ModalSeguimiento from "./modalSeguimiento";
 
 const EstudiantesSeguimiento = () => {
   const [students, setStudents] = useState([]);
-  const [loading, setLoading] = useState(true);
   const [selectedStudent, setSelectedStudent] = useState(null);
   const [showModal, setShowModal] = useState(false);
+
+  const cargarSeguimiento = () => {
+    getStudentsInFollowUp().then(setStudents);
+  };
 
   useEffect(() => {
     cargarSeguimiento();
   }, []);
 
-  const cargarSeguimiento = () => {
-    setLoading(true);
-    getStudentsInFollowUp()
-      .then((data) => {
-        console.log("Seguimiento cargado:", data);
-        setStudents(data);
-      })
-      .finally(() => setLoading(false));
-  };
-
-  const abrirModal = (student) => {
+  const handleVerSeguimiento = (student) => {
     setSelectedStudent(student);
     setShowModal(true);
   };
 
-  const cerrarModal = () => {
-    setShowModal(false);
-    setSelectedStudent(null);
+  const handleFollowUpUpdated = () => {
     cargarSeguimiento();
   };
 
   return (
     <div>
-      <h6 className="fw-bold mb-3">Estudiantes en seguimiento</h6>
-
-      {loading ? (
-        <div className="text-center">
-          <Spinner animation="border" variant="primary" />
-        </div>
-      ) : students.length === 0 ? (
-        <p className="text-muted">No hay estudiantes en seguimiento.</p>
-      ) : (
-        <ListGroup>
-          {students.map((student) => (
-            <ListGroup.Item
-              key={student.id_student}
-              action
-              className="text-primary fw-bold"
-              onClick={() => abrirModal(student)}
-            >
-              {student.lastName} {student.firstName}
-            </ListGroup.Item>
-          ))}
-        </ListGroup>
-      )}
+      <h5 className="fw-bold">Estudiantes en seguimiento</h5>
+      <ListGroup>
+        {students.map((student) => (
+          <ListGroup.Item
+            key={student.id_student}
+            action
+            onClick={() => handleVerSeguimiento(student)}
+            className="text-primary fw-bold"
+          >
+            {student.lastName} {student.firstName}
+          </ListGroup.Item>
+        ))}
+      </ListGroup>
 
       {selectedStudent && (
         <ModalSeguimiento
           show={showModal}
-          onHide={cerrarModal}
+          onHide={() => setShowModal(false)}
           student={selectedStudent}
-          onFollowUpUpdated={cargarSeguimiento}
+          onFollowUpUpdated={handleFollowUpUpdated}
         />
       )}
     </div>

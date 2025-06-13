@@ -1,6 +1,6 @@
 import React from "react";
 
-const ListaEstudiantes = ({ students, selectedCourse }) => {
+const ListaEstudiantes = ({selectedCourse }) => {
     return (
     <div className="bg-white p-3 rounded shadow-sm">
       <h5 className="fw-bold">Estudiantes</h5>
