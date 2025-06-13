@@ -1,24 +1,56 @@
-import React from "react";
-import { FaUser } from "react-icons/fa";
+import React, { useEffect, useState } from "react";
+import { Button, ListGroup } from "react-bootstrap";
+import { getStudentsInFollowUp } from "../../services/incidentApi";
+import ModalSeguimiento from "./modalSeguimiento";
 
-const EstudiantesSeguimiento = () => (
-  <div className="seguimiento">
-    <h6 className="fw-bold">Estudiantes en seguimiento</h6>
-    <div className="d-flex gap-2 mt-2">
-      <div className="rounded-circle bg-primary text-white d-flex justify-content-center align-items-center" style={{ width: 40, height: 40 }}>
-        <FaUser />
-      </div>
-      <div className="rounded-circle bg-success text-white d-flex justify-content-center align-items-center" style={{ width: 40, height: 40 }}>
-        <FaUser />
-      </div>
-      <div className="rounded-circle bg-danger text-white d-flex justify-content-center align-items-center" style={{ width: 40, height: 40 }}>
-        <FaUser />
-      </div>
-      <button className="btn btn-outline-secondary rounded-circle p-1" style={{ width: 40, height: 40 }}>
-        +
-      </button>
+const EstudiantesSeguimiento = () => {
+  const [students, setStudents] = useState([]);
+  const [selectedStudent, setSelectedStudent] = useState(null);
+  const [showModal, setShowModal] = useState(false);
+
+  const cargarSeguimiento = () => {
+    getStudentsInFollowUp().then(setStudents);
+  };
+
+  useEffect(() => {
+    cargarSeguimiento();
+  }, []);
+
+  const handleVerSeguimiento = (student) => {
+    setSelectedStudent(student);
+    setShowModal(true);
+  };
+
+  const handleFollowUpUpdated = () => {
+    cargarSeguimiento();
+  };
+
+  return (
+    <div>
+      <h5 className="fw-bold">Estudiantes en seguimiento</h5>
+      <ListGroup>
+        {students.map((student) => (
+          <ListGroup.Item
+            key={student.id_student}
+            action
+            onClick={() => handleVerSeguimiento(student)}
+            className="text-primary fw-bold"
+          >
+            {student.lastName} {student.firstName}
+          </ListGroup.Item>
+        ))}
+      </ListGroup>
+
+      {selectedStudent && (
+        <ModalSeguimiento
+          show={showModal}
+          onHide={() => setShowModal(false)}
+          student={selectedStudent}
+          onFollowUpUpdated={handleFollowUpUpdated}
+        />
+      )}
     </div>
-  </div>
-);
+  );
+};
 
 export default EstudiantesSeguimiento;

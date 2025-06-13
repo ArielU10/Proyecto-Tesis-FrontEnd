@@ -1,5 +1,5 @@
 import React from "react";
-import "../../styles/professor/listaCursos.css"; // Asegúrate de tener este CSS
+import "../../styles/professor/listaCursos.css";
 
 const ListaCursos = ({ courses, onSelectCourse }) => {
   return (
