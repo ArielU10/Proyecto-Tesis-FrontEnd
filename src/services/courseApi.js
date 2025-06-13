@@ -11,3 +11,13 @@ export const getCourses = async () => {
     return [];
   }
 };
+
+export const getCoursesByProfessor = async (professorId) => {
+  try {
+    const response = await axios.get(`${API_URL}/professor/${professorId}`);
+    return response.data;
+  } catch (error) {
+    console.error("Error al obtener cursos por profesor:", error.response?.data || error.message);
+    throw error;
+  }
+};
