@@ -33,7 +33,9 @@ export const AdminDashboardLayout = ({ children }) => {
 
           <div className="footer-icons">
             <img src="/src/assets/logo_redes/wssp.svg" alt="WhatsApp" />
-            <img src="/src/assets/logo_redes/fb.svg" alt="Facebook" />
+            <a href="https://www.facebook.com/UnidadEducativaJesusDeNazareth" target="_blank" rel="noopener noreferrer">
+                <img src="/src/assets/logo_redes/fb.svg" alt="Facebook" />
+            </a>
             <img src="/src/assets/logo_redes/x.svg" alt="X" />
             <img src="/src/assets/logo_redes/inst.svg" alt="Instagram" />
             <img src="/src/assets/logo_redes/tiktok.svg" alt="TikTok" />
