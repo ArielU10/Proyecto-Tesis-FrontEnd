@@ -14,7 +14,7 @@ export const NavigationProvider = ({ children }) => {
     }
 
     const path = page ? `/${module}/${page}` : `/${module}`;
-    navigate(path);
+    navigate(path.replace(/\/$/, ''));
   };
 
   // Página actual

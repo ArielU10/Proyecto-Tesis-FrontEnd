@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import '../../../styles/legalRepresentantive/LegalRepresentantiveHome.css';
 import '../../../styles/legalRepresentantive/additionalLegalRepresentativeStyles.css';
 
@@ -60,7 +60,8 @@ const StudentAssistancePage = () => {
     }
     
     setAttendanceData(filtered);
-  }, [attendanceRecords, selectedDate, selectedStudent]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedDate, selectedStudent]);
 
   const getStatusColor = (status) => {
     switch (status) {

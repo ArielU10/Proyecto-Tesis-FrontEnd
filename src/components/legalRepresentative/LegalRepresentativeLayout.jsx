@@ -1,11 +1,14 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
+import { Outlet } from 'react-router-dom';
 import { useNavigation } from '../../context/NavigationContext';
 import '../../styles/legalRepresentantive/LegalRepresentantiveHome.css';
 import JN_logo from '../../assets/legalRepresentativeAssets/JN_logo.svg';
+import { useAuth } from '../../context/AuthContext';
 
-const LegalRepresentativeLayout = ({ children }) => {
+const LegalRepresentativeLayout = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { navigate } = useNavigation();
+  const { logout } = useAuth();
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
@@ -21,7 +24,8 @@ const LegalRepresentativeLayout = ({ children }) => {
 
   const handleLogout = () => {
     if (window.confirm('¿Está seguro que desea cerrar sesión?')) {
-      navigate('login');
+      logout();
+      navigate({ module: 'login' });
     }
     setIsMenuOpen(false);
   };
@@ -48,16 +52,21 @@ const LegalRepresentativeLayout = ({ children }) => {
         <button className="nav-item" onClick={handleLogout}>SALIR</button>
       </nav>
 
-      <main className="main-content">{children}</main>
+      {/* Contenedor principal que asegura el layout correcto */}
+      <div className="main-wrapper">
+        <main className="main-content">
+          <Outlet />
+        </main>
+        
+        <footer className="footer">
+          <div className="footer-content">
+            <span className="footer-text">JESUS DE NAZARETH</span>
+            <span className="footer-text">TODOS LOS DERECHOS RESERVADOS</span>
+          </div>
+        </footer>
+      </div>
 
       <div className="bottom-gradient"></div>
-
-      <footer className="footer">
-        <div className="footer-content">
-          <span className="footer-text">JESUS DE NAZARETH</span>
-          <span className="footer-text">TODOS LOS DERECHOS RESERVADOS</span>
-        </div>
-      </footer>
     </div>
   );
 };

@@ -6,16 +6,17 @@ import LegalRepresentativeRoutes from './pages/legalRepresentantive/routes';
 import ProfessorPage from './pages/professor/professorPage';
 import ModalIncidente from "./components/professor/modalIncidente";
 
-
 function App() {
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Login />} />
+        <Route path="/login" element={<Login />} />
         <Route path="/admin" element={<AdminScreen />} />
         <Route path="/professor" element={<ProfessorPage />} />
         <Route path="/professor/incident/:studentId/:courseId" element={<ModalIncidente />} />
-        {LegalRepresentativeRoutes()}
+        
+        {LegalRepresentativeRoutes}
       </Routes>
     </BrowserRouter>
   );

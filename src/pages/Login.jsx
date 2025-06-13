@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { useAuth } from '../context/AuthContext';
 
 import '../styles/login.css';
 import logo from '../assets/logoJN.png';
@@ -14,6 +15,7 @@ const images = [img1, img2, img3, img4, img5];
 
 const Login = () => {
   const navigate = useNavigate();
+  const { login } = useAuth();
 
   const [currentImage, setCurrentImage] = useState(0);
   const [email, setEmail] = useState('');
@@ -31,11 +33,18 @@ const Login = () => {
 
     try {
       const response = await axios.post('http://localhost:3000/api/auth/login', {
-        user_name: email, // usamos "email" como identificador, mapeado a "user_name"
+        user_name: email,
         password
       });
 
-      const { role } = response.data;
+      const userData = response.data;
+      login(userData);
+
+      const role = userData.user.role;
+
+      console.log('Rol recibido del backend:', role);
+      console.log('Tipo del rol:', typeof role);
+      console.log('userData completo:', userData);
 
       if (role === 'administrative') navigate('/admin');
       else if (role === 'professor') navigate('/professor');

@@ -5,23 +5,25 @@ import LegalRepresentativeHomepage from './pages/legalRepresentantiveHome';
 import GenerateQRPage from './pages/GenerateQr';
 import StudentAssistancePage from './pages/StudentAssistance';
 import StudentIncidentsPage from './pages/StudentIncidents';
+import ProtectedRoute from '../../components/ProtectedRoute';
 
-const LegalRepresentativeRoutes = () => (
+const LegalRepresentativeRoutes = [
   <Route
-    path="/legal-representantive/*"
+    key="layout"
+    path="/legal-representantive"
     element={
-      <NavigationProvider>
-        <LegalRepresentativeLayout>
-          <Routes>
-            <Route path="" element={<LegalRepresentativeHomepage />} />
-            <Route path="generate-qr" element={<GenerateQRPage />} />
-            <Route path="student/:student_id/assistance" element={<StudentAssistancePage />} />
-            <Route path="student/:student_id/incidents" element={<StudentIncidentsPage />} />
-          </Routes>
-        </LegalRepresentativeLayout>
-      </NavigationProvider>
+      <ProtectedRoute allowedRoles={['legalRepresentative']}>
+        <NavigationProvider>
+          <LegalRepresentativeLayout />
+        </NavigationProvider>
+      </ProtectedRoute>
     }
-  />
-);
+  >
+    <Route index element={<LegalRepresentativeHomepage />} />
+    <Route path="generate-qr" element={<GenerateQRPage />} />
+    <Route path="student/:student_id/assistance" element={<StudentAssistancePage />} />
+    <Route path="student/:student_id/incidents" element={<StudentIncidentsPage />} />
+  </Route>
+];
 
 export default LegalRepresentativeRoutes;
