@@ -92,8 +92,7 @@
 }
 
 .main-wrapper {
-  padding-top: 2rem;
-  min-height: calc(100vh - 80px); /* Ajustar según altura del header */
+  min-height: calc(100vh - 80px);
   display: flex;
   flex-direction: column;
   position: relative;
@@ -103,16 +102,16 @@
 .main-content {
   position: relative;
   z-index: 10;
-  padding: 2rem 1rem 1rem 1rem;
+  padding: 1rem 1rem;
   min-height: calc(100vh - 160px);
   height: calc(100vh - 60px);
-  display: flex;
   flex: 1;
   overflow-y: auto;
+  display: flex;
   flex-direction: column;
-  justify-content: center;
-  margin-top: 1rem;
-  max-height: 90vh;
+  justify-content: flex-start;
+  height: auto;
+  max-height: none;
 }
 
 .content-container {
