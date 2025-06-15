@@ -8,6 +8,8 @@ import AdminScreen from './pages/adminScreen';
 import PadreScreen from './pages/padreScreen';
 import ProfessorPage from './pages/professor/professorPage';
 import ModalIncidente from "./components/professor/modalIncidente";
+import CourseScreen from './pages/CourseScreen';
+
 
 function App() {
   return (
@@ -18,6 +20,8 @@ function App() {
         <Route path="/professor" element={<ProfessorPage />} />
         <Route path="/professor/incident/:studentId/:courseId" element={<ModalIncidente />} />
         <Route path="/padre" element={<PadreScreen />} />
+        <Route path="/cursos" element={<CourseScreen />} />
+
       </Routes>
 
       <ToastContainer 

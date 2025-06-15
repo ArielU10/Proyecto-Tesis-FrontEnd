@@ -1,4 +1,5 @@
 import { Header } from './Header';
+import { NavLink } from 'react-router-dom';
 import '../../styles/components/adminLayout.css';
 
 export const AdminDashboardLayout = ({ children }) => {
@@ -8,12 +9,22 @@ export const AdminDashboardLayout = ({ children }) => {
         <img src="/src/assets/logo_jn.svg" alt="Logo JN" className="logo-image" />
         <nav className="menu">
           <ul>
-            <li>Home</li>
-            <li>Registro de Asistencias</li>
+          <li>
+            <NavLink
+              to="/admin"className={({ isActive }) => isActive ? "sidebar-link active" : "sidebar-link"}>Home
+            </NavLink>
+          </li>
+            <li>
+            Registro de Asistencias
+            </li>
             <li>Faltas y Observaciones</li>
             <li>Usuarios</li>
-            <li>Cursos / Paralelos</li>
-            <li>Cerrar Sesion</li>
+          <li>
+            <NavLink
+              to="/cursos"className={({ isActive }) => isActive ? "sidebar-link active" : "sidebar-link"}>Cursos / Paralelos
+            </NavLink>
+          </li>
+      
           </ul>
         </nav>
         <div className="sidebar-footer">¡Soy Nazareno, soy triunfador!</div>
