@@ -1,14 +1,17 @@
 import React from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import Login from './pages/Login';
 import AdminScreen from './pages/adminScreen';
 import LegalRepresentativeRoutes from './pages/legalRepresentantive/routes';
 import ProfessorPage from './pages/professor/professorPage';
 import ModalIncidente from "./components/professor/modalIncidente";
+import CourseScreen from './pages/CourseScreen';
 
 function App() {
   return (
-    <BrowserRouter>
+    <>
       <Routes>
         <Route path="/" element={<Login />} />
         <Route path="/login" element={<Login />} />
@@ -17,8 +20,19 @@ function App() {
         <Route path="/professor/incident/:studentId/:courseId" element={<ModalIncidente />} />
         
         {LegalRepresentativeRoutes}
+
       </Routes>
-    </BrowserRouter>
+
+      <ToastContainer 
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        closeOnClick
+        pauseOnHover
+        draggable
+        theme="colored"
+      />
+    </>
   );
 }
 

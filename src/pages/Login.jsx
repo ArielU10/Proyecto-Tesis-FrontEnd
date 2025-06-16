@@ -37,19 +37,27 @@ const Login = () => {
         password
       });
 
-      const userData = response.data;
-      login(userData);
+      const { user } = response.data;
+      console.log('🧠 Usuario recibido del backend:', user);
 
-      const role = userData.user.role;
+      // Guarda directamente el usuario completo, ya incluye nombre y apellido
+      login(user);
 
-      console.log('Rol recibido del backend:', role);
-      console.log('Tipo del rol:', typeof role);
-      console.log('userData completo:', userData);
+      // Redirección según rol
+      switch (user.role) {
+        case 'administrative':
+          navigate('/admin');
+          break;
+        case 'professor':
+          navigate('/professor');
+          break;
+        case 'legalRepresentative':
+          navigate('/padre');
+          break;
+        default:
+          alert('Rol no reconocido');
+      }
 
-      if (role === 'administrative') navigate('/admin');
-      else if (role === 'professor') navigate('/professor');
-      else if (role === 'legalRepresentative') navigate('/legal-representantive');
-      else alert('Rol no reconocido');
     } catch (err) {
       alert('Credenciales inválidas o error del servidor');
       console.error(err);
