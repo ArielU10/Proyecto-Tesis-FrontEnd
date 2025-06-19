@@ -68,3 +68,7 @@
   border-left: 1px solid #ccc;
 }
 
+html, body {
+  background-color: #f8f9fa !important;
+  color: #000;
+}

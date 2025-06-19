@@ -48,3 +48,15 @@ button {
     color: #747bff;
   }
 }
+
+.modal-content {
+  background-color: #fff !important;
+  border-radius: 12px !important;
+  border: none !important;              /* ✅ elimina borde negro */
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15) !important;
+}
+
+.modal-dialog {
+  background-color: transparent !important;
+  border: none !important;              /* ✅ asegura que no haya borde */
+}
