@@ -47,3 +47,9 @@ export const updateIncident = async (incidentId, data) => {
   return response.data;
 };
 
+export const getIncidentsByProfessorId = async (professorId) => {
+  const response = await axios.get(`${API_URL}/by-professor/${professorId}`);
+  return response.data;
+};
+
+

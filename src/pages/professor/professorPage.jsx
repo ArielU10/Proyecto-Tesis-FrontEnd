@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import "../../styles/professor/professorPage.css";
 
-import { getCourses } from "../../services/courseApi";
+// Estilos y servicios
+import "../../styles/professor/professorPage.css";
+import { getCoursesByProfessor } from "../../services/courseApi";
 import { getStudentsByCourse } from "../../services/studentApi";
 
 // Componentes
@@ -24,15 +25,27 @@ const ProfessorPage = () => {
   const [showModal, setShowModal] = useState(false);
   const [showInasistencias, setShowInasistencias] = useState(false);
   const [showIncidentes, setShowIncidentes] = useState(false);
+  const [professorId, setProfessorId] = useState(null);
 
+  // Cargar cursos asignados al profesor
   useEffect(() => {
-    getCourses()
+  const user = JSON.parse(localStorage.getItem("user"));
+
+  if (user && user.role === "professor") {
+    setProfessorId(user.roleId);
+    getCoursesByProfessor(user.roleId)
       .then((data) => {
-        console.log("Cursos obtenidos:", data);
-        setCourses(data);
+        console.log("Cursos asignados al profesor:", data);
+
+        // ✅ Aquí se extrae solo la propiedad course de cada entrada del array
+        const formattedCourses = data.map(item => item.course);
+
+        setCourses(formattedCourses); // 👈 se pasa solo el array de cursos reales
       })
-      .catch(console.error);
-  }, []);
+      .catch((error) => console.error("Error al obtener cursos:", error));
+  }
+}, []);
+
 
   const handleLogout = () => {
     navigate("/");
@@ -81,13 +94,13 @@ const ProfessorPage = () => {
         show={showInasistencias}
         onHide={() => setShowInasistencias(false)}
         courses={courses}
-        professorId={1} 
+        professorId={professorId}
       />
 
       <ModalHistorialIncidentes
         show={showIncidentes}
         onHide={() => setShowIncidentes(false)}
-        professorId={1} 
+        professorId={professorId}
       />
     </div>
   );
