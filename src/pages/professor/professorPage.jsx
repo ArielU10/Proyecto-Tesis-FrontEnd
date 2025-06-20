@@ -79,13 +79,16 @@ const ProfessorPage = () => {
         </div>
       </div>
 
-      <div className="div3 p-4 bg-light d-flex flex-column justify-content-between">
-        <AccionesProfesor
-          onShowInasistencias={() => setShowInasistencias(true)}
-          onShowIncidentes={() => setShowIncidentes(true)}
-        />
-        <EstudiantesSeguimiento />
-      </div>
+     <div className="div3 p-4 bg-light d-flex flex-column justify-content-between">
+  <div className="mb-4">
+    <AccionesProfesor
+      onShowInasistencias={() => setShowInasistencias(true)}
+      onShowIncidentes={() => setShowIncidentes(true)}
+    />
+  </div>
+  <EstudiantesSeguimiento />
+</div>
+
 
       <ModalEstudiantes
         show={showModal}

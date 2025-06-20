@@ -147,3 +147,169 @@ html, body {
   transform: scale(1.2);
   color: #E5AC55;
 }
+
+.acciones-profesor {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  padding: 0px;
+  border-radius: 12px;
+  background-color: #f9f9f9;
+  
+}
+
+.accion-btn {
+  height: 100px;
+  width: 100%;
+  font-size: 1rem;
+  font-weight: 500;
+  border: none;
+  border-radius: 0;
+  color: white;
+  cursor: pointer;
+  transition:
+    transform 0.3s ease-in-out,
+    box-shadow 0.3s ease-in-out,
+    background-color 0.3s ease-in-out;
+}
+
+
+.accion-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+
+.qr {
+  background-color: #0058FF;
+}
+
+.qr:hover {
+  background-color: #5A8CFF; /* Azul más claro */
+  color: black;
+}
+
+.inasistencias {
+  background-color: #FF9800;
+}
+
+.inasistencias:hover {
+  background-color: #FFC04D; /* Mostaza más clara */
+  color: black;
+}
+
+.atrasos {
+  background-color: #DD3C7A;
+}
+
+.atrasos:hover {
+  background-color: #f598b8; /* Rosa más claro */
+  color: black;
+}
+
+.incidentes {
+  background-color: #F72F05;
+}
+
+.incidentes:hover {
+  background-color: #FF7254; /* Rojo anaranjado claro */
+  color: black;
+}
+
+.bienvenida-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #ffc107;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  min-width: 320px;
+  width: 100%;
+  gap: 20px;
+  flex-wrap: wrap; /* permite apilar en pantallas pequeñas */
+}
+
+.bienvenida-texto {
+  flex: 1 1 60%;
+  min-width: 250px;
+}
+
+.bienvenida-texto h4 {
+  margin-bottom: 8px;
+}
+
+.bienvenida-texto p {
+  margin-bottom: 12px;
+}
+
+.bienvenida-imagen {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 3px solid #E5AC55;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.bienvenida-imagen img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+@media (max-width: 768px) {
+  .parent {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto auto auto;
+    grid-template-areas:
+      "header"
+      "main"
+      "aside"
+      "footer";
+    height: auto;
+    overflow: auto;
+  }
+
+  .div1,
+  .div2,
+  .div3,
+  .footer-profesor {
+    width: 100%;
+  }
+
+  .div2,
+  .div3 {
+    border-left: none;
+    padding: 12px;
+  }
+
+  .acciones-profesor {
+    grid-template-columns: 1fr; /* botones en una sola columna */
+  }
+
+  .footer-content {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .bienvenida-card {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .bienvenida-texto {
+    max-width: 100%;
+  }
+}
+@media (max-width: 768px) {
+  .bienvenida-detalle,         /* Oculta el <ul> */
+  .bienvenida-imagen {         /* Oculta la imagen */
+    display: none;
+  }
+}
