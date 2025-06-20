@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { toast } from "react-toastify";
 import ModalIncidente from "./modalIncidente";
 import {
   createAsistance,
@@ -13,7 +14,6 @@ const ModalEstudiantes = ({ show, onHide, students, courseId }) => {
   const [idProfessor, setIdProfessor] = useState(null);
   const [asistenciaTomada, setAsistenciaTomada] = useState(false);
 
-  // Obtener el ID del profesor desde localStorage
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem("user"));
     if (user && user.role === "professor") {
@@ -21,7 +21,6 @@ const ModalEstudiantes = ({ show, onHide, students, courseId }) => {
     }
   }, []);
 
-  // Verificar si ya se tomó asistencia cuando se muestre el modal y tengamos el id del profesor
   useEffect(() => {
     const verificarAsistencia = async () => {
       if (show && courseId && idProfessor) {
@@ -56,7 +55,7 @@ const ModalEstudiantes = ({ show, onHide, students, courseId }) => {
       );
 
       if (estudiantesSinAsistencia.length > 0) {
-        alert("⚠️ Debes registrar asistencia de todos los estudiantes.");
+        toast.warn("Debes registrar asistencia de todos los estudiantes.");
         return;
       }
 
@@ -75,20 +74,19 @@ const ModalEstudiantes = ({ show, onHide, students, courseId }) => {
         await createAsistance(asistenciaData);
       }
 
-      alert("✅ Asistencias registradas correctamente.");
+      toast.success("Asistencias registradas correctamente.");
 
-      // Volver a verificar después de registrar
       const respuesta = await checkAsistenciaTomada(courseId, idProfessor);
       setAsistenciaTomada(respuesta === true || respuesta?.alreadyTaken === true);
 
       setAsistencias({});
     } catch (error) {
       if (error.response?.status === 409) {
-        alert("⚠️ Ya se tomó asistencia hoy para este curso.");
+        toast.info("Ya se tomó asistencia hoy para este curso.");
         setAsistenciaTomada(true);
       } else {
         console.error("Error al registrar asistencias:", error);
-        alert("❌ Error inesperado al registrar asistencia.");
+        toast.error("Error inesperado al registrar asistencia.");
       }
     }
   };
@@ -107,7 +105,7 @@ const ModalEstudiantes = ({ show, onHide, students, courseId }) => {
           <div className="modal-body">
             {asistenciaTomada && (
               <div className="alert alert-info text-center mb-3">
-                ✅ Ya se tomó asistencia hoy para este curso.
+                Ya se tomó asistencia hoy para este curso.
               </div>
             )}
             {students.length > 0 ? (
@@ -125,9 +123,7 @@ const ModalEstudiantes = ({ show, onHide, students, courseId }) => {
                               ? "btn success"
                               : "btn outline-success"
                           }
-                          onClick={() =>
-                            handleAsistencia(student.id_student, "present")
-                          }
+                          onClick={() => handleAsistencia(student.id_student, "present")}
                         >
                           Asiste
                         </button>
@@ -137,9 +133,7 @@ const ModalEstudiantes = ({ show, onHide, students, courseId }) => {
                               ? "btn warning"
                               : "btn outline-warning"
                           }
-                          onClick={() =>
-                            handleAsistencia(student.id_student, "absent")
-                          }
+                          onClick={() => handleAsistencia(student.id_student, "absent")}
                         >
                           Falta
                         </button>
@@ -149,9 +143,7 @@ const ModalEstudiantes = ({ show, onHide, students, courseId }) => {
                               ? "btn info"
                               : "btn outline-info"
                           }
-                          onClick={() =>
-                            handleAsistencia(student.id_student, "late")
-                          }
+                          onClick={() => handleAsistencia(student.id_student, "late")}
                         >
                           Atraso
                         </button>

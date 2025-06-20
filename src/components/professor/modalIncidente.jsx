@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import { createIncident } from "../../services/incidentApi"; // debe hacer POST a /api/incidents
+import { toast } from "react-toastify";
+import { createIncident } from "../../services/incidentApi";
 import "../../styles/professor/modalCustom.css";
 
-// Opciones de tipo de incidente con value para la BD y label para mostrar
 const incidentTypes = [
   { value: "academic", label: "Académica" },
   { value: "disciplinary", label: "Disciplinaria" },
@@ -18,26 +18,26 @@ const ModalIncidente = ({ show, onHide, student }) => {
 
   const handleSave = async () => {
     if (!type || !description) {
-      alert("⚠️ Por favor, complete todos los campos.");
+      toast.warn(" Por favor, complete todos los campos.");
       return;
     }
 
     try {
       const payload = {
-        type, // ahora usa el campo correcto que el backend espera
+        type,
         description,
         id_student: student.id_student,
         id_professor,
       };
 
-      await createIncident(payload); // esta función debe llamar al endpoint POST /api/incidents
-      alert("✅ Incidente registrado con éxito.");
+      await createIncident(payload);
+      toast.success("Incidente registrado con éxito.");
       setType("");
       setDescription("");
       onHide();
     } catch (error) {
       console.error("Error al registrar incidente:", error);
-      alert("❌ Ocurrió un error al guardar el incidente.");
+      toast.error("Ocurrió un error al guardar el incidente.");
     }
   };
 
@@ -47,8 +47,12 @@ const ModalIncidente = ({ show, onHide, student }) => {
     <div className="modal-overlay">
       <div className="modal-container">
         <div className="modal-header">
-          <h2>Registrar Incidente para {student.firstName} {student.lastName}</h2>
-          <button className="close-button" onClick={onHide}>×</button>
+          <h2>
+            Registrar Incidente para {student.firstName} {student.lastName}
+          </h2>
+          <button className="close-button" onClick={onHide}>
+            ×
+          </button>
         </div>
 
         <div className="modal-body">
@@ -77,8 +81,12 @@ const ModalIncidente = ({ show, onHide, student }) => {
         </div>
 
         <div className="modal-footer">
-          <button className="btn primary" onClick={handleSave}>Guardar</button>
-          <button className="btn danger" onClick={onHide}>Cancelar</button>
+          <button className="btn primary" onClick={handleSave}>
+            Guardar
+          </button>
+          <button className="btn danger" onClick={onHide}>
+            Cancelar
+          </button>
         </div>
       </div>
     </div>
