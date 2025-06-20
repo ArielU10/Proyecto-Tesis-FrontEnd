@@ -15,6 +15,7 @@ import EstudiantesSeguimiento from "../../components/professor/estudianteSeguimi
 import ModalEstudiantes from "../../components/professor/modalStudents";
 import ModalInasistencias from "../../components/professor/modalNoAsistencias";
 import ModalHistorialIncidentes from "../../components/professor/modalHistorialIncidentes";
+import ModalAtrasos from "../../components/professor/modalAtrasos";
 import FooterProfesor from "../../components/professor/footerProfessor";
 
 
@@ -28,6 +29,7 @@ const ProfessorPage = () => {
   const [showModal, setShowModal] = useState(false);
   const [showInasistencias, setShowInasistencias] = useState(false);
   const [showIncidentes, setShowIncidentes] = useState(false);
+  const [showAtrasos, setShowAtrasos] = useState(false);
   const [professorId, setProfessorId] = useState(null);
   
 
@@ -84,6 +86,7 @@ const ProfessorPage = () => {
     <AccionesProfesor
       onShowInasistencias={() => setShowInasistencias(true)}
       onShowIncidentes={() => setShowIncidentes(true)}
+      onShowAtrasos={() => setShowAtrasos(true)} 
     />
   </div>
   <EstudiantesSeguimiento />
@@ -107,6 +110,12 @@ const ProfessorPage = () => {
       <ModalHistorialIncidentes
         show={showIncidentes}
         onHide={() => setShowIncidentes(false)}
+        professorId={professorId}
+      />
+            <ModalAtrasos
+        show={showAtrasos}
+        onHide={() => setShowAtrasos(false)}
+        courses={courses}
         professorId={professorId}
       />
 

@@ -12,6 +12,11 @@ export const getInasistenciasByCourse = async (courseId) => {
   return response.data;
 };
 
+export const getAtrazosByCourseAndProfessor = async (id_professor, id_course) => {
+  const response = await axios.get(`${API_URL}/professor/${id_professor}/courses/${id_course}/atrasos`);
+  return response.data;
+};
+
 export const getInasistenciasPorCurso = async (professorId, courseId) => {
   const response = await axios.get(`${API_URL}/professor/${professorId}/courses/${courseId}/inasistencias`);
   return response.data;

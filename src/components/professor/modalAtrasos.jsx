@@ -1,18 +1,18 @@
 import React, { useState, useEffect } from "react";
-import { getInasistenciasByCourse } from "../../services/asistanceApi";
-import "../../styles/professor/modalInasistencias.css";
+import { getAtrazosByCourseAndProfessor } from "../../services/asistanceApi";
+import "../../styles/professor/modalAtrasos.css";
 
-const ModalInasistencias = ({ show, onHide, courses }) => {
+const ModalAtrasos = ({ show, onHide, courses, professorId }) => {
   const [selectedCourse, setSelectedCourse] = useState("");
-  const [inasistencias, setInasistencias] = useState([]);
+  const [atrasos, setAtrasos] = useState([]);
 
   useEffect(() => {
-    if (selectedCourse) {
-      getInasistenciasByCourse(selectedCourse)
-        .then(setInasistencias)
-        .catch((err) => console.error("Error al cargar inasistencias", err));
+    if (selectedCourse && professorId) {
+      getAtrazosByCourseAndProfessor(professorId, selectedCourse)
+        .then(setAtrasos)
+        .catch((err) => console.error("Error al cargar atrasos", err));
     }
-  }, [selectedCourse]);
+  }, [selectedCourse, professorId]);
 
   if (!show) return null;
 
@@ -20,7 +20,7 @@ const ModalInasistencias = ({ show, onHide, courses }) => {
     <div className="custom-modal-overlay">
       <div className="custom-modal-container">
         <div className="custom-modal-header">
-          <h2>Histórico de Inasistencias</h2>
+          <h2>Histórico de Atrasos</h2>
           <button className="custom-close-button" onClick={onHide}>×</button>
         </div>
 
@@ -41,16 +41,16 @@ const ModalInasistencias = ({ show, onHide, courses }) => {
             </select>
           </div>
 
-          {inasistencias.length > 0 ? (
+          {atrasos.length > 0 ? (
             <ul className="inasistencias-list">
-              {inasistencias.map((item) => (
+              {atrasos.map((item) => (
                 <li key={item.id_asistance}>
                   <strong>{item.date.substring(0, 10)}</strong> – {item.Student.lastName} {item.Student.firstName}
                 </li>
               ))}
             </ul>
           ) : (
-            selectedCourse && <p className="text-muted">No hay inasistencias en este curso.</p>
+            selectedCourse && <p className="text-muted">No hay atrasos en este curso.</p>
           )}
         </div>
 
@@ -62,4 +62,4 @@ const ModalInasistencias = ({ show, onHide, courses }) => {
   );
 };
 
-export default ModalInasistencias;
+export default ModalAtrasos;

@@ -1,0 +1,116 @@
+/* === MODAL DE ATRASOS === */
+
+.custom-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.custom-modal-container {
+  background-color: #fff;
+  width: 90%;
+  max-width: 800px;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.custom-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.custom-modal-header h2 {
+  margin: 0;
+  font-size: 1.5rem;
+  color: #000;
+}
+
+.custom-close-button {
+  background: transparent;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: #981426;
+}
+
+.custom-modal-body {
+  margin-bottom: 1rem;
+}
+
+.custom-modal-footer {
+  text-align: right;
+  margin-top: 1rem;
+}
+
+.custom-button {
+  padding: 8px 16px;
+  background-color: #981426;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.custom-button:hover {
+  background-color: #b8323c;
+}
+
+/* === SELECT DE CURSOS === */
+
+.select-curso-container {
+  margin-bottom: 1rem;
+}
+
+.select-curso-container label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+  color: #981426;
+}
+
+.custom-select-dark {
+  width: 100%;
+  padding: 8px 12px;
+  font-size: 1rem;
+  border: 1px solid #981426;
+  border-radius: 6px;
+  background-color: #981426;
+  color: #fff;
+  outline: none;
+  transition: border-color 0.3s ease;
+}
+
+.custom-select-dark:focus {
+  border-color: #b8323c;
+}
+
+.custom-select-dark option {
+  background-color: #981426;
+  color: #fff;
+}
+
+/* === LISTA DE ATRASOS === */
+.atrasos-list {
+  list-style: none;
+  padding-left: 0;
+}
+
+.atrasos-list li {
+  padding: 8px;
+  border-bottom: 1px solid #ddd;
+  color: #333;
+}
