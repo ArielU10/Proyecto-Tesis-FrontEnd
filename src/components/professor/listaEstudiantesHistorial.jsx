@@ -14,17 +14,16 @@ const ListaEstudiantesHistorial = ({ students, getIncidentsByStudentId }) => {
     const id = student.id_student;
 
     if (expandedStudentId === id) {
-      setExpandedStudentId(null); // Cierra si ya estaba abierto
+      setExpandedStudentId(null);
     } else {
       if (!incidentsMap[id]) {
         const data = await getIncidentsByStudentId(id);
         setIncidentsMap((prev) => ({ ...prev, [id]: data }));
       }
-      setExpandedStudentId(id); // Abre otro
+      setExpandedStudentId(id);
     }
   };
 
-  // Diccionario de traducción
   const incidentTypeMap = {
     medical: {
       label: "Médico",
@@ -44,9 +43,16 @@ const ListaEstudiantesHistorial = ({ students, getIncidentsByStudentId }) => {
     }
   };
 
+  // Ordenar estudiantes por apellido y luego nombre
+  const sortedStudents = [...students].sort((a, b) => {
+    const last = a.lastName.localeCompare(b.lastName);
+    if (last !== 0) return last;
+    return a.firstName.localeCompare(b.firstName);
+  });
+
   return (
     <div className="lista-estudiantes">
-      {students.map((student) => (
+      {sortedStudents.map((student) => (
         <div key={student.id_student} className="estudiante-item">
           <div
             className="estudiante-nombre"
@@ -58,7 +64,7 @@ const ListaEstudiantesHistorial = ({ students, getIncidentsByStudentId }) => {
               marginBottom: "5px"
             }}
           >
-            {student.firstName} {student.lastName}
+            {student.lastName} {student.firstName}
           </div>
 
           {expandedStudentId === student.id_student && (
@@ -72,7 +78,7 @@ const ListaEstudiantesHistorial = ({ students, getIncidentsByStudentId }) => {
                 <ul>
                   {incidentsMap[student.id_student].map((inc) => {
                     const { label, icon } =
-                      incidentTypeMap[inc.type] || incidentTypeMap.other;
+                      incidentTypeMap[inc.type] || { label: inc.type, icon: "❗" };
                     return (
                       <li key={inc.id_incident}>
                         <strong>

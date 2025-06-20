@@ -23,7 +23,15 @@ const ModalHistorialIncidentes = ({ show, onHide, professorId }) => {
     setSelectedCourse(courseId);
     if (courseId) {
       getStudentsByCourse(courseId)
-        .then(setStudents)
+        .then((data) => {
+          //  Ordenar por apellido y luego por nombre
+          const sorted = data.sort((a, b) => {
+            const lastNameCompare = a.lastName.localeCompare(b.lastName);
+            if (lastNameCompare !== 0) return lastNameCompare;
+            return a.firstName.localeCompare(b.firstName);
+          });
+          setStudents(sorted);
+        })
         .catch(err => console.error("Error al cargar estudiantes:", err));
     } else {
       setStudents([]);
