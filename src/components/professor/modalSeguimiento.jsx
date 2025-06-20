@@ -74,7 +74,7 @@ const ModalSeguimiento = ({ show, onHide, student, onFollowUpUpdated }) => {
             <p className="text-muted">No hay incidentes pendientes para este estudiante</p>
           ) : (
             incidents.map((incident) => (
-              <div className="incident-card" key={incident.id_incident}>
+              <div className="incident-card" key={incident.id_incident} style={{ marginBottom: "1.5rem" }}>
                 <p><strong>Profesor:</strong>{" "}{incident.Professor?.firstName} {incident.Professor?.lastName}</p>
                 <p><strong>Fecha:</strong> {formatDate(incident.date)}</p>
                 <p><strong>Hora:</strong> {formatTime(incident.date)}</p>

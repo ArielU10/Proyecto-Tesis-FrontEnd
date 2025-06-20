@@ -1,0 +1,157 @@
+/* Fondo oscuro del overlay del modal */
+.custom-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+/* Contenedor del modal */
+.custom-modal-container {
+  background-color: white;
+  width: 90%;
+  max-width: 800px;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+/* Cabecera del modal */
+.custom-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.custom-modal-header h2 {
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+/* Botón cerrar */
+.custom-close-button {
+  background: transparent;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: #444;
+}
+
+/* Cuerpo y pie del modal */
+.custom-modal-body {
+  margin-bottom: 1rem;
+}
+
+.custom-modal-footer {
+  text-align: right;
+  margin-top: 1rem;
+}
+
+/* Botón personalizado */
+.custom-button {
+  padding: 8px 16px;
+  background-color: #981426;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.custom-button:hover {
+  background-color: #b8323c;
+}
+
+/* Estilo del contenedor del select */
+.select-curso-container {
+  margin-bottom: 1rem;
+}
+
+.select-curso-container label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+  color: #000; /* Etiqueta en negro */
+}
+
+/* Select con fondo negro y letras blancas */
+.select-curso-container select {
+  width: 100%;
+  padding: 8px 12px;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  background-color: #000; /* Fondo negro */
+  color: #fff; /* Texto blanco */
+  outline: none;
+  transition: border-color 0.3s ease;
+}
+
+/* Opciones del select con fondo negro */
+.select-curso-container select option {
+  background-color: #000; /* Fondo negro */
+  color: #fff; /* Texto blanco */
+}
+
+/* Borde cuando tiene foco */
+.select-curso-container select:focus {
+  border-color: #E5AC55;
+}
+
+/* Lista de estudiantes */
+.lista-estudiantes {
+  margin-top: 10px;
+}
+
+.estudiante-item {
+  padding: 10px;
+  border-bottom: 1px solid #eee;
+  cursor: pointer;
+  font-weight: 600;
+  color: #2c3e50;
+  transition: background-color 0.2s ease;
+}
+
+/* Hover en la fila del estudiante */
+.estudiante-item:hover {
+  background-color: #f1f1f1;
+}
+
+/* Incidentes mostrados al hacer clic */
+.incidentes-desplegados {
+  margin-left: 20px;
+  margin-top: 8px;
+  font-size: 14px;
+  color: #444;
+}
+
+.select-curso-container select {
+  background-color: #000 !important;  /* fuerza fondo negro */
+  color: #fff !important;              /* texto blanco */
+}
+
+.select-curso-container select option {
+  background-color: #000 !important;  /* fuerza fondo negro */
+  color: #fff !important;
+}
+@media (prefers-color-scheme: light) {
+  :root {
+    color: #213547;
+  }
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    color: #ffffff;
+    background-color: #000000;
+  }
+}

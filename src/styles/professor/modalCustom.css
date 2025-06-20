@@ -102,3 +102,13 @@
   border-radius: 8px;
   font-size: 1rem;
 }
+
+.modal-body {
+  max-height: 70vh;
+  overflow-y: auto;
+  padding-bottom: 2rem; /* 👈 espacio al final */
+}
+
+.incident-card:last-child {
+  margin-bottom: 1.5rem; /* 👈 espacio extra al último */
+}

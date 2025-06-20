@@ -60,3 +60,8 @@ button {
   background-color: transparent !important;
   border: none !important;              /* ✅ asegura que no haya borde */
 }
+
+body {
+  background-color: #121212;
+  color: #ffffff;
+}

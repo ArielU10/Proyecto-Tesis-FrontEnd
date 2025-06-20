@@ -1,23 +1,96 @@
-import React from "react";
+import React, { useState } from "react";
+import {
+  FaUserMd,
+  FaShieldAlt,
+  FaExclamationTriangle,
+  FaBook 
+} from "react-icons/fa";
 
-const ListaEstudiantesHistorial = ({ students, onStudentClick }) => (
-  students.length > 0 && (
-    <div className="mb-3">
-      <h6>Estudiantes:</h6>
-      <ul className="list-group">
-        {students.map(student => (
-          <li
-            key={student.id_student}
-            className="list-group-item list-group-item-action"
-            style={{ cursor: "pointer" }}
-            onClick={() => onStudentClick(student)}
+const ListaEstudiantesHistorial = ({ students, getIncidentsByStudentId }) => {
+  const [expandedStudentId, setExpandedStudentId] = useState(null);
+  const [incidentsMap, setIncidentsMap] = useState({});
+
+  const handleToggle = async (student) => {
+    const id = student.id_student;
+
+    if (expandedStudentId === id) {
+      setExpandedStudentId(null); // Cierra si ya estaba abierto
+    } else {
+      if (!incidentsMap[id]) {
+        const data = await getIncidentsByStudentId(id);
+        setIncidentsMap((prev) => ({ ...prev, [id]: data }));
+      }
+      setExpandedStudentId(id); // Abre otro
+    }
+  };
+
+  // Diccionario de traducción
+  const incidentTypeMap = {
+    medical: {
+      label: "Médico",
+      icon: <FaUserMd style={{ color: "#007bff" }} />
+    },
+    disciplinary: {
+      label: "Disciplinario",
+      icon: <FaExclamationTriangle style={{ color: "#dc3545" }} />
+    },
+    security: {
+      label: "Seguridad",
+      icon: <FaShieldAlt style={{ color: "#ffc107" }} />
+    },
+    academic: {
+      label: "Académico",
+      icon: <FaBook style={{ color: "#17a2b8" }}/>
+    }
+  };
+
+  return (
+    <div className="lista-estudiantes">
+      {students.map((student) => (
+        <div key={student.id_student} className="estudiante-item">
+          <div
+            className="estudiante-nombre"
+            onClick={() => handleToggle(student)}
+            style={{
+              fontWeight: "bold",
+              color: "#2c3e50",
+              cursor: "pointer",
+              marginBottom: "5px"
+            }}
           >
-            {student.lastName} {student.firstName}
-          </li>
-        ))}
-      </ul>
+            {student.firstName} {student.lastName}
+          </div>
+
+          {expandedStudentId === student.id_student && (
+            <div
+              className="incidentes-desplegados"
+              style={{ marginLeft: "20px", marginBottom: "15px" }}
+            >
+              {incidentsMap[student.id_student]?.length === 0 ? (
+                <p style={{ color: "gray" }}>Sin incidentes</p>
+              ) : (
+                <ul>
+                  {incidentsMap[student.id_student].map((inc) => {
+                    const { label, icon } =
+                      incidentTypeMap[inc.type] || incidentTypeMap.other;
+                    return (
+                      <li key={inc.id_incident}>
+                        <strong>
+                          {icon} {label}
+                        </strong>{" "}
+                        - {inc.description}{" "}
+                        <em>({new Date(inc.date).toLocaleDateString()})</em>
+                      </li>
+                    );
+                  })}
+                </ul>
+              )}
+            </div>
+          )}
+        </div>
+      ))}
     </div>
-  )
-);
+  );
+};
 
 export default ListaEstudiantesHistorial;
