@@ -15,6 +15,9 @@ import EstudiantesSeguimiento from "../../components/professor/estudianteSeguimi
 import ModalEstudiantes from "../../components/professor/modalStudents";
 import ModalInasistencias from "../../components/professor/modalNoAsistencias";
 import ModalHistorialIncidentes from "../../components/professor/modalHistorialIncidentes";
+import FooterProfesor from "../../components/professor/footerProfessor";
+
+
 
 const ProfessorPage = () => {
   const navigate = useNavigate();
@@ -26,6 +29,7 @@ const ProfessorPage = () => {
   const [showInasistencias, setShowInasistencias] = useState(false);
   const [showIncidentes, setShowIncidentes] = useState(false);
   const [professorId, setProfessorId] = useState(null);
+  
 
   // Cargar cursos asignados al profesor
   useEffect(() => {
@@ -102,6 +106,9 @@ const ProfessorPage = () => {
         onHide={() => setShowIncidentes(false)}
         professorId={professorId}
       />
+
+      <FooterProfesor />
+
     </div>
   );
 };

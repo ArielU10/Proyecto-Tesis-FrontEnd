@@ -83,3 +83,22 @@
 .danger { background: #dc3545; color: white; }
 
 .primary { background: #0d6efd; color: white; }
+
+.modal-body .form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1rem;
+}
+
+.modal-body .form-group label {
+  font-weight: 500;
+  margin-bottom: 0.3rem;
+}
+
+.modal-body .form-group select,
+.modal-body .form-group textarea {
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 1rem;
+}
