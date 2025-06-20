@@ -52,4 +52,11 @@ export const getIncidentsByProfessorId = async (professorId) => {
   return response.data;
 };
 
+export const getStudentsInFollowUpByProfessor = async (professorId) => {
+  const response = await axios.get(`${API_URL}/students-follow/${professorId}`);
+  return response.data;
+};
+
+
+
 
