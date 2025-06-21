@@ -37,11 +37,12 @@ const Login = () => {
         password
       });
 
-      const { user } = response.data;
+      const { user, token } = response.data;
+      console.log('📦 response.data:', response.data);
       console.log('🧠 Usuario recibido del backend:', user);
 
       // Guarda directamente el usuario completo, ya incluye nombre y apellido
-      login(user);
+      login(user, token);
 
       // Redirección según rol
       switch (user.role) {
@@ -52,15 +53,16 @@ const Login = () => {
           navigate('/professor');
           break;
         case 'legalRepresentative':
-          navigate('/padre');
+          navigate('/legal-representantive/');
           break;
         default:
           alert('Rol no reconocido');
       }
 
     } catch (err) {
-      alert('Credenciales inválidas o error del servidor');
-      console.error(err);
+      const backendMessage = err.response?.data?.message || 'Error desconocido';
+      alert(backendMessage);
+      console.error('Login error:', err);
     }
   };
 
