@@ -80,14 +80,14 @@ const ModalIncidente = ({ show, onHide, student }) => {
           </div>
         </div>
 
-        <div className="modal-footer">
-          <button className="btn primary" onClick={handleSave}>
-            Guardar
-          </button>
-          <button className="btn danger" onClick={onHide}>
-            Cancelar
-          </button>
-        </div>
+        <div className="modal-footer justify-end">
+  <button className="btn guardar" onClick={handleSave}>
+    Guardar
+  </button>
+  <button className="btn cancelar" onClick={onHide}>
+    Cancelar
+  </button>
+</div>
       </div>
     </div>
   );

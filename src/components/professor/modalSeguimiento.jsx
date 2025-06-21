@@ -100,9 +100,9 @@ const ModalSeguimiento = ({ show, onHide, student, onFollowUpUpdated }) => {
                   </select>
                 </div>
 
-                <button className="btn success" onClick={() => handleSave(incident.id_incident)}>
-                  Guardar seguimiento
-                </button>
+                <button className="btn seguimiento" onClick={() => handleSave(incident.id_incident)}>
+  Guardar seguimiento
+</button>
               </div>
             ))
           )}

@@ -313,3 +313,24 @@ html, body {
     display: none;
   }
 }
+
+/* Ocultar scrollbars de div2 y div3 */
+.div2::-webkit-scrollbar,
+.div3::-webkit-scrollbar {
+  display: none;
+}
+.div2,
+.div3 {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE y Edge Legacy */
+  overflow-y: auto;
+}
+
+/* Ocultar scroll global si se requiere */
+body::-webkit-scrollbar {
+  display: none;
+}
+body {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
