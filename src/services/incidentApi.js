@@ -57,6 +57,11 @@ export const getStudentsInFollowUpByProfessor = async (professorId) => {
   return response.data;
 };
 
+export const getIncidentHistoryByCourse = async (courseId) => {
+  const response = await axios.get(`${API_URL}/history/course/${courseId}`);
+  return response.data;
+};
+
 
 
 

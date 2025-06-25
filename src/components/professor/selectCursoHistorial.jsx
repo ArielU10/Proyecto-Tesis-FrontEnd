@@ -1,7 +1,6 @@
 import React from "react";
 import "../../styles/professor/modalHistorial.css";
 
-
 const SelectCursoHistorial = ({ courses, selectedCourse, onCourseChange }) => (
   <div className="select-curso-container">
     <label>Seleccione un curso:</label>

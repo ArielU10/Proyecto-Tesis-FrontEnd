@@ -2,14 +2,13 @@ import React, { useState, useEffect } from "react";
 import SelectCursoHistorial from "./selectCursoHistorial";
 import ListaEstudiantesHistorial from "./listaEstudiantesHistorial";
 import { getCoursesByProfessor } from "../../services/courseApi";
-import { getStudentsByCourse } from "../../services/studentApi";
-import { getIncidentsByStudentId } from "../../services/incidentApi";
+import { getIncidentHistoryByCourse } from "../../services/incidentApi";
 import "../../styles/professor/modalHistorial.css";
 
 const ModalHistorialIncidentes = ({ show, onHide, professorId }) => {
   const [courses, setCourses] = useState([]);
   const [selectedCourse, setSelectedCourse] = useState("");
-  const [students, setStudents] = useState([]);
+  const [studentsWithIncidents, setStudentsWithIncidents] = useState([]);
 
   useEffect(() => {
     if (show && professorId) {
@@ -22,19 +21,11 @@ const ModalHistorialIncidentes = ({ show, onHide, professorId }) => {
   const handleCourseChange = (courseId) => {
     setSelectedCourse(courseId);
     if (courseId) {
-      getStudentsByCourse(courseId)
-        .then((data) => {
-          //  Ordenar por apellido y luego por nombre
-          const sorted = data.sort((a, b) => {
-            const lastNameCompare = a.lastName.localeCompare(b.lastName);
-            if (lastNameCompare !== 0) return lastNameCompare;
-            return a.firstName.localeCompare(b.firstName);
-          });
-          setStudents(sorted);
-        })
-        .catch(err => console.error("Error al cargar estudiantes:", err));
+      getIncidentHistoryByCourse(courseId)
+        .then(setStudentsWithIncidents)
+        .catch(err => console.error("Error al cargar historial de incidentes:", err));
     } else {
-      setStudents([]);
+      setStudentsWithIncidents([]);
     }
   };
 
@@ -59,15 +50,12 @@ const ModalHistorialIncidentes = ({ show, onHide, professorId }) => {
             />
           )}
 
-          {selectedCourse && students.length === 0 && (
-            <p className="text-muted">No hay estudiantes en este curso.</p>
+          {selectedCourse && studentsWithIncidents.length === 0 && (
+            <p className="text-muted">No hay incidentes registrados en este curso.</p>
           )}
 
-          {selectedCourse && students.length > 0 && (
-            <ListaEstudiantesHistorial
-              students={students}
-              getIncidentsByStudentId={getIncidentsByStudentId}
-            />
+          {selectedCourse && studentsWithIncidents.length > 0 && (
+            <ListaEstudiantesHistorial studentsWithIncidents={studentsWithIncidents} />
           )}
         </div>
 

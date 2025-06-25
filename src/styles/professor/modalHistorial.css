@@ -81,29 +81,26 @@
   display: block;
   font-weight: bold;
   margin-bottom: 0.5rem;
-  color: #000; /* Etiqueta en negro */
+  color: #000;
 }
 
-/* Select con fondo negro y letras blancas */
 .select-curso-container select {
   width: 100%;
   padding: 8px 12px;
   font-size: 1rem;
   border: 1px solid #ccc;
   border-radius: 6px;
-  background-color: #000; /* Fondo negro */
-  color: #fff; /* Texto blanco */
+  background-color: #000 !important;
+  color: #fff !important;
   outline: none;
   transition: border-color 0.3s ease;
 }
 
-/* Opciones del select con fondo negro */
 .select-curso-container select option {
-  background-color: #000; /* Fondo negro */
-  color: #fff; /* Texto blanco */
+  background-color: #000 !important;
+  color: #fff !important;
 }
 
-/* Borde cuando tiene foco */
 .select-curso-container select:focus {
   border-color: #E5AC55;
 }
@@ -122,7 +119,6 @@
   transition: background-color 0.2s ease;
 }
 
-/* Hover en la fila del estudiante */
 .estudiante-item:hover {
   background-color: #f1f1f1;
 }
@@ -135,20 +131,62 @@
   color: #444;
 }
 
-.select-curso-container select {
-  background-color: #000 !important;  /* fuerza fondo negro */
-  color: #fff !important;              /* texto blanco */
+/* Tarjeta individual de incidente */
+.tarjeta-incidente {
+  background-color: #f8d7da; /* fondo rosa claro */
+  border-radius: 10px;
+  padding: 10px 15px;
+  margin-bottom: 12px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
 }
 
-.select-curso-container select option {
-  background-color: #000 !important;  /* fuerza fondo negro */
-  color: #fff !important;
+.tarjeta-incidente .header {
+  font-weight: bold;
+  color: #333;
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
+
+.tarjeta-incidente .fecha {
+  font-style: italic;
+  color: #6c757d;
+}
+
+.tarjeta-incidente .contenido {
+  background-color: #d1ecf1; /* fondo celeste claro */
+  border-radius: 8px;
+  padding: 10px;
+  margin-top: 5px;
+}
+
+.tarjeta-incidente p {
+  margin: 4px 0;
+}
+
+/* Colores para estado */
+.resuelto {
+  color: green;
+  font-weight: bold;
+}
+
+.pendiente {
+  color: orange;
+  font-weight: bold;
+}
+
+.lista-estudiantes ul {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+/* Adaptación para modo oscuro */
 @media (prefers-color-scheme: light) {
   :root {
     color: #213547;
   }
 }
+
 @media (prefers-color-scheme: dark) {
   :root {
     color: #ffffff;
