@@ -1,4 +1,3 @@
-/* Fondo oscuro del overlay */
 .custom-modal-overlay {
   position: fixed;
   top: 0;
@@ -12,7 +11,6 @@
   z-index: 1000;
 }
 
-/* Contenedor del modal */
 .custom-modal-container {
   background-color: #fff;
   width: 90%;
@@ -24,7 +22,6 @@
   overflow-y: auto;
 }
 
-/* Cabecera del modal */
 .custom-modal-header {
   display: flex;
   justify-content: space-between;
@@ -38,7 +35,6 @@
   color: #000;
 }
 
-/* Botón cerrar */
 .custom-close-button {
   background: transparent;
   border: none;
@@ -47,7 +43,6 @@
   color: #981426;
 }
 
-/* Cuerpo y pie del modal */
 .custom-modal-body {
   margin-bottom: 1rem;
 }
@@ -57,7 +52,6 @@
   margin-top: 1rem;
 }
 
-/* Botón personalizado */
 .custom-button {
   padding: 8px 16px;
   background-color: #981426;
@@ -73,32 +67,33 @@
   background-color: #b8323c;
 }
 
-/* Select curso */
-.select-curso-container {
+/* NUEVO SELECT CURSO */
+.curso-selector-container {
   margin-bottom: 1rem;
 }
 
-.select-curso-container label {
+.curso-selector-container label {
   display: block;
   font-weight: bold;
   margin-bottom: 0.5rem;
   color: #981426;
 }
 
-.custom-select-dark {
+.curso-select {
   width: 100%;
   padding: 8px 12px;
   font-size: 1rem;
   border: 1px solid #981426;
   border-radius: 6px;
-  background-color: #981426;
-  color: #fff;
+  background-color: #fff;
+  color: #000;
   outline: none;
+  transition: border-color 0.3s ease;
 }
 
-.custom-select-dark option {
-  background-color: #981426;
-  color: #fff;
+.curso-select option {
+  background-color: #fff;
+  color: #000;
 }
 
 /* Lista agrupada de estudiantes */
@@ -107,7 +102,6 @@
   margin-top: 1rem;
 }
 
-/* Nombre de estudiante */
 .nombre-estudiante {
   font-size: 1rem;
   font-weight: 500;
@@ -122,7 +116,6 @@
   background-color: #f5f5f5;
 }
 
-/* Historial de inasistencias */
 .inasistencias-historial {
   background-color: #f2f8ff;
   padding: 10px 16px;

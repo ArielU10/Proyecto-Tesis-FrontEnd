@@ -21,7 +21,6 @@ const ModalInasistencias = ({ show, onHide, courses }) => {
     setExpandedStudentId((prev) => (prev === id ? null : id));
   };
 
-  // Agrupar inasistencias por estudiante
   const groupedByStudent = {};
   inasistencias.forEach((i) => {
     const id = i.Student.id_student;
@@ -34,7 +33,6 @@ const ModalInasistencias = ({ show, onHide, courses }) => {
     groupedByStudent[id].dates.push(i.date);
   });
 
-  // Ordenar alfabéticamente por apellido y luego por nombre
   const sortedStudents = Object.values(groupedByStudent).sort((a, b) => {
     const lastNameComparison = a.student.lastName.localeCompare(b.student.lastName);
     if (lastNameComparison !== 0) return lastNameComparison;
@@ -52,10 +50,11 @@ const ModalInasistencias = ({ show, onHide, courses }) => {
         </div>
 
         <div className="custom-modal-body">
-          <div className="select-curso-container">
-            <label>Seleccione un curso:</label>
+          <div className="curso-selector-container">
+            <label htmlFor="curso-select">Seleccionar curso:</label>
             <select
-              className="custom-select-dark"
+              id="curso-select"
+              className="curso-select"
               value={selectedCourse}
               onChange={(e) => setSelectedCourse(e.target.value)}
             >

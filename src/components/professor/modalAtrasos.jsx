@@ -29,7 +29,6 @@ const ModalAtrasos = ({ show, onHide, courses, professorId }) => {
     groupedByStudent[id].dates.push(item.date);
   });
 
-  // Ordenar estudiantes alfabéticamente por apellido y luego por nombre
   const sortedStudents = Object.values(groupedByStudent).sort((a, b) => {
     const lastNameCompare = a.student.lastName.localeCompare(b.student.lastName);
     if (lastNameCompare !== 0) return lastNameCompare;
@@ -47,10 +46,11 @@ const ModalAtrasos = ({ show, onHide, courses, professorId }) => {
         </div>
 
         <div className="custom-modal-body">
-          <div className="select-curso-container">
-            <label>Seleccione un curso:</label>
+          <div className="curso-selector-container">
+            <label htmlFor="curso-select">Seleccionar curso:</label>
             <select
-              className="custom-select-dark"
+              id="curso-select"
+              className="curso-select"
               value={selectedCourse}
               onChange={(e) => setSelectedCourse(e.target.value)}
             >
@@ -79,10 +79,12 @@ const ModalAtrasos = ({ show, onHide, courses, professorId }) => {
                   </p>
 
                   {expandedStudentId === student.id_student && (
-                    <div className="inasistencias-historial">
+                    <div className="atrasos-historial">
                       <ul>
                         {dates.map((date, idx) => (
-                          <li key={idx}>{new Date(date).toLocaleDateString()}</li>
+                          <li key={idx}>
+                            {new Date(date).toLocaleDateString()}
+                          </li>
                         ))}
                       </ul>
                       <p>Total: {dates.length} atraso(s)</p>
