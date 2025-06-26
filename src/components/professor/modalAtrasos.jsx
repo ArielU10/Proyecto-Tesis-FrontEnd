@@ -5,14 +5,36 @@ import "../../styles/professor/modalAtrasos.css";
 const ModalAtrasos = ({ show, onHide, courses, professorId }) => {
   const [selectedCourse, setSelectedCourse] = useState("");
   const [atrasos, setAtrasos] = useState([]);
+  const [expandedStudentId, setExpandedStudentId] = useState(null);
 
   useEffect(() => {
     if (selectedCourse && professorId) {
       getAtrazosByCourseAndProfessor(professorId, selectedCourse)
         .then(setAtrasos)
         .catch((err) => console.error("Error al cargar atrasos", err));
+    } else {
+      setAtrasos([]);
     }
   }, [selectedCourse, professorId]);
+
+  const groupedByStudent = {};
+  atrasos.forEach((item) => {
+    const id = item.Student.id_student;
+    if (!groupedByStudent[id]) {
+      groupedByStudent[id] = {
+        student: item.Student,
+        dates: [],
+      };
+    }
+    groupedByStudent[id].dates.push(item.date);
+  });
+
+  // Ordenar estudiantes alfabéticamente por apellido y luego por nombre
+  const sortedStudents = Object.values(groupedByStudent).sort((a, b) => {
+    const lastNameCompare = a.student.lastName.localeCompare(b.student.lastName);
+    if (lastNameCompare !== 0) return lastNameCompare;
+    return a.student.firstName.localeCompare(b.student.firstName);
+  });
 
   if (!show) return null;
 
@@ -20,7 +42,7 @@ const ModalAtrasos = ({ show, onHide, courses, professorId }) => {
     <div className="custom-modal-overlay">
       <div className="custom-modal-container">
         <div className="custom-modal-header">
-          <h2>Histórico de Atrasos</h2>
+          <h2>Historial de Atrasos</h2>
           <button className="custom-close-button" onClick={onHide}>×</button>
         </div>
 
@@ -41,16 +63,38 @@ const ModalAtrasos = ({ show, onHide, courses, professorId }) => {
             </select>
           </div>
 
-          {atrasos.length > 0 ? (
-            <ul className="inasistencias-list">
-              {atrasos.map((item) => (
-                <li key={item.id_asistance}>
-                  <strong>{item.date.substring(0, 10)}</strong> – {item.Student.lastName} {item.Student.firstName}
-                </li>
+          {sortedStudents.length > 0 ? (
+            <div className="estudiantes-lista">
+              {sortedStudents.map(({ student, dates }) => (
+                <div key={student.id_student} className="estudiante-item">
+                  <p
+                    className="nombre-estudiante"
+                    onClick={() =>
+                      setExpandedStudentId((prev) =>
+                        prev === student.id_student ? null : student.id_student
+                      )
+                    }
+                  >
+                    {student.lastName} {student.firstName}
+                  </p>
+
+                  {expandedStudentId === student.id_student && (
+                    <div className="inasistencias-historial">
+                      <ul>
+                        {dates.map((date, idx) => (
+                          <li key={idx}>{new Date(date).toLocaleDateString()}</li>
+                        ))}
+                      </ul>
+                      <p>Total: {dates.length} atraso(s)</p>
+                    </div>
+                  )}
+                </div>
               ))}
-            </ul>
+            </div>
           ) : (
-            selectedCourse && <p className="text-muted">No hay atrasos en este curso.</p>
+            selectedCourse && (
+              <p className="text-muted">No hay atrasos en este curso.</p>
+            )
           )}
         </div>
 
