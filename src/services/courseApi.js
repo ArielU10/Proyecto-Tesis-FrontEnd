@@ -1,20 +1,29 @@
 import axios from "axios";
 
-const API_URL = "http://localhost:3000/api/courses";
+// URLs base para los endpoints
+const COURSE_API_URL = "http://localhost:3000/api/courses";
+const PROFESSOR_COURSES_API_URL = "http://localhost:3000/api/professor-courses";
 
+/**
+ * Obtener todos los cursos (sin importar profesor)
+ */
 export const getCourses = async () => {
   try {
-    const response = await axios.get(API_URL);
+    const response = await axios.get(COURSE_API_URL);
     return response.data;
   } catch (error) {
-    console.error("Error al obtener los cursos:", error);
+    console.error("Error al obtener los cursos:", error.response?.data || error.message);
     return [];
   }
 };
 
+/**
+ * Obtener cursos asignados a un profesor específico
+ * @param {number} professorId - ID del profesor
+ */
 export const getCoursesByProfessor = async (professorId) => {
   try {
-    const response = await axios.get(`${API_URL}/professor/${professorId}`);
+    const response = await axios.get(`${PROFESSOR_COURSES_API_URL}/${professorId}`);
     return response.data;
   } catch (error) {
     console.error("Error al obtener cursos por profesor:", error.response?.data || error.message);

@@ -11,10 +11,11 @@ export const AuthProvider = ({ children }) => {
     return storedUser ? JSON.parse(storedUser) : null;
   });
 
-  const login = (userData) => {
-    setUser(userData);
-    localStorage.setItem('user', JSON.stringify(userData));
-  };
+  const login = (userData, token) => {
+  const userWithToken = { ...userData, token };
+  setUser(userWithToken);
+  localStorage.setItem('user', JSON.stringify(userWithToken));
+};
 
   const logout = () => {
     setUser(null);

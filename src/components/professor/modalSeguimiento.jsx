@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { Modal, Button, Form, Card } from "react-bootstrap";
 import { getIncidentsByStudentId, updateIncident } from "../../services/incidentApi";
+import "../../styles/professor/modalCustom.css";
 
 const ModalSeguimiento = ({ show, onHide, student, onFollowUpUpdated }) => {
   const [incidents, setIncidents] = useState([]);
@@ -14,7 +14,7 @@ const ModalSeguimiento = ({ show, onHide, student, onFollowUpUpdated }) => {
         data.forEach((incident) => {
           initialFormData[incident.id_incident] = {
             resolution: incident.resolution || "",
-            status: incident.status
+            status: incident.status,
           };
         });
         setFormData(initialFormData);
@@ -27,8 +27,8 @@ const ModalSeguimiento = ({ show, onHide, student, onFollowUpUpdated }) => {
       ...prevState,
       [incidentId]: {
         ...prevState[incidentId],
-        [field]: value
-      }
+        [field]: value,
+      },
     }));
   };
 
@@ -56,68 +56,59 @@ const ModalSeguimiento = ({ show, onHide, student, onFollowUpUpdated }) => {
     }
   };
 
-  // NUEVOS FORMATEADORES:
-  const formatDate = (dateStr) => {
-    const date = new Date(dateStr);
-    return date.toLocaleDateString();
-  };
+  const formatDate = (dateStr) => new Date(dateStr).toLocaleDateString();
+  const formatTime = (dateStr) => new Date(dateStr).toLocaleTimeString();
 
-  const formatTime = (dateStr) => {
-    const date = new Date(dateStr);
-    return date.toLocaleTimeString();
-  };
+  if (!show || !student) return null;
 
   return (
-    <Modal show={show} onHide={onHide} size="lg" centered>
-      <Modal.Header closeButton>
-        <Modal.Title>Seguimiento de {student?.lastName} {student?.firstName}</Modal.Title>
-      </Modal.Header>
-      <Modal.Body>
-        {incidents.length === 0 ? (
-          <p className="text-muted">No hay incidentes pendientes para este estudiante</p>
-        ) : (
-          incidents.map((incident) => (
-            <Card key={incident.id_incident} className="mb-3">
-              <Card.Body>
+    <div className="modal-overlay">
+      <div className="modal-container">
+        <div className="modal-header">
+          <h2>Seguimiento de {student.lastName} {student.firstName}</h2>
+          <button className="close-button" onClick={onHide}>×</button>
+        </div>
+
+        <div className="modal-body">
+          {incidents.length === 0 ? (
+            <p className="text-muted">No hay incidentes pendientes para este estudiante</p>
+          ) : (
+            incidents.map((incident) => (
+              <div className="incident-card" key={incident.id_incident} style={{ marginBottom: "1.5rem" }}>
+                <p><strong>Profesor:</strong>{" "}{incident.Professor?.firstName} {incident.Professor?.lastName}</p>
                 <p><strong>Fecha:</strong> {formatDate(incident.date)}</p>
                 <p><strong>Hora:</strong> {formatTime(incident.date)}</p>
-                <p><strong>Profesor:</strong> {incident.professor?.firstName} {incident.professor?.lastName}</p>
                 <p><strong>Incidente:</strong> {incident.description}</p>
 
-                <Form.Group className="mb-3">
-                  <Form.Label>Resolución</Form.Label>
-                  <Form.Control
-                    as="textarea"
-                    rows={2}
+                <div className="form-group">
+                  <label>Resolución</label>
+                  <textarea
+                    rows={3}
                     value={formData[incident.id_incident]?.resolution || ""}
-                    onChange={(e) =>
-                      handleFieldChange(incident.id_incident, "resolution", e.target.value)
-                    }
+                    onChange={(e) => handleFieldChange(incident.id_incident, "resolution", e.target.value)}
                   />
-                </Form.Group>
+                </div>
 
-                <Form.Group className="mb-3">
-                  <Form.Label>Estado</Form.Label>
-                  <Form.Select
+                <div className="form-group">
+                  <label>Estado</label>
+                  <select
                     value={formData[incident.id_incident]?.status || "pending"}
-                    onChange={(e) =>
-                      handleFieldChange(incident.id_incident, "status", e.target.value)
-                    }
+                    onChange={(e) => handleFieldChange(incident.id_incident, "status", e.target.value)}
                   >
                     <option value="pending">Pendiente</option>
                     <option value="resolved">Resuelto</option>
-                  </Form.Select>
-                </Form.Group>
+                  </select>
+                </div>
 
-                <Button variant="success" onClick={() => handleSave(incident.id_incident)}>
-                  Guardar seguimiento
-                </Button>
-              </Card.Body>
-            </Card>
-          ))
-        )}
-      </Modal.Body>
-    </Modal>
+                <button className="btn seguimiento" onClick={() => handleSave(incident.id_incident)}>
+  Guardar seguimiento
+</button>
+              </div>
+            ))
+          )}
+        </div>
+      </div>
+    </div>
   );
 };
 

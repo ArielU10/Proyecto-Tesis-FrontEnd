@@ -1,53 +1,69 @@
 import React, { useState, useEffect } from "react";
-import { Modal, Button } from "react-bootstrap";
 import SelectCursoHistorial from "./selectCursoHistorial";
 import ListaEstudiantesHistorial from "./listaEstudiantesHistorial";
-import ListaIncidentesHistorial from "./listaIncidentesHistorial";
 import { getCoursesByProfessor } from "../../services/courseApi";
-import { getStudentsByCourse } from "../../services/studentApi";
-import { getIncidentsByStudentId } from "../../services/incidentApi";
+import { getIncidentHistoryByCourse } from "../../services/incidentApi";
+import "../../styles/professor/modalHistorial.css";
 
 const ModalHistorialIncidentes = ({ show, onHide, professorId }) => {
   const [courses, setCourses] = useState([]);
   const [selectedCourse, setSelectedCourse] = useState("");
-  const [students, setStudents] = useState([]);
-  const [selectedStudent, setSelectedStudent] = useState(null);
-  const [incidents, setIncidents] = useState([]);
+  const [studentsWithIncidents, setStudentsWithIncidents] = useState([]);
 
   useEffect(() => {
-    if (show) {
-      getCoursesByProfessor(professorId).then(setCourses);
+    if (show && professorId) {
+      getCoursesByProfessor(professorId)
+        .then(setCourses)
+        .catch(err => console.error("Error al cargar cursos:", err));
     }
   }, [show, professorId]);
 
   const handleCourseChange = (courseId) => {
     setSelectedCourse(courseId);
-    setSelectedStudent(null);
-    setIncidents([]);
     if (courseId) {
-      getStudentsByCourse(courseId).then(setStudents);
+      getIncidentHistoryByCourse(courseId)
+        .then(setStudentsWithIncidents)
+        .catch(err => console.error("Error al cargar historial de incidentes:", err));
+    } else {
+      setStudentsWithIncidents([]);
     }
   };
 
-  const handleStudentClick = (student) => {
-    setSelectedStudent(student);
-    getIncidentsByStudentId(student.id_student).then(setIncidents);
-  };
+  if (!show) return null;
 
   return (
-    <Modal show={show} onHide={onHide} size="lg" centered>
-      <Modal.Header closeButton>
-        <Modal.Title>Historial de Incidentes</Modal.Title>
-      </Modal.Header>
-      <Modal.Body>
-        <SelectCursoHistorial courses={courses} selectedCourse={selectedCourse} onCourseChange={handleCourseChange} />
-        <ListaEstudiantesHistorial students={students} onStudentClick={handleStudentClick} />
-        <ListaIncidentesHistorial student={selectedStudent} incidents={incidents} />
-      </Modal.Body>
-      <Modal.Footer>
-        <Button variant="secondary" onClick={onHide}>Cerrar</Button>
-      </Modal.Footer>
-    </Modal>
+    <div className="custom-modal-overlay">
+      <div className="custom-modal-container">
+        <div className="custom-modal-header">
+          <h2>Historial de Incidentes</h2>
+          <button onClick={onHide} className="custom-close-button">×</button>
+        </div>
+
+        <div className="custom-modal-body">
+          {courses.length === 0 ? (
+            <p className="text-muted">No hay cursos disponibles.</p>
+          ) : (
+            <SelectCursoHistorial
+              courses={courses}
+              selectedCourse={selectedCourse}
+              onCourseChange={handleCourseChange}
+            />
+          )}
+
+          {selectedCourse && studentsWithIncidents.length === 0 && (
+            <p className="text-muted">No hay incidentes registrados en este curso.</p>
+          )}
+
+          {selectedCourse && studentsWithIncidents.length > 0 && (
+            <ListaEstudiantesHistorial studentsWithIncidents={studentsWithIncidents} />
+          )}
+        </div>
+
+        <div className="custom-modal-footer">
+          <button className="custom-button" onClick={onHide}>Cerrar</button>
+        </div>
+      </div>
+    </div>
   );
 };
 

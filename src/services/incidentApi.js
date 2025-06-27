@@ -47,3 +47,21 @@ export const updateIncident = async (incidentId, data) => {
   return response.data;
 };
 
+export const getIncidentsByProfessorId = async (professorId) => {
+  const response = await axios.get(`${API_URL}/by-professor/${professorId}`);
+  return response.data;
+};
+
+export const getStudentsInFollowUpByProfessor = async (professorId) => {
+  const response = await axios.get(`${API_URL}/students-follow/${professorId}`);
+  return response.data;
+};
+
+export const getIncidentHistoryByCourse = async (courseId) => {
+  const response = await axios.get(`${API_URL}/history/course/${courseId}`);
+  return response.data;
+};
+
+
+
+

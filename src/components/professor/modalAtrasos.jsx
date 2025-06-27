@@ -1,41 +1,37 @@
 import React, { useState, useEffect } from "react";
-import { getInasistenciasByCourse } from "../../services/asistanceApi";
-import "../../styles/professor/modalInasistencias.css";
+import { getAtrazosByCourseAndProfessor } from "../../services/asistanceApi";
+import "../../styles/professor/modalAtrasos.css";
 
-const ModalInasistencias = ({ show, onHide, courses }) => {
+const ModalAtrasos = ({ show, onHide, courses, professorId }) => {
   const [selectedCourse, setSelectedCourse] = useState("");
-  const [inasistencias, setInasistencias] = useState([]);
+  const [atrasos, setAtrasos] = useState([]);
   const [expandedStudentId, setExpandedStudentId] = useState(null);
 
   useEffect(() => {
-    if (selectedCourse) {
-      getInasistenciasByCourse(selectedCourse)
-        .then(setInasistencias)
-        .catch((err) => console.error("Error al cargar inasistencias", err));
+    if (selectedCourse && professorId) {
+      getAtrazosByCourseAndProfessor(professorId, selectedCourse)
+        .then(setAtrasos)
+        .catch((err) => console.error("Error al cargar atrasos", err));
     } else {
-      setInasistencias([]);
+      setAtrasos([]);
     }
-  }, [selectedCourse]);
-
-  const toggleStudent = (id) => {
-    setExpandedStudentId((prev) => (prev === id ? null : id));
-  };
+  }, [selectedCourse, professorId]);
 
   const groupedByStudent = {};
-  inasistencias.forEach((i) => {
-    const id = i.Student.id_student;
+  atrasos.forEach((item) => {
+    const id = item.Student.id_student;
     if (!groupedByStudent[id]) {
       groupedByStudent[id] = {
-        student: i.Student,
+        student: item.Student,
         dates: [],
       };
     }
-    groupedByStudent[id].dates.push(i.date);
+    groupedByStudent[id].dates.push(item.date);
   });
 
   const sortedStudents = Object.values(groupedByStudent).sort((a, b) => {
-    const lastNameComparison = a.student.lastName.localeCompare(b.student.lastName);
-    if (lastNameComparison !== 0) return lastNameComparison;
+    const lastNameCompare = a.student.lastName.localeCompare(b.student.lastName);
+    if (lastNameCompare !== 0) return lastNameCompare;
     return a.student.firstName.localeCompare(b.student.firstName);
   });
 
@@ -45,7 +41,7 @@ const ModalInasistencias = ({ show, onHide, courses }) => {
     <div className="custom-modal-overlay">
       <div className="custom-modal-container">
         <div className="custom-modal-header">
-          <h2>Historial de Inasistencias</h2>
+          <h2>Historial de Atrasos</h2>
           <button className="custom-close-button" onClick={onHide}>×</button>
         </div>
 
@@ -73,19 +69,25 @@ const ModalInasistencias = ({ show, onHide, courses }) => {
                 <div key={student.id_student} className="estudiante-item">
                   <p
                     className="nombre-estudiante"
-                    onClick={() => toggleStudent(student.id_student)}
+                    onClick={() =>
+                      setExpandedStudentId((prev) =>
+                        prev === student.id_student ? null : student.id_student
+                      )
+                    }
                   >
                     {student.lastName} {student.firstName}
                   </p>
 
                   {expandedStudentId === student.id_student && (
-                    <div className="inasistencias-historial">
+                    <div className="atrasos-historial">
                       <ul>
                         {dates.map((date, idx) => (
-                          <li key={idx}>{new Date(date).toLocaleDateString()}</li>
+                          <li key={idx}>
+                            {new Date(date).toLocaleDateString()}
+                          </li>
                         ))}
                       </ul>
-                      <p>Total: {dates.length} inasistencias</p>
+                      <p>Total: {dates.length} atraso(s)</p>
                     </div>
                   )}
                 </div>
@@ -93,7 +95,7 @@ const ModalInasistencias = ({ show, onHide, courses }) => {
             </div>
           ) : (
             selectedCourse && (
-              <p className="text-muted">No hay inasistencias en este curso.</p>
+              <p className="text-muted">No hay atrasos en este curso.</p>
             )
           )}
         </div>
@@ -106,4 +108,4 @@ const ModalInasistencias = ({ show, onHide, courses }) => {
   );
 };
 
-export default ModalInasistencias;
+export default ModalAtrasos;

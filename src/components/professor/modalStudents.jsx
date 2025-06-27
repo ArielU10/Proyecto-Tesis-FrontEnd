@@ -1,12 +1,40 @@
-import React, { useState } from "react";
-import { Modal, Button } from "react-bootstrap";
+import React, { useState, useEffect } from "react";
+import { toast } from "react-toastify";
 import ModalIncidente from "./modalIncidente";
-import { createAsistance } from "../../services/asistanceApi";
+import {
+  createAsistance,
+  checkAsistenciaTomada,
+} from "../../services/asistanceApi";
+import "../../styles/professor/modalCustom.css";
 
 const ModalEstudiantes = ({ show, onHide, students, courseId }) => {
   const [showIncidenteModal, setShowIncidenteModal] = useState(false);
   const [selectedStudent, setSelectedStudent] = useState(null);
   const [asistencias, setAsistencias] = useState({});
+  const [idProfessor, setIdProfessor] = useState(null);
+  const [asistenciaTomada, setAsistenciaTomada] = useState(false);
+
+  useEffect(() => {
+    const user = JSON.parse(localStorage.getItem("user"));
+    if (user && user.role === "professor") {
+      setIdProfessor(user.roleId);
+    }
+  }, []);
+
+  useEffect(() => {
+    const verificarAsistencia = async () => {
+      if (show && courseId && idProfessor) {
+        try {
+          const respuesta = await checkAsistenciaTomada(courseId, idProfessor);
+          setAsistenciaTomada(respuesta === true || respuesta?.alreadyTaken === true);
+        } catch (error) {
+          console.error("Error al verificar si ya se tomó asistencia:", error);
+        }
+      }
+    };
+
+    verificarAsistencia();
+  }, [show, courseId, idProfessor]);
 
   const abrirModalIncidente = (student) => {
     setSelectedStudent(student);
@@ -22,14 +50,23 @@ const ModalEstudiantes = ({ show, onHide, students, courseId }) => {
 
   const handleRegistrarAsistencias = async () => {
     try {
+      const estudiantesSinAsistencia = students.filter(
+        (student) => !asistencias[student.id_student]
+      );
+
+      if (estudiantesSinAsistencia.length > 0) {
+        toast.warn("Debes registrar asistencia de todos los estudiantes.");
+        return;
+      }
+
       const registros = Object.entries(asistencias);
 
       for (let [studentId, status] of registros) {
         const asistenciaData = {
           id_student: parseInt(studentId),
-          id_professor: 1,  // ✅ profesor fijo por ahora
-          id_course: courseId,  // ✅ aquí agregamos el curso
-          status: status,
+          id_professor: idProfessor,
+          id_course: courseId,
+          status,
           justification: null,
           news: null,
         };
@@ -37,74 +74,104 @@ const ModalEstudiantes = ({ show, onHide, students, courseId }) => {
         await createAsistance(asistenciaData);
       }
 
-      alert("Asistencias registradas correctamente.");
+      toast.success("Asistencias registradas correctamente.");
+
+      const respuesta = await checkAsistenciaTomada(courseId, idProfessor);
+      setAsistenciaTomada(respuesta === true || respuesta?.alreadyTaken === true);
+
       setAsistencias({});
-      onHide();
     } catch (error) {
-      console.error("Error al registrar asistencias:", error);
-      alert("Error al registrar asistencias");
+      if (error.response?.status === 409) {
+        toast.info("Ya se tomó asistencia hoy para este curso.");
+        setAsistenciaTomada(true);
+      } else {
+        console.error("Error al registrar asistencias:", error);
+        toast.error("Error inesperado al registrar asistencia.");
+      }
     }
   };
 
+  if (!show) return null;
+
   return (
     <>
-      <Modal show={show} onHide={onHide} centered size="lg">
-        <Modal.Header closeButton>
-          <Modal.Title>Estudiantes del Curso</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          {students.length > 0 ? (
-            students.map((student) => (
-              <div
-                key={student.id_student}
-                className="d-flex justify-content-between align-items-center border-bottom py-2"
-              >
-                <div>
-                  <strong>{student.lastName} {student.firstName}</strong>
-                </div>
-                <div className="d-flex gap-2 flex-wrap mt-2">
-                  <Button
-                    variant={asistencias[student.id_student] === "present" ? "success" : "outline-success"}
-                    size="sm"
-                    onClick={() => handleAsistencia(student.id_student, "present")}
-                  >
-                    Asiste
-                  </Button>
-                  <Button
-                    variant={asistencias[student.id_student] === "absent" ? "warning" : "outline-warning"}
-                    size="sm"
-                    onClick={() => handleAsistencia(student.id_student, "absent")}
-                  >
-                    Falta
-                  </Button>
-                  <Button
-                    variant={asistencias[student.id_student] === "late" ? "info" : "outline-info"}
-                    size="sm"
-                    onClick={() => handleAsistencia(student.id_student, "late")}
-                  >
-                    Atraso
-                  </Button>
-                  <Button
-                    variant="danger"
-                    size="sm"
-                    onClick={() => abrirModalIncidente(student)}
-                  >
-                    Incidente
-                  </Button>
-                </div>
-              </div>
-            ))
-          ) : (
-            <p className="text-muted">No hay estudiantes en este curso.</p>
-          )}
-        </Modal.Body>
+      <div className="modal-overlay">
+        <div className="modal-container">
+          <div className="modal-header">
+            <h2>Estudiantes del Curso</h2>
+            <button className="close-button" onClick={onHide}>×</button>
+          </div>
 
-        <Modal.Footer>
-          <Button variant="primary" onClick={handleRegistrarAsistencias}>
-            Registrar Asistencias
-          </Button>
-        </Modal.Footer>
-      </Modal>
+          <div className="modal-body">
+            {asistenciaTomada && (
+              <div className="alert alert-info text-center mb-3">
+                Ya se tomó asistencia hoy para este curso.
+              </div>
+            )}
+            {students.length > 0 ? (
+              students.map((student) => (
+                <div className="student-row" key={student.id_student}>
+                  <div className="student-name">
+                    {student.lastName} {student.firstName}
+                  </div>
+                  <div className="student-actions">
+                    {!asistenciaTomada && (
+                      <>
+                        <button
+                          className={
+                            asistencias[student.id_student] === "present"
+                              ? "btn success"
+                              : "btn outline-success"
+                          }
+                          onClick={() => handleAsistencia(student.id_student, "present")}
+                        >
+                          Asiste
+                        </button>
+                        <button
+                          className={
+                            asistencias[student.id_student] === "absent"
+                              ? "btn warning"
+                              : "btn outline-warning"
+                          }
+                          onClick={() => handleAsistencia(student.id_student, "absent")}
+                        >
+                          Falta
+                        </button>
+                        <button
+                          className={
+                            asistencias[student.id_student] === "late"
+                              ? "btn info"
+                              : "btn outline-info"
+                          }
+                          onClick={() => handleAsistencia(student.id_student, "late")}
+                        >
+                          Atraso
+                        </button>
+                      </>
+                    )}
+                    <button
+                      className="btn danger"
+                      onClick={() => abrirModalIncidente(student)}
+                    >
+                      Incidente
+                    </button>
+                  </div>
+                </div>
+              ))
+            ) : (
+              <p>No hay estudiantes en este curso.</p>
+            )}
+          </div>
+
+          <div className="modal-footer">
+            {!asistenciaTomada && (
+              <button className="btn primary" onClick={handleRegistrarAsistencias}>
+                Registrar Asistencias
+              </button>
+            )}
+          </div>
+        </div>
+      </div>
 
       <ModalIncidente
         show={showIncidenteModal}

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import CourseForm from '../components/Admin/CourseForm';
-import { getCourses } from "../services/courseApi";
-import '../styles/administrative/courseScreen.css'; // si usas uno dedicado
+import CourseForm from '../../../components/Admin/CourseForm';
+import { getCourses } from "../../../services/courseApi";
+import '../../../styles/administrative/courseScreen.css'; // si usas uno dedicado
 
 const CourseScreen = () => {
   const [courses, setCourses] = useState([]);

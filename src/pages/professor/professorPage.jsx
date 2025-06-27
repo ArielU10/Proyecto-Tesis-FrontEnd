@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import "../../styles/professor/professorPage.css";
 
-import { getCourses } from "../../services/courseApi";
+// Estilos y servicios
+import "../../styles/professor/professorPage.css";
+import { getCoursesByProfessor } from "../../services/courseApi";
 import { getStudentsByCourse } from "../../services/studentApi";
 
 // Componentes
@@ -14,6 +15,10 @@ import EstudiantesSeguimiento from "../../components/professor/estudianteSeguimi
 import ModalEstudiantes from "../../components/professor/modalStudents";
 import ModalInasistencias from "../../components/professor/modalNoAsistencias";
 import ModalHistorialIncidentes from "../../components/professor/modalHistorialIncidentes";
+import ModalAtrasos from "../../components/professor/modalAtrasos";
+import FooterProfesor from "../../components/professor/footerProfessor";
+
+
 
 const ProfessorPage = () => {
   const navigate = useNavigate();
@@ -24,15 +29,29 @@ const ProfessorPage = () => {
   const [showModal, setShowModal] = useState(false);
   const [showInasistencias, setShowInasistencias] = useState(false);
   const [showIncidentes, setShowIncidentes] = useState(false);
+  const [showAtrasos, setShowAtrasos] = useState(false);
+  const [professorId, setProfessorId] = useState(null);
+  
 
+  // Cargar cursos asignados al profesor
   useEffect(() => {
-    getCourses()
+  const user = JSON.parse(localStorage.getItem("user"));
+
+  if (user && user.role === "professor") {
+    setProfessorId(user.roleId);
+    getCoursesByProfessor(user.roleId)
       .then((data) => {
-        console.log("Cursos obtenidos:", data);
-        setCourses(data);
+        console.log("Cursos asignados al profesor:", data);
+
+        // ✅ Aquí se extrae solo la propiedad course de cada entrada del array
+        const formattedCourses = data.map(item => item.course);
+
+        setCourses(formattedCourses); // 👈 se pasa solo el array de cursos reales
       })
-      .catch(console.error);
-  }, []);
+      .catch((error) => console.error("Error al obtener cursos:", error));
+  }
+}, []);
+
 
   const handleLogout = () => {
     navigate("/");
@@ -62,13 +81,17 @@ const ProfessorPage = () => {
         </div>
       </div>
 
-      <div className="div3 p-4 bg-light d-flex flex-column justify-content-between">
-        <AccionesProfesor
-          onShowInasistencias={() => setShowInasistencias(true)}
-          onShowIncidentes={() => setShowIncidentes(true)}
-        />
-        <EstudiantesSeguimiento />
-      </div>
+     <div className="div3 p-4 bg-light d-flex flex-column justify-content-between">
+  <div className="mb-4">
+    <AccionesProfesor
+      onShowInasistencias={() => setShowInasistencias(true)}
+      onShowIncidentes={() => setShowIncidentes(true)}
+      onShowAtrasos={() => setShowAtrasos(true)} 
+    />
+  </div>
+  <EstudiantesSeguimiento />
+</div>
+
 
       <ModalEstudiantes
         show={showModal}
@@ -81,14 +104,23 @@ const ProfessorPage = () => {
         show={showInasistencias}
         onHide={() => setShowInasistencias(false)}
         courses={courses}
-        professorId={1} 
+        professorId={professorId}
       />
 
       <ModalHistorialIncidentes
         show={showIncidentes}
         onHide={() => setShowIncidentes(false)}
-        professorId={1} 
+        professorId={professorId}
       />
+            <ModalAtrasos
+        show={showAtrasos}
+        onHide={() => setShowAtrasos(false)}
+        courses={courses}
+        professorId={professorId}
+      />
+
+      <FooterProfesor />
+
     </div>
   );
 };

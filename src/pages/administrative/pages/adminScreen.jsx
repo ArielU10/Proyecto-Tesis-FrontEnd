@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import { AdminDashboardLayout } from '../components/Admin/adminLayout';
+import { AdminDashboardLayout } from '../../../components/Admin/adminLayout';
 import { FaQrcode, FaBell, FaClipboardCheck, FaUserPlus, FaBookOpen, FaExclamationTriangle, FaChartBar } from "react-icons/fa";
-import userAvatar from '../assets/avatarMujer.png';
-import '../styles/administrative/adminScreen.css';
-import UserModal from '../components/Admin/userModal';
-import CourseForm from '../components/Admin/CourseForm'; // ✅ importar el formulario
-import { useAuth } from '../context/AuthContext';
+import userAvatar from '../../../assets/avatarMujer.png';
+import '../../../styles/administrative/adminScreen.css';
+import UserModal from '../../../components/Admin/userModal';
+import CourseForm from '../../../components/Admin/CourseForm'; // ✅ importar el formulario
+import { useAuth } from '../../../context/AuthContext';
 
 const AdminScreen = () => {
   // Modal usuario

@@ -21,7 +21,7 @@ const GenerateQRPage = () => {
   const { user } = useAuth();
 
   const token = user?.token || localStorage.getItem('token');
-  const roleId = user?.user?.roleId;
+  const roleId = user?.roleId;
 
   useEffect(() => {
     console.log('🔍 Datos del usuario:', {

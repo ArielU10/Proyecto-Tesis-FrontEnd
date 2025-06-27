@@ -9,3 +9,9 @@ export const getStudentsByCourse = async (courseId) => {
     throw error;
   }
 };
+
+export const searchStudentsByLastNameAndProfessor = async (apellido, id_professor) => {
+  const response = await axios.get(`http://localhost:3000/api/search/${apellido}/${id_professor}`);
+  return response.data;
+};
+

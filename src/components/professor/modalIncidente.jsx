@@ -1,72 +1,95 @@
-import React, { useState, useEffect } from "react";
-import { Modal, Button, Form } from "react-bootstrap";
+import React, { useState } from "react";
+import { toast } from "react-toastify";
 import { createIncident } from "../../services/incidentApi";
+import "../../styles/professor/modalCustom.css";
 
-const ModalIncidente = ({ show, onHide, student, courseId }) => {
-  const [type, setType] = useState("disciplinary");
+const incidentTypes = [
+  { value: "academic", label: "Académica" },
+  { value: "disciplinary", label: "Disciplinaria" },
+  { value: "medical", label: "Médica" },
+  { value: "security", label: "Seguridad" },
+];
+
+const ModalIncidente = ({ show, onHide, student }) => {
+  const [type, setType] = useState("");
   const [description, setDescription] = useState("");
 
-  const tiposIncidente = [
-    { value: "academic", label: "Académica" },
-    { value: "disciplinary", label: "Disciplinaria" },
-    { value: "medical", label: "Médica" },
-    { value: "security", label: "Seguridad" },
-  ];
+  const id_professor = JSON.parse(localStorage.getItem("user"))?.roleId;
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    const newIncident = {
-      type,
-      description,
-      id_student: student?.id_student || student?.id, // adapta según tu modelo
-      id_professor: 1 // cambiar por el profesor autenticado si aplica
-    };
-
-    console.log("✅ Enviando:", newIncident);
+  const handleSave = async () => {
+    if (!type || !description) {
+      toast.warn(" Por favor, complete todos los campos.");
+      return;
+    }
 
     try {
-      await createIncident(newIncident);
-      alert("Incidente registrado correctamente");
+      const payload = {
+        type,
+        description,
+        id_student: student.id_student,
+        id_professor,
+      };
+
+      await createIncident(payload);
+      toast.success("Incidente registrado con éxito.");
+      setType("");
       setDescription("");
-      setType("disciplinary");
       onHide();
     } catch (error) {
-      alert("❌ Error al registrar el incidente");
+      console.error("Error al registrar incidente:", error);
+      toast.error("Ocurrió un error al guardar el incidente.");
     }
   };
 
+  if (!show || !student) return null;
+
   return (
-    <Modal show={show} onHide={onHide} centered>
-      <Modal.Header closeButton>
-        <Modal.Title>Registrar Incidente</Modal.Title>
-      </Modal.Header>
-      <Modal.Body>
-        <p><strong>Estudiante:</strong> {student?.firstName} {student?.lastName}</p>
-        <p><strong>Curso:</strong> {courseId}</p>
-        <Form onSubmit={handleSubmit}>
-          <Form.Group>
-            <Form.Label>Tipo</Form.Label>
-            <Form.Select value={type} onChange={(e) => setType(e.target.value)}>
-              {tiposIncidente.map((t) => (
-                <option key={t.value} value={t.value}>{t.label}</option>
+    <div className="modal-overlay">
+      <div className="modal-container">
+        <div className="modal-header">
+          <h2>
+            Registrar Incidente para {student.firstName} {student.lastName}
+          </h2>
+          <button className="close-button" onClick={onHide}>
+            ×
+          </button>
+        </div>
+
+        <div className="modal-body">
+          <div className="form-group">
+            <label>Tipo de Incidente:</label>
+            <select value={type} onChange={(e) => setType(e.target.value)} required>
+              <option value="">-- Selecciona un tipo --</option>
+              {incidentTypes.map((item) => (
+                <option key={item.value} value={item.value}>
+                  {item.label}
+                </option>
               ))}
-            </Form.Select>
-          </Form.Group>
-          <Form.Group className="mt-3">
-            <Form.Label>Descripción</Form.Label>
-            <Form.Control
-              as="textarea"
-              rows={3}
+            </select>
+          </div>
+
+          <div className="form-group">
+            <label>Descripción:</label>
+            <textarea
               value={description}
               onChange={(e) => setDescription(e.target.value)}
+              placeholder="Describe lo ocurrido..."
+              rows={4}
               required
             />
-          </Form.Group>
-          <Button className="mt-3" variant="danger" type="submit">Guardar Incidente</Button>
-        </Form>
-      </Modal.Body>
-    </Modal>
+          </div>
+        </div>
+
+        <div className="modal-footer justify-end">
+  <button className="btn guardar" onClick={handleSave}>
+    Guardar
+  </button>
+  <button className="btn cancelar" onClick={onHide}>
+    Cancelar
+  </button>
+</div>
+      </div>
+    </div>
   );
 };
 

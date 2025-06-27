@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { Button, ListGroup } from "react-bootstrap";
-import { getStudentsInFollowUp } from "../../services/incidentApi";
+import { ListGroup } from "react-bootstrap";
+import { getStudentsInFollowUpByProfessor } from "../../services/incidentApi";
 import ModalSeguimiento from "./modalSeguimiento";
 
 const EstudiantesSeguimiento = () => {
@@ -9,7 +9,16 @@ const EstudiantesSeguimiento = () => {
   const [showModal, setShowModal] = useState(false);
 
   const cargarSeguimiento = () => {
-    getStudentsInFollowUp().then(setStudents);
+    const user = JSON.parse(localStorage.getItem("user"));
+    const professorId = user?.role === "professor" ? user.roleId : null;
+
+    if (professorId) {
+      getStudentsInFollowUpByProfessor(professorId)
+        .then(setStudents)
+        .catch((err) => console.error("Error al obtener estudiantes en seguimiento:", err));
+    } else {
+      console.warn("No se encontró un ID de profesor válido en el usuario");
+    }
   };
 
   useEffect(() => {
