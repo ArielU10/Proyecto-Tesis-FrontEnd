@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
 import '../../styles/components/userModal.css';
-import { createUserByRole } from '../../services/userService'; // ✅ importamos el nuevo servicio
-
 import AdministrativeForm from './AdministrativeForm';
 import ProfessorForm from './ProfessorForm';
 import StudentForm from './StudentForm';
@@ -58,86 +56,92 @@ const UserWizardModal = ({ isOpen, onClose }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    const token = localStorage.getItem('token');
+    if (!token) {
+      toast.error('❌ Token no encontrado. Por favor, inicia sesión nuevamente.');
+      return;
+    }
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    };
+
     try {
       if (selectedType === 'administrative') {
-        const response = await axios.post('http://localhost:3000/api/administratives', {
-          firstName: formData.firstName,
-          lastName: formData.lastName,
-          identification: formData.identification,
-          email: formData.email,
-          phone: formData.phone
-        });
-
-        await createUserByRole({
-          role: 'administrative',
-          email: formData.email,
-          identification: formData.identification,
-          foreignId: response.data.id_administrative
-        });
+        await axios.post(
+          'http://localhost:3000/api/administratives',
+          {
+            firstName: formData.firstName,
+            lastName: formData.lastName,
+            identification: formData.identification,
+            email: formData.email,
+            phone: formData.phone
+          },
+          config
+        );
 
         toast.success('✅ Administrativo creado correctamente');
-        onClose();
-        resetFormState();
       }
 
       if (selectedType === 'professor') {
-        const response = await axios.post('http://localhost:3000/api/professors', {
-          firstName: formData.firstName,
-          lastName: formData.lastName,
-          identification: formData.identification,
-          email: formData.email,
-          phone: formData.phone
-        });
-
-        await createUserByRole({
-          role: 'professor',
-          email: formData.email,
-          identification: formData.identification,
-          foreignId: response.data.id_professor
-        });
+        await axios.post(
+          'http://localhost:3000/api/professors',
+          {
+            firstName: formData.firstName,
+            lastName: formData.lastName,
+            identification: formData.identification,
+            email: formData.email,
+            phone: formData.phone
+          },
+          config
+        );
 
         toast.success('✅ Profesor creado correctamente');
-        onClose();
-        resetFormState();
       }
 
       if (selectedType === 'student') {
-        const repResponse = await axios.post('http://localhost:3000/api/legal-representatives', {
-          firstName: formData.rep_firstName,
-          lastName: formData.rep_lastName,
-          identification: formData.rep_identification,
-          phone: '+593' + formData.rep_phone,
-          email: formData.rep_email,
-          address: formData.rep_address
-        });
+        const repResponse = await axios.post(
+          'http://localhost:3000/api/legal-representatives',
+          {
+            firstName: formData.rep_firstName,
+            lastName: formData.rep_lastName,
+            identification: formData.rep_identification,
+            phone: '+593' + formData.rep_phone,
+            email: formData.rep_email,
+            address: formData.rep_address
+          },
+          config
+        );
 
-        if (!repResponse.data?.id_representative) {
-          throw new Error('La respuesta del backend no contiene id_representative');
+        const repId = repResponse.data?.id_legal_representative;
+
+
+        if (!repId) {
+          throw new Error('La respuesta del backend no contiene representative.id');
         }
 
-        const repId = repResponse.data.id_representative;
-
-        await createUserByRole({
-          role: 'legalRepresentative',
-          email: formData.rep_email,
-          identification: formData.rep_identification,
-          foreignId: repId
-        });
-
-        await axios.post('http://localhost:3000/api/students', {
-          firstName: formData.firstName,
-          lastName: formData.lastName,
-          birthDate: formData.birthDate,
-          identityCard: formData.identityCard,
-          status: formData.status,
-          id_course: formData.id_course,
-          id_legal_representative: repId
-        });
+        await axios.post(
+          'http://localhost:3000/api/students',
+          {
+            firstName: formData.firstName,
+            lastName: formData.lastName,
+            birthDate: formData.birthDate,
+            identityCard: formData.identityCard,
+            status: formData.status,
+            id_course: formData.id_course,
+            id_legal_representative: repId
+          },
+          config
+        );
 
         toast.success('✅ Estudiante y representante creados correctamente');
-        onClose();
-        resetFormState();
       }
+
+      onClose();
+      resetFormState();
 
     } catch (err) {
       const serverMessage = err.response?.data?.error || err.message;

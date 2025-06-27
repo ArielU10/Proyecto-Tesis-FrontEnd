@@ -47,9 +47,10 @@ export const Header = () => {
       />
 
       <div className="profile-section" onClick={() => setShowMenu(!showMenu)}>
-        <span className="username">
-          {user?.name || 'Usuario'}
-        </span>
+      <span className="username">
+        {user?.firstName ? `${user.firstName} ${user.lastName}` : 'Usuario'}
+      </span>
+
         <div className="user-avatar-circle">
           <img
             src="/src/assets/avatarMujer.png"

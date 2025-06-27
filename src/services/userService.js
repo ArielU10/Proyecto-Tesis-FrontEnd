@@ -14,20 +14,19 @@ export const createUserByRole = async ({ role, email, identification, foreignId 
     const user_name = email.split('@')[0];
     const password = identification;
 
-    // 🔒 IDs fijos predefinidos (según tu tabla 'roles')
-    const roleIds = {
-      administrative: 1,
-      professor: 2,
-      legalRepresentative: 3
-    };
+    const token = localStorage.getItem('token');
+    if (!token) throw new Error('Token no encontrado');
 
-    const id_role = roleIds[role];
-    if (!id_role) throw new Error('Rol no reconocido o sin ID asignado');
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    };
 
     const body = {
       user_name,
       password,
-      id_role
+      role_name: role // 👈 Enviamos el nombre del rol en vez del id
     };
 
     // Asociación correcta según el rol
@@ -41,9 +40,11 @@ export const createUserByRole = async ({ role, email, identification, foreignId 
       case 'administrative':
         body.id_administrative = foreignId;
         break;
+      default:
+        throw new Error('Rol no reconocido');
     }
 
-    await axios.post('http://localhost:3000/api/auth/register', body);
+    await axios.post('http://localhost:3000/api/auth/register', body, config);
     console.log(`✅ Usuario creado automáticamente para ${role}`);
   } catch (error) {
     console.error(`❌ Error creando usuario para ${role}:`, error);
