@@ -57,11 +57,14 @@ const UserWizardModal = ({ isOpen, onClose }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const token = localStorage.getItem('token');
+    const storedUser = JSON.parse(localStorage.getItem('user'));
+    const token = storedUser?.token;
+
     if (!token) {
       toast.error('❌ Token no encontrado. Por favor, inicia sesión nuevamente.');
       return;
     }
+
 
     const config = {
       headers: {
