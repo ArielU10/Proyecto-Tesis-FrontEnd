@@ -116,7 +116,8 @@ const UserWizardModal = ({ isOpen, onClose }) => {
           config
         );
 
-        const repId = repResponse.data?.representative?.id;
+        const repId = repResponse.data?.id_legal_representative;
+
 
         if (!repId) {
           throw new Error('La respuesta del backend no contiene representative.id');
