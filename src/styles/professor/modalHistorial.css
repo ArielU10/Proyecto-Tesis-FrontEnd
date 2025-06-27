@@ -1,4 +1,4 @@
-/* Fondo oscuro del overlay del modal */
+/* === Overlay del modal === */
 .custom-modal-overlay {
   position: fixed;
   top: 0;
@@ -12,7 +12,7 @@
   z-index: 1000;
 }
 
-/* Contenedor del modal */
+/* === Contenedor del modal === */
 .custom-modal-container {
   background-color: white;
   width: 90%;
@@ -24,7 +24,7 @@
   overflow-y: auto;
 }
 
-/* Cabecera del modal */
+/* === Cabecera del modal === */
 .custom-modal-header {
   display: flex;
   justify-content: space-between;
@@ -37,7 +37,7 @@
   font-size: 1.5rem;
 }
 
-/* Botón cerrar */
+/* === Botón de cerrar === */
 .custom-close-button {
   background: transparent;
   border: none;
@@ -46,17 +46,18 @@
   color: #444;
 }
 
-/* Cuerpo y pie del modal */
+/* === Cuerpo del modal === */
 .custom-modal-body {
   margin-bottom: 1rem;
 }
 
+/* === Pie del modal === */
 .custom-modal-footer {
   text-align: right;
   margin-top: 1rem;
 }
 
-/* Botón personalizado */
+/* === Botón personalizado === */
 .custom-button {
   padding: 8px 16px;
   background-color: #981426;
@@ -72,7 +73,7 @@
   background-color: #b8323c;
 }
 
-/* Estilo del contenedor del select */
+/* === Contenedor del select === */
 .select-curso-container {
   margin-bottom: 1rem;
 }
@@ -90,22 +91,29 @@
   font-size: 1rem;
   border: 1px solid #ccc;
   border-radius: 6px;
-  background-color: #000 !important;
-  color: #fff !important;
+  background-color: #ffffff;
+  color: #000000;
   outline: none;
   transition: border-color 0.3s ease;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
 }
 
 .select-curso-container select option {
-  background-color: #000 !important;
-  color: #fff !important;
+  background-color: #ffffff !important;
+  color: #000000 !important;
+  font-size: 1rem;
+  padding: 8px;
 }
 
+
+/* === Enfocado === */
 .select-curso-container select:focus {
   border-color: #E5AC55;
 }
 
-/* Lista de estudiantes */
+/* === Lista de estudiantes === */
 .lista-estudiantes {
   margin-top: 10px;
 }
@@ -123,7 +131,7 @@
   background-color: #f1f1f1;
 }
 
-/* Incidentes mostrados al hacer clic */
+/* === Incidentes desplegados === */
 .incidentes-desplegados {
   margin-left: 20px;
   margin-top: 8px;
@@ -131,9 +139,9 @@
   color: #444;
 }
 
-/* Tarjeta individual de incidente */
+/* === Tarjetas de incidentes === */
 .tarjeta-incidente {
-  background-color: #f8d7da; /* fondo rosa claro */
+  background-color: #f8d7da;
   border-radius: 10px;
   padding: 10px 15px;
   margin-bottom: 12px;
@@ -154,7 +162,7 @@
 }
 
 .tarjeta-incidente .contenido {
-  background-color: #d1ecf1; /* fondo celeste claro */
+  background-color: #d1ecf1;
   border-radius: 8px;
   padding: 10px;
   margin-top: 5px;
@@ -164,7 +172,7 @@
   margin: 4px 0;
 }
 
-/* Colores para estado */
+/* === Estado de incidentes === */
 .resuelto {
   color: green;
   font-weight: bold;
@@ -175,12 +183,13 @@
   font-weight: bold;
 }
 
+/* === Lista sin viñetas === */
 .lista-estudiantes ul {
   list-style-type: none;
   padding-left: 0;
 }
 
-/* Adaptación para modo oscuro */
+/* === Preferencias de color del SO === */
 @media (prefers-color-scheme: light) {
   :root {
     color: #213547;
