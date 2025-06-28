@@ -9,9 +9,12 @@ const ModalSeguimiento = ({ show, onHide, student, onFollowUpUpdated }) => {
   useEffect(() => {
     if (student) {
       getIncidentsByStudentId(student.id_student).then((data) => {
-        setIncidents(data);
+        // ✅ Filtrar solo los incidentes con estado 'pending'
+        const pendingIncidents = data.filter((incident) => incident.status === "pending");
+        setIncidents(pendingIncidents);
+
         const initialFormData = {};
-        data.forEach((incident) => {
+        pendingIncidents.forEach((incident) => {
           initialFormData[incident.id_incident] = {
             resolution: incident.resolution || "",
             status: incident.status,
@@ -75,7 +78,7 @@ const ModalSeguimiento = ({ show, onHide, student, onFollowUpUpdated }) => {
           ) : (
             incidents.map((incident) => (
               <div className="incident-card" key={incident.id_incident} style={{ marginBottom: "1.5rem" }}>
-                <p><strong>Profesor:</strong>{" "}{incident.Professor?.firstName} {incident.Professor?.lastName}</p>
+                <p><strong>Profesor:</strong> {incident.Professor?.firstName} {incident.Professor?.lastName}</p>
                 <p><strong>Fecha:</strong> {formatDate(incident.date)}</p>
                 <p><strong>Hora:</strong> {formatTime(incident.date)}</p>
                 <p><strong>Incidente:</strong> {incident.description}</p>
@@ -101,8 +104,8 @@ const ModalSeguimiento = ({ show, onHide, student, onFollowUpUpdated }) => {
                 </div>
 
                 <button className="btn seguimiento" onClick={() => handleSave(incident.id_incident)}>
-  Guardar seguimiento
-</button>
+                  Guardar seguimiento
+                </button>
               </div>
             ))
           )}
