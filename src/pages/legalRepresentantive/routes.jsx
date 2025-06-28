@@ -12,7 +12,7 @@ const LegalRepresentativeRoutes = [
     key="layout"
     path="/legal-representantive"
     element={
-      <ProtectedRoute allowedRoles={['legalRepresentative']}>
+      <ProtectedRoute allowedRoles={['legal_representative']}>
         <NavigationProvider>
           <LegalRepresentativeLayout />
         </NavigationProvider>

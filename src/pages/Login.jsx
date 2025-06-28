@@ -52,7 +52,7 @@ const Login = () => {
         case 'professor':
           navigate('/professor');
           break;
-        case 'legalRepresentative':
+        case 'legal_representative':
           navigate('/legal-representantive/');
           break;
         default:

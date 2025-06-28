@@ -23,6 +23,7 @@ export const getCourses = async () => {
  */
 export const getCoursesByProfessor = async (professorId) => {
   try {
+    console.log("professorId:", professorId); 
     const response = await axios.get(`${PROFESSOR_COURSES_API_URL}/${professorId}`);
     return response.data;
   } catch (error) {

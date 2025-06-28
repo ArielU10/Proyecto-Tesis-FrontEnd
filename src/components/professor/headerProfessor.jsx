@@ -15,9 +15,14 @@ const HeaderProfesor = ({ onLogout }) => {
   useEffect(() => {
     const userData = JSON.parse(localStorage.getItem("user"));
     if (userData && userData.role === "professor") {
-      fetch(`http://localhost:3000/api/professors/${userData.roleId}`)
-        .then(res => res.json())
-        .then(data => {
+      const id_professor = userData.roleId;
+      if (!id_professor) {
+        console.error("No se encontró un ID de profesor válido en el usuario");
+        return;
+      }
+      fetch(`http://localhost:3000/api/professors/${id_professor}`)
+        .then((res) => res.json())
+        .then((data) => {
           setProfessorName(`${data.firstName} ${data.lastName}`);
         })
         .catch(() => setProfessorName("Profesor"));
@@ -27,7 +32,10 @@ const HeaderProfesor = ({ onLogout }) => {
   const handleSearch = async () => {
     if (!apellido.trim()) return;
     try {
-      const resultados = await searchStudentsByLastNameAndProfessor(apellido, id_professor);
+      const resultados = await searchStudentsByLastNameAndProfessor(
+        apellido,
+        id_professor
+      );
       setStudents(resultados);
       setShowModal(true);
     } catch (error) {
@@ -54,13 +62,19 @@ const HeaderProfesor = ({ onLogout }) => {
             }
           }}
         />
-        <button className="btn bg-transparent text-dark border-0" onClick={handleSearch}>
+        <button
+          className="btn bg-transparent text-dark border-0"
+          onClick={handleSearch}
+        >
           <FaSearch />
         </button>
       </div>
 
       <div className="perfil text-white">
-        <button className="btn btn-link text-white text-decoration-none" onClick={onLogout}>
+        <button
+          className="btn btn-link text-white text-decoration-none"
+          onClick={onLogout}
+        >
           {professorName}
         </button>
       </div>
