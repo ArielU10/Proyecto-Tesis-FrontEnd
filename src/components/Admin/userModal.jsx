@@ -97,10 +97,11 @@ const UserWizardModal = ({ isOpen, onClose }) => {
             lastName: formData.lastName,
             identification: formData.identification,
             email: formData.email,
-            phone: formData.phone
+            phone: formData.phone,
+            courseIds: formData.courseIds || []
           },
           config
-        );
+        );        
 
         toast.success('✅ Profesor creado correctamente');
       }

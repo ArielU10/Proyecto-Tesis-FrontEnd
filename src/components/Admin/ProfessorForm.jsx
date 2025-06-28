@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import '../../styles/components/professorForm.css';
 import {
   validateCedula,
@@ -6,9 +6,48 @@ import {
   handleLetterInput,
   handleUppercaseChange
 } from '../../services/validationService';
+import { getCourses } from '../../services/courseApi';
+import Select from 'react-select'; 
 
 const ProfessorForm = ({ formData, onChange, onSubmit, onCancel }) => {
   const [errors, setErrors] = useState({});
+  const [courses, setCourses] = useState([]);
+  const [selectedLevel, setSelectedLevel] = useState('');
+
+  const niveles = [
+    'Inicial',
+    'Basica Elemental',
+    'Basica Media',
+    'Colegio Basica',
+    'Bachillerato'
+  ];
+
+  useEffect(() => {
+    const fetchCourses = async () => {
+      const allCourses = await getCourses();
+      setCourses(allCourses);
+    };
+    fetchCourses();
+  }, []);
+
+  // Cursos ya seleccionados
+  const selectedCourseObjects = (formData.courseIds || []).map(id => {
+    const course = courses.find(c => c.id_course === id);
+    return course ? {
+      value: course.id_course,
+      label: `${course.courseName} - ${course.description}`
+    } : null;
+  }).filter(Boolean);
+
+  // Opciones filtradas por nivel (si hay uno seleccionado)
+  const filteredCourses = selectedLevel
+    ? courses.filter(course => course.level === selectedLevel && !formData.courseIds?.includes(course.id_course))
+    : courses.filter(course => !formData.courseIds?.includes(course.id_course));
+
+  const filteredOptions = filteredCourses.map(course => ({
+    value: course.id_course,
+    label: `${course.courseName} - ${course.description}`
+  }));
 
   return (
     <form onSubmit={onSubmit} className="admin-form">
@@ -88,6 +127,30 @@ const ProfessorForm = ({ formData, onChange, onSubmit, onCancel }) => {
         />
       </div>
       {errors.phone && <p className="error-message">{errors.phone}</p>}
+
+      <label style={{ marginTop: '1rem' }}>Filtrar por Nivel Educativo:</label>
+      <select
+        value={selectedLevel}
+        onChange={(e) => setSelectedLevel(e.target.value)}
+      >
+        <option value="">-- Mostrar todos --</option>
+        {niveles.map((nivel, index) => (
+          <option key={index} value={nivel}>{nivel}</option>
+        ))}
+      </select>
+
+      <label style={{ marginTop: '1rem' }}>Asignar Cursos:</label>
+      <Select
+        isMulti
+        name="courseIds"
+        options={[...filteredOptions, ...selectedCourseObjects]}
+        value={selectedCourseObjects}
+        onChange={(selectedOptions) => {
+          const selectedIds = selectedOptions.map(option => option.value);
+          onChange({ target: { name: 'courseIds', value: selectedIds } });
+        }}
+        placeholder="Selecciona uno o varios cursos..."
+      />
 
       <div style={{ display: 'flex', gap: '1rem', marginTop: '1rem' }}>
         <button type="submit">Guardar</button>

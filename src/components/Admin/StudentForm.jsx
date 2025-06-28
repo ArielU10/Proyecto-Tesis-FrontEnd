@@ -11,6 +11,15 @@ import {
 const StudentForm = ({ formData, onChange, onSubmit, onCancel }) => {
   const [courses, setCourses] = useState([]);
   const [errors, setErrors] = useState({});
+  const [selectedLevel, setSelectedLevel] = useState('');
+
+  const niveles = [
+    'Inicial',
+    'Basica Elemental',
+    'Basica Media',
+    'Colegio Basica',
+    'Bachillerato'
+  ];
 
   useEffect(() => {
     const fetchCourses = async () => {
@@ -81,10 +90,36 @@ const StudentForm = ({ formData, onChange, onSubmit, onCancel }) => {
         <option value="inactive">Inactivo</option>
       </select>
 
-      <select name="id_course" value={formData.id_course} onChange={onChange} required>
-        <option value="">-- Curso --</option>
-        {courses.map((course) => (
-          <option key={course.id_course} value={course.id_course}>{course.courseName}</option>
+      <label style={{ marginTop: '1rem' }}>Nivel Educativo:</label>
+      <select
+        value={selectedLevel}
+        onChange={(e) => {
+          setSelectedLevel(e.target.value);
+          onChange({ target: { name: 'id_course', value: '' } });
+        }}
+        required
+      >
+        <option value="">-- Selecciona el nivel educativo --</option>
+        {niveles.map((nivel, index) => (
+          <option key={index} value={nivel}>{nivel}</option>
+        ))}
+      </select>
+
+      <label style={{ marginTop: '1rem' }}>Curso:</label>
+      <select
+        name="id_course"
+        value={formData.id_course}
+        onChange={onChange}
+        disabled={!selectedLevel}
+        required
+      >
+        <option value="">-- Selecciona un curso --</option>
+        {courses
+          .filter(course => course.level === selectedLevel)
+          .map((course) => (
+            <option key={course.id_course} value={course.id_course}>
+              {course.courseName} - {course.description}
+            </option>
         ))}
       </select>
 
