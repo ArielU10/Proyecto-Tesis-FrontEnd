@@ -32,3 +32,9 @@ export const validateCedula = (cedula) => {
     onChange({ target: { name, value: value.toUpperCase() } });
   };
   
+  export const validateEmail = (email) => {
+    // Valida que el correo tenga un formato básico correcto
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return regex.test(email);
+  };
+  

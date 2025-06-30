@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import '../../styles/components/courseForm.css';
+import '../../styles/components/userForms.css';
 import axios from 'axios';
-import { toast } from 'react-toastify'; // ✅ Importar toast
+import { toast } from 'react-toastify';
+import { FaSpinner } from 'react-icons/fa';
 
 const niveles = {
   "Inicial": ["2 años", "3 años", "4 años"],
@@ -20,6 +21,7 @@ const CourseForm = ({ onClose }) => {
 
   const [nivelPrincipal, setNivelPrincipal] = useState('');
   const [errores, setErrores] = useState({});
+  const [isSubmitting, setIsSubmitting] = useState(false); // ✅ nuevo
 
   const handleMainLevelChange = (e) => {
     const nivel = e.target.value;
@@ -48,16 +50,29 @@ const CourseForm = ({ onClose }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!validateForm()) return;
-
+  
+    setIsSubmitting(true);
+    const start = Date.now();
+  
     try {
       await axios.post('http://localhost:3000/api/courses', formData);
-      toast.success("✅ Curso registrado con éxito"); // ✅ Notificación exitosa
+      const elapsed = Date.now() - start;
+  
+      // Esperar si la petición fue demasiado rápida (< 800ms)
+      if (elapsed < 500) {
+        await new Promise(resolve => setTimeout(resolve, 500 - elapsed));
+      }
+  
+      toast.success("✅ Curso registrado con éxito");
       onClose();
     } catch (error) {
       console.error("❌ Error al guardar curso:", error);
-      toast.error("❌ Hubo un error al guardar el curso."); // ✅ Notificación de error
+      toast.error("❌ Hubo un error al guardar el curso.");
+    } finally {
+      setIsSubmitting(false);
     }
   };
+  
 
   return (
     <form onSubmit={handleSubmit} className="admin-form">
@@ -99,9 +114,29 @@ const CourseForm = ({ onClose }) => {
       </select>
       {errores.description && <p className="error-message">{errores.description}</p>}
 
-      <div style={{ display: 'flex', gap: '1rem', marginTop: '1rem' }}>
-        <button type="submit">Guardar</button>
-        <button type="button" onClick={onClose}>Cancelar</button>
+      <div>
+        <button
+          type="submit"
+          disabled={isSubmitting}
+          className={`btn ${isSubmitting ? 'btn-loading' : 'btn-guardar'}`}
+        >
+          {isSubmitting ? (
+            <>
+              <FaSpinner className="spinner" /> Creando curso...
+            </>
+          ) : (
+            'Guardar'
+          )}
+        </button>
+
+        <button
+          type="button"
+          onClick={onClose}
+          className="btn btn-cancel"
+          disabled={isSubmitting}
+        >
+          Cancelar
+        </button>
       </div>
     </form>
   );

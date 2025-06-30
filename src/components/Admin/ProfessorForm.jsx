@@ -1,15 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import '../../styles/components/professorForm.css';
+import '../../styles/components/userForms.css';
 import {
   validateCedula,
   validatePhone,
   handleLetterInput,
-  handleUppercaseChange
+  handleUppercaseChange,
+  validateEmail
 } from '../../services/validationService';
 import { getCourses } from '../../services/courseApi';
-import Select from 'react-select'; 
+import Select from 'react-select';
+import { FaSpinner } from 'react-icons/fa';
 
-const ProfessorForm = ({ formData, onChange, onSubmit, onCancel }) => {
+const ProfessorForm = ({ formData, onChange, onSubmit, onCancel, isSubmitting }) => {
   const [errors, setErrors] = useState({});
   const [courses, setCourses] = useState([]);
   const [selectedLevel, setSelectedLevel] = useState('');
@@ -30,7 +32,6 @@ const ProfessorForm = ({ formData, onChange, onSubmit, onCancel }) => {
     fetchCourses();
   }, []);
 
-  // Cursos ya seleccionados
   const selectedCourseObjects = (formData.courseIds || []).map(id => {
     const course = courses.find(c => c.id_course === id);
     return course ? {
@@ -39,7 +40,6 @@ const ProfessorForm = ({ formData, onChange, onSubmit, onCancel }) => {
     } : null;
   }).filter(Boolean);
 
-  // Opciones filtradas por nivel (si hay uno seleccionado)
   const filteredCourses = selectedLevel
     ? courses.filter(course => course.level === selectedLevel && !formData.courseIds?.includes(course.id_course))
     : courses.filter(course => !formData.courseIds?.includes(course.id_course));
@@ -74,6 +74,7 @@ const ProfessorForm = ({ formData, onChange, onSubmit, onCancel }) => {
       />
 
       <input
+        className="full-width"
         type="text"
         name="identification"
         placeholder="Cédula o Identificación"
@@ -90,18 +91,29 @@ const ProfessorForm = ({ formData, onChange, onSubmit, onCancel }) => {
         maxLength={10}
         required
       />
-      {errors.identification && <p className="error-message">{errors.identification}</p>}
+      {errors.identification && <p className="error-message full-width">{errors.identification}</p>}
+
 
       <input
+        className="full-width"
         type="email"
         name="email"
         placeholder="Correo electrónico"
         value={formData.email}
         onChange={onChange}
+        onBlur={() => {
+          const isValid = validateEmail(formData.email);
+          setErrors((prev) => ({
+            ...prev,
+            email: isValid ? '' : 'Correo electrónico no válido'
+          }));
+        }}
         required
       />
+      {errors.email && <p className="error-message full-width">{errors.email}</p>}
 
-      <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+
+      <div className="full-width" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
         <span style={{ whiteSpace: 'nowrap' }}>+593</span>
         <input
           type="text"
@@ -126,7 +138,8 @@ const ProfessorForm = ({ formData, onChange, onSubmit, onCancel }) => {
           maxLength={9}
         />
       </div>
-      {errors.phone && <p className="error-message">{errors.phone}</p>}
+      {errors.phone && <p className="error-message full-width">{errors.phone}</p>}
+
 
       <label style={{ marginTop: '1rem' }}>Filtrar por Nivel Educativo:</label>
       <select
@@ -153,8 +166,28 @@ const ProfessorForm = ({ formData, onChange, onSubmit, onCancel }) => {
       />
 
       <div style={{ display: 'flex', gap: '1rem', marginTop: '1rem' }}>
-        <button type="submit">Guardar</button>
-        <button type="button" onClick={onCancel}>Cancelar</button>
+        <button
+          type="submit"
+          disabled={isSubmitting}
+          className={`btn ${isSubmitting ? 'btn-loading' : 'btn-guardar'}`}
+        >
+          {isSubmitting ? (
+            <>
+              <FaSpinner className="spinner" /> Creando profesor...
+            </>
+          ) : (
+            'Guardar'
+          )}
+        </button>
+
+        <button
+          type="button"
+          onClick={onCancel}
+          className="btn btn-cancel"
+          disabled={isSubmitting}
+        >
+          Cancelar
+        </button>
       </div>
     </form>
   );

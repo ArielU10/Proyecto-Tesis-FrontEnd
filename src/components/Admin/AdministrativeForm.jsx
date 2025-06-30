@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
-import '../../styles/components/administrativeForm.css';
+import { FaSpinner } from 'react-icons/fa';
+import '../../styles/components/userForms.css';
 import {
   handleLetterInput,
   handleUppercaseChange,
   validatePhone,
-  validateCedula
+  validateCedula,
+  validateEmail
 } from '../../services/validationService';
 
-const AdministrativeForm = ({ formData, onChange, onSubmit, onCancel }) => {
+const AdministrativeForm = ({ formData, onChange, onSubmit, onCancel, isSubmitting }) => {
   const [errors, setErrors] = useState({});
 
   return (
@@ -35,6 +37,7 @@ const AdministrativeForm = ({ formData, onChange, onSubmit, onCancel }) => {
       />
 
       <input
+        className="full-width"
         type="text"
         name="identification"
         placeholder="Cédula"
@@ -55,18 +58,28 @@ const AdministrativeForm = ({ formData, onChange, onSubmit, onCancel }) => {
         maxLength={10}
         required
       />
-      {errors.identification && <p className="error-message">{errors.identification}</p>}
+      {errors.identification && <p className="error-message full-width">{errors.identification}</p>}
 
       <input
+        className="full-width"
         type="email"
         name="email"
         placeholder="Correo electrónico"
         value={formData.email}
         onChange={onChange}
+        onBlur={() => {
+          const isValid = validateEmail(formData.email);
+          setErrors((prev) => ({
+            ...prev,
+            email: isValid ? '' : 'Correo electrónico no válido'
+          }));
+        }}
         required
       />
+      {errors.email && <p className="error-message full-width">{errors.email}</p>}
 
-      <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+
+      <div className="full-width" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
         <span style={{ whiteSpace: 'nowrap' }}>+593</span>
         <input
           type="text"
@@ -89,13 +102,34 @@ const AdministrativeForm = ({ formData, onChange, onSubmit, onCancel }) => {
             }
           }}
           maxLength={9}
-        />
+      />
       </div>
-      {errors.phone && <p className="error-message">{errors.phone}</p>}
+      {errors.phone && <p className="error-message full-width">{errors.phone}</p>}
+
 
       <div style={{ display: 'flex', gap: '1rem', marginTop: '1rem' }}>
-        <button type="submit">Guardar</button>
-        <button type="button" onClick={onCancel}>Cancelar</button>
+        <button
+          type="submit"
+          disabled={isSubmitting}
+          className={`btn ${isSubmitting ? 'btn-loading' : 'btn-guardar'}`}
+        >
+          {isSubmitting ? (
+            <>
+              <FaSpinner className="spinner" /> Creando administrativo...
+            </>
+          ) : (
+            'Guardar'
+          )}
+        </button>
+
+        <button
+          type="button"
+          onClick={onCancel}
+          className="btn btn-cancel"
+          disabled={isSubmitting}
+        >
+          Cancelar
+        </button>
       </div>
     </form>
   );

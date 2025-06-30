@@ -23,12 +23,14 @@ const UserWizardModal = ({ isOpen, onClose }) => {
     rep_address: '',
     email: '',
     phone: '',
-    identification: ''
+    identification: '',
+    courseIds: []
   };
 
   const [step, setStep] = useState(1);
   const [selectedType, setSelectedType] = useState('');
   const [formData, setFormData] = useState(initialFormData);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   if (!isOpen) return null;
 
@@ -56,15 +58,16 @@ const UserWizardModal = ({ isOpen, onClose }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsSubmitting(true);
 
     const storedUser = JSON.parse(localStorage.getItem('user'));
     const token = storedUser?.token;
 
     if (!token) {
       toast.error('❌ Token no encontrado. Por favor, inicia sesión nuevamente.');
+      setIsSubmitting(false);
       return;
     }
-
 
     const config = {
       headers: {
@@ -85,7 +88,6 @@ const UserWizardModal = ({ isOpen, onClose }) => {
           },
           config
         );
-
         toast.success('✅ Administrativo creado correctamente');
       }
 
@@ -101,8 +103,7 @@ const UserWizardModal = ({ isOpen, onClose }) => {
             courseIds: formData.courseIds || []
           },
           config
-        );        
-
+        );
         toast.success('✅ Profesor creado correctamente');
       }
 
@@ -121,7 +122,6 @@ const UserWizardModal = ({ isOpen, onClose }) => {
         );
 
         const repId = repResponse.data?.id_legal_representative;
-
 
         if (!repId) {
           throw new Error('La respuesta del backend no contiene representative.id');
@@ -146,11 +146,12 @@ const UserWizardModal = ({ isOpen, onClose }) => {
 
       onClose();
       resetFormState();
-
     } catch (err) {
       const serverMessage = err.response?.data?.error || err.message;
       console.error('❌ Error durante creación:', serverMessage);
-      toast.error(`❌ Error al guardar:\n${serverMessage}`);
+      toast.error(`❌ Error: ${serverMessage}`);
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -175,6 +176,7 @@ const UserWizardModal = ({ isOpen, onClose }) => {
             onChange={handleChange}
             onSubmit={handleSubmit}
             onCancel={() => setStep(1)}
+            isSubmitting={isSubmitting}
           />
         )}
 
@@ -184,6 +186,7 @@ const UserWizardModal = ({ isOpen, onClose }) => {
             onChange={handleChange}
             onSubmit={handleSubmit}
             onCancel={() => setStep(1)}
+            isSubmitting={isSubmitting}
           />
         )}
 
@@ -193,6 +196,7 @@ const UserWizardModal = ({ isOpen, onClose }) => {
             onChange={handleChange}
             onSubmit={handleSubmit}
             onCancel={() => setStep(1)}
+            isSubmitting={isSubmitting}
           />
         )}
       </div>
