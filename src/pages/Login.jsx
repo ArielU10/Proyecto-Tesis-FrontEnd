@@ -55,9 +55,12 @@ const Login = () => {
         case 'legal_representative':
           navigate('/legal-representantive/');
           break;
+        case 'guard': 
+          navigate('/guard/home');
+          break;
         default:
           alert('Rol no reconocido');
-      }
+      }      
 
     } catch (err) {
       const backendMessage = err.response?.data?.message || 'Error desconocido';

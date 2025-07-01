@@ -1,20 +1,19 @@
 import React, { useState } from 'react';
-import { FaSpinner } from 'react-icons/fa';
-import '../../styles/components/userForms.css';
 import {
+  validateCedula,
+  validatePhone,
   handleLetterInput,
   handleUppercaseChange,
-  validatePhone,
-  validateCedula,
   validateEmail
 } from '../../services/validationService';
+import { FaSpinner } from 'react-icons/fa';
 
-const AdministrativeForm = ({ formData, onChange, onSubmit, onCancel, isSubmitting }) => {
+const GuardForm = ({ formData, onChange, onSubmit, onCancel, isSubmitting }) => {
   const [errors, setErrors] = useState({});
 
   return (
     <form onSubmit={onSubmit} className="admin-form">
-      <h2>Datos del Administrativo</h2>
+      <h2>Registrar Guardia</h2>
 
       <input
         type="text"
@@ -40,20 +39,16 @@ const AdministrativeForm = ({ formData, onChange, onSubmit, onCancel, isSubmitti
         className="full-width"
         type="text"
         name="identification"
-        placeholder="Cédula"
+        placeholder="Cédula (10 dígitos)"
         value={formData.identification}
         onChange={onChange}
-        onKeyPress={(e) => {
-          if (!/[0-9]/.test(e.key)) e.preventDefault();
-        }}
+        onKeyPress={(e) => { if (!/[0-9]/.test(e.key)) e.preventDefault(); }}
         onBlur={() => {
-          if (formData.identification) {
-            const isValid = validateCedula(formData.identification);
-            setErrors((prev) => ({
-              ...prev,
-              identification: isValid ? '' : 'Cédula no válida'
-            }));
-          }
+          const isValid = validateCedula(formData.identification);
+          setErrors((prev) => ({
+            ...prev,
+            identification: isValid ? '' : 'Cédula de identidad no válida'
+          }));
         }}
         maxLength={10}
         required
@@ -78,7 +73,6 @@ const AdministrativeForm = ({ formData, onChange, onSubmit, onCancel, isSubmitti
       />
       {errors.email && <p className="error-message full-width">{errors.email}</p>}
 
-
       <div className="full-width" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
         <span style={{ whiteSpace: 'nowrap' }}>+593</span>
         <input
@@ -97,17 +91,16 @@ const AdministrativeForm = ({ formData, onChange, onSubmit, onCancel, isSubmitti
               const isValid = validatePhone(formData.phone);
               setErrors((prev) => ({
                 ...prev,
-                phone: isValid ? '' : 'Número incorrecto (debe contener 9 dígitos)'
+                phone: isValid ? '' : 'Número incorrecto (9 dígitos)'
               }));
             }
           }}
           maxLength={9}
-      />
+        />
       </div>
       {errors.phone && <p className="error-message full-width">{errors.phone}</p>}
 
-
-      <div style={{ display: 'flex', gap: '1rem', marginTop: '1rem' }}>
+      <div style={{ display: 'flex', gap: '1rem', marginTop: '1rem', gridColumn: 'span 2' }}>
         <button
           type="submit"
           disabled={isSubmitting}
@@ -115,17 +108,17 @@ const AdministrativeForm = ({ formData, onChange, onSubmit, onCancel, isSubmitti
         >
           {isSubmitting ? (
             <>
-              <FaSpinner className="spinner" /> Creando administrativo...
+              <FaSpinner className="spinner" /> Creando personal de Sseguridad...
             </>
           ) : (
-            'Guardar'
+            'Registrar Guardia'
           )}
         </button>
 
         <button
           type="button"
-          onClick={onCancel}
           className="btn btn-cancel"
+          onClick={onCancel}
           disabled={isSubmitting}
         >
           Cancelar
@@ -135,4 +128,4 @@ const AdministrativeForm = ({ formData, onChange, onSubmit, onCancel, isSubmitti
   );
 };
 
-export default AdministrativeForm;
+export default GuardForm;

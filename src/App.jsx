@@ -1,4 +1,3 @@
-// src/App.jsx
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
@@ -7,6 +6,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import Login from './pages/Login';
 import LegalRepresentativeRoutes from './pages/legalRepresentantive/routes';
 import AdministrativeRoutes from './pages/administrative/adminRoutes';
+import GuardRoutes from './pages/guard/guardRoutes'; 
 import ProfessorPage from './pages/professor/professorPage';
 import ModalIncidente from "./components/professor/modalIncidente";
 
@@ -21,6 +21,7 @@ function App() {
 
         {LegalRepresentativeRoutes}
         {AdministrativeRoutes}
+        {GuardRoutes}
       </Routes>
 
       <ToastContainer 

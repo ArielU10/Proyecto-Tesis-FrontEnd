@@ -37,7 +37,7 @@ const StudentForm = ({ formData, onChange, onSubmit, onCancel, isSubmitting }) =
 
   return (
     <form onSubmit={onSubmit} className="admin-form">
-      <h2>Registrar Estudiante</h2>
+      <h2>Datos del Estudiante</h2>
 
       <input
         type="text"
@@ -129,7 +129,7 @@ const StudentForm = ({ formData, onChange, onSubmit, onCancel, isSubmitting }) =
         ))}
       </select>
 
-      <h3>Datos del Representante Legal</h3>
+      <h2>Datos del Representante Legal</h2>
 
       <input
         type="text"

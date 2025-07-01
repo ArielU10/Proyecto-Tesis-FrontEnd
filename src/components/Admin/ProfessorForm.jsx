@@ -51,7 +51,7 @@ const ProfessorForm = ({ formData, onChange, onSubmit, onCancel, isSubmitting })
 
   return (
     <form onSubmit={onSubmit} className="admin-form">
-      <h2>Registrar Profesor</h2>
+      <h2>Datos del Profesor</h2>
 
       <input
         type="text"
