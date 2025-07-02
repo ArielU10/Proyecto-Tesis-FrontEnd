@@ -1,28 +1,26 @@
 // src/pages/administrative/routes.jsx
 import { Route } from 'react-router-dom';
+import ProtectedRoute from '../../components/ProtectedRoute';
+import AdminDashboardLayout from '../../components/Admin/adminLayout';
+
 import AdminScreen from './pages/adminScreen';
 import CourseScreen from './pages/CourseScreen';
-import ProtectedRoute from '../../components/ProtectedRoute';
 
-const AdministrativeRoutes = [
+const AdministrativeRoutes = (
   <Route
-    key="admin"
     path="/admin"
     element={
       <ProtectedRoute allowedRoles={['administrative']}>
-        <AdminScreen />
+        <AdminDashboardLayout />
       </ProtectedRoute>
     }
-  />,
-  <Route
-    key="courses"
-    path="/admin/courses"
-    element={
-      <ProtectedRoute allowedRoles={['administrative']}>
-        <CourseScreen />
-      </ProtectedRoute>
-    }
-  />
-];
+  >
+    {/* Ruta Home: /admin */}
+    <Route index element={<AdminScreen />} />
+
+    {/* Ruta Cursos: /admin/courses */}
+    <Route path="courses" element={<CourseScreen />} />
+  </Route>
+);
 
 export default AdministrativeRoutes;

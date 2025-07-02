@@ -67,7 +67,6 @@ console.log("👀 Usuario desde contexto:", user);
         </div>
       )}
 
-      <AdminDashboardLayout>
         <div className="admin-screen-layout">
 
           {/* Sección de bienvenida */}
@@ -103,7 +102,6 @@ console.log("👀 Usuario desde contexto:", user);
           <div className="card-boton"><FaChartBar /> Ver Reportes</div>
 
         </div>
-      </AdminDashboardLayout>
     </>
   );
 };

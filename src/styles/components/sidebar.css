@@ -1,28 +1,27 @@
-/* ==============================
-   SIDEBAR (LATERAL IZQUIERDO)
-============================== */
 .sidebar {
-    grid-area: sidebar;
-    background: rgba(119, 5, 33, 0.4); /* vino semitransparente */
+    position: fixed;
+    top: 1vh;
+    bottom: 1vh;
+    left: 0;
+    width: 200px;
+    height: calc(98vh);
+  
+    background: rgba(119, 5, 33, 0.4);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
     color: white;
-    padding: 2rem;
+  
+    padding: 2rem 1rem;
     display: flex;
     flex-direction: column;
-    gap: 2rem;
-  
-    height: 96vh;
-    margin: 2vh 0;
+    justify-content: space-between;
+    box-sizing: border-box;
+    z-index: 1000;
   
     border: 3px solid #d4af37;
-    border-top-left-radius: 0;
-    border-bottom-left-radius: 0;
-    border-top-right-radius: 20px;
-    border-bottom-right-radius: 20px;
-    box-sizing: border-box;
+    border-left: none;
+    border-radius: 0 20px 20px 0;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-    transition: all 0.3s ease;
   }
   
   .sidebar-content {
@@ -36,7 +35,7 @@
   .logo-image {
     width: 100px;
     height: auto;
-    margin: 0 auto;
+    margin: 0 auto 1rem;
     display: block;
     border-radius: 8px;
   }
@@ -45,40 +44,33 @@
     list-style: none;
     padding: 0;
     margin: 0;
+    width: 100%;
   }
   
   .menu li {
-    padding: 0.75rem 1rem;
     margin: 0.25rem 0;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background 0.2s;
-  }
-  
-  .menu li:hover {
-    background-color: #4e0212;
-    color: #d4af37;
+    width: 100%;
   }
   
   .sidebar-link {
-    text-decoration: none;
-    color: inherit;
     display: block;
     width: 100%;
-    height: 100%;
-    padding: 0.5rem 1rem;
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    text-decoration: none;
+    color: inherit;
+    transition: background 0.2s ease, color 0.2s ease;
   }
   
-  .sidebar-link:not(.active):hover {
+  .sidebar-link:hover {
     color: #d4af37;
+    background-color: rgba(255, 255, 255, 0.05);
   }
   
   .sidebar-link.active {
-    backdrop-filter: blur(4px);
     background-color: rgba(255, 255, 255, 0.08);
-    color: #fff;
+    color: #ffffff;
     font-weight: 600;
-    border-radius: 8px;
   }
   
   .sidebar-footer {

@@ -41,10 +41,7 @@ const Footer = ({ variant }) => {
   return (
     <footer className={`admin-footer ${variant === 'compact' ? 'footer-compact' : ''}`}>
       <div className="footer-content">
-        <div className="footer-text">
-          <p>© 2025 Unidad Educativa Jesús de Nazareth</p>
-        </div>
-
+        {/* 👇 Primero los íconos */}
         <div className="footer-icons">
           {socialLinks.map(({ href, icon, tooltip }, i) => (
             <a
@@ -58,9 +55,11 @@ const Footer = ({ variant }) => {
             </a>
           ))}
         </div>
+
       </div>
     </footer>
   );
 };
+
 
 export default Footer;
