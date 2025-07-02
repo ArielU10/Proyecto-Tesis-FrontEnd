@@ -1,0 +1,131 @@
+.admin-footer {
+  grid-column: 1 / -1;
+  width: 100vw;
+  padding: 0.3rem 2rem;
+  font-size: 0.85rem;
+  color: #e0e0e0;
+  background: rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(6px);
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 12px 12px 0 0;
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.2);
+  position: relative;
+  overflow: visible; /* Necesario para mostrar tooltips */
+}
+
+.footer-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.footer-text {
+  flex: 1;
+  text-align: center;
+  margin: 10px;
+  line-height: 0.1;
+  padding-left: 15em;
+}
+
+/* Estilos generales para iconos */
+.footer-icons {
+  display: flex;
+  gap: 1rem;
+  font-size: 1.2rem;
+  position: relative;
+}
+
+.footer-icons a {
+  color: #ffffff;
+  transition: transform 0.2s ease, color 0.2s ease;
+  position: relative;
+}
+
+.footer-icons a:hover {
+  transform: scale(1.4);
+  color: #f6ca48;
+}
+
+/* === Variante compacta para login === */
+.footer-compact {
+  padding: 1rem 1.5rem;
+  text-align: center;
+  font-size: 0.75rem;
+  background: none;
+  box-shadow: none;
+  width: 100%;
+  margin-top: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.footer-compact .footer-content {
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.footer-compact .footer-text {
+  padding: 0;
+  margin: 0;
+  line-height: 1.4;
+}
+
+.footer-compact .footer-icons {
+  justify-content: center;
+  gap: 1.2rem;
+  margin-top: 0.5rem;
+  font-size: 1.1rem;
+}
+
+/* Opcional: ajuste de escala hover en versión compacta */
+.footer-compact .footer-icons a {
+  opacity: 0.9;
+}
+
+.footer-compact .footer-icons a:hover {
+  transform: scale(1.2);
+  color: #f6ca48;
+  opacity: 1;
+}
+
+/* === Tooltips modernos === */
+.footer-icons a::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: calc(100% + 10px);
+  left: 50%;
+  transform: translateX(-50%) scale(0.95);
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(6px);
+  color: white;
+  font-size: 0.7rem;
+  padding: 4px 8px;
+  border-radius: 4px;
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+  z-index: 10;
+}
+
+.footer-icons a::before {
+  content: '';
+  position: absolute;
+  bottom: calc(100% + 2px);
+  left: 50%;
+  transform: translateX(-50%);
+  border: 5px solid transparent;
+  border-top-color: rgba(255, 255, 255, 0.1);
+  opacity: 0;
+  transition: all 0.3s ease;
+  z-index: 9;
+}
+
+.footer-icons a:hover::after,
+.footer-icons a:hover::before {
+  opacity: 1;
+  transform: translateX(-50%) scale(1);
+}

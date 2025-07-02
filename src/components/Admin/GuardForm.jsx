@@ -108,7 +108,7 @@ const GuardForm = ({ formData, onChange, onSubmit, onCancel, isSubmitting }) => 
         >
           {isSubmitting ? (
             <>
-              <FaSpinner className="spinner" /> Creando personal de Sseguridad...
+              <FaSpinner className="spinner" /> Creando personal de Seguridad...
             </>
           ) : (
             'Registrar Guardia'

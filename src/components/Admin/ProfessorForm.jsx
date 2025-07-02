@@ -173,10 +173,10 @@ const ProfessorForm = ({ formData, onChange, onSubmit, onCancel, isSubmitting })
         >
           {isSubmitting ? (
             <>
-              <FaSpinner className="spinner" /> Creando profesor...
+              <FaSpinner className="spinner" /> Creando Profesor...
             </>
           ) : (
-            'Guardar'
+            'Registrar Profesor'
           )}
         </button>
 

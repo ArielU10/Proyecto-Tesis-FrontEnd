@@ -122,10 +122,10 @@ const CourseForm = ({ onClose }) => {
         >
           {isSubmitting ? (
             <>
-              <FaSpinner className="spinner" /> Creando curso...
+              <FaSpinner className="spinner" /> Creando Curso...
             </>
           ) : (
-            'Guardar'
+            'Guardar Curso'
           )}
         </button>
 

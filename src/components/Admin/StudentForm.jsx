@@ -239,10 +239,10 @@ const StudentForm = ({ formData, onChange, onSubmit, onCancel, isSubmitting }) =
         >
           {isSubmitting ? (
             <>
-              <FaSpinner className="spinner" /> Creando estudiante...
+              <FaSpinner className="spinner" /> Creando Estudiante...
             </>
           ) : (
-            'Guardar'
+            'Registrar Estudiante'
           )}
         </button>
 

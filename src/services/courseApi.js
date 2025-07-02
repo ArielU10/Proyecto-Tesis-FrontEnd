@@ -31,3 +31,17 @@ export const getCoursesByProfessor = async (professorId) => {
     throw error;
   }
 };
+
+/**
+ * Eliminar un curso por su ID
+ * @param {number} courseId - ID del curso
+ */
+export const deleteCourse = async (courseId) => {
+  try {
+    const response = await axios.delete(`${COURSE_API_URL}/${courseId}`);
+    return response.data;
+  } catch (error) {
+    console.error("Error al eliminar el curso:", error.response?.data || error.message);
+    throw error;
+  }
+};

@@ -1,0 +1,92 @@
+/* ==============================
+   SIDEBAR (LATERAL IZQUIERDO)
+============================== */
+.sidebar {
+    grid-area: sidebar;
+    background: rgba(119, 5, 33, 0.4); /* vino semitransparente */
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    color: white;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  
+    height: 96vh;
+    margin: 2vh 0;
+  
+    border: 3px solid #d4af37;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
+    box-sizing: border-box;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+  }
+  
+  .sidebar-content {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    flex-grow: 1;
+    justify-content: space-between;
+  }
+  
+  .logo-image {
+    width: 100px;
+    height: auto;
+    margin: 0 auto;
+    display: block;
+    border-radius: 8px;
+  }
+  
+  .menu ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .menu li {
+    padding: 0.75rem 1rem;
+    margin: 0.25rem 0;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  
+  .menu li:hover {
+    background-color: #4e0212;
+    color: #d4af37;
+  }
+  
+  .sidebar-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+    width: 100%;
+    height: 100%;
+    padding: 0.5rem 1rem;
+  }
+  
+  .sidebar-link:not(.active):hover {
+    color: #d4af37;
+  }
+  
+  .sidebar-link.active {
+    backdrop-filter: blur(4px);
+    background-color: rgba(255, 255, 255, 0.08);
+    color: #fff;
+    font-weight: 600;
+    border-radius: 8px;
+  }
+  
+  .sidebar-footer {
+    margin-top: auto;
+    text-align: center;
+    font-size: 0.85rem;
+    color: #eee;
+    padding-top: 2rem;
+    font-style: italic;
+  }
+  

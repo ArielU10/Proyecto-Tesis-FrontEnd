@@ -1,23 +1,27 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import '../../styles/components/adminLayout.css';
+import '../../styles/components/header.css';
 
-export const Header = () => {
+const Header = () => {
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
   const [showMenu, setShowMenu] = useState(false);
   const [darkMode, setDarkMode] = useState(false);
+  const menuRef = useRef(null);
 
   useEffect(() => {
-    try {
-      const storedUser = localStorage.getItem('user');
-      if (storedUser) {
-        setUser(JSON.parse(storedUser));
+    const storedUser = localStorage.getItem('user');
+    if (storedUser) setUser(JSON.parse(storedUser));
+  }, []);
+
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (menuRef.current && !menuRef.current.contains(e.target)) {
+        setShowMenu(false);
       }
-    } catch (error) {
-      console.error('Error al leer usuario:', error);
-      setUser(null);
-    }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
   const handleLogout = () => {
@@ -40,32 +44,23 @@ export const Header = () => {
 
   return (
     <header className="admin-header">
-      <input
-        type="text"
-        className="search-bar"
-        placeholder="Buscar Estudiante"
-      />
+      <input type="text" className="search-bar" placeholder="Buscar Estudiante" />
 
-      <div className="profile-section" onClick={() => setShowMenu(!showMenu)}>
-      <span className="username">
-        {user?.firstName ? `${user.firstName} ${user.lastName}` : 'Usuario'}
-      </span>
-
-        <div className="user-avatar-circle">
-          <img
-            src="/src/assets/avatarMujer.png"
-            alt="Avatar"
-            className="user-avatar"
-          />
+      <div className="profile-container" ref={menuRef}>
+        <div className="profile-button" onClick={() => setShowMenu(!showMenu)}>
+          <span className="username">
+            {user?.firstName ? `${user.firstName} ${user.lastName}` : 'Usuario'}
+          </span>
+          <div className="user-avatar-circle">
+            <img src="/src/assets/avatarMujer.png" alt="Avatar" className="user-avatar" />
+          </div>
         </div>
 
         {showMenu && (
           <div className="user-dropdown-menu">
             <button onClick={handleShowProfile}>👤 Mi perfil</button>
             <button onClick={handleEditProfile}>✏️ Editar perfil</button>
-            <button onClick={handleToggleTheme}>
-              🎨 Cambiar a {darkMode ? 'Claro' : 'Oscuro'}
-            </button>
+            <button onClick={handleToggleTheme}>🎨 Cambiar a {darkMode ? 'Claro' : 'Oscuro'}</button>
             <button onClick={handleLogout}>🔐 Cerrar sesión</button>
           </div>
         )}
@@ -73,3 +68,5 @@ export const Header = () => {
     </header>
   );
 };
+
+export default Header;

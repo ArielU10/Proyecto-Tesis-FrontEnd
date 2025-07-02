@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { AdminDashboardLayout } from '../../../components/Admin/adminLayout';
+import AdminDashboardLayout from '../../../components/Admin/adminLayout';
 import { FaQrcode, FaBell, FaClipboardCheck, FaUserPlus, FaBookOpen, FaExclamationTriangle, FaChartBar } from "react-icons/fa";
 import userAvatar from '../../../assets/avatarMujer.png';
 import '../../../styles/administrative/adminScreen.css';
