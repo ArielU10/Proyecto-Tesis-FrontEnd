@@ -33,6 +33,22 @@ export const getCoursesByProfessor = async (professorId) => {
 };
 
 /**
+ * Actualizar un curso por su ID
+ * @param {number} id - ID del curso
+ * @param {object} data - Datos del curso a actualizar
+ */
+export const updateCourse = async (id, data) => {
+  try {
+    const response = await axios.put(`${COURSE_API_URL}/${id}`, data);
+    return response.data;
+  } catch (error) {
+    console.error("Error al actualizar el curso:", error.response?.data || error.message);
+    throw error;
+  }
+};
+
+
+/**
  * Eliminar un curso por su ID
  * @param {number} courseId - ID del curso
  */

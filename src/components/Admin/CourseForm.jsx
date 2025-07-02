@@ -3,6 +3,7 @@ import '../../styles/components/userForms.css';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { FaSpinner } from 'react-icons/fa';
+import { updateCourse } from '../../services/courseApi';
 
 const niveles = {
   "Inicial": ["2 años", "3 años", "4 años"],
@@ -12,16 +13,18 @@ const niveles = {
   "Bachillerato": ["1ro Bachillerato", "2do Bachillerato", "3ro Bachillerato"]
 };
 
-const CourseForm = ({ onClose }) => {
+const CourseForm = ({ onClose, onSaved, editingCourse, defaultLevel = '' }) => {
+  const isEditing = Boolean(editingCourse);
+
   const [formData, setFormData] = useState({
-    courseName: '',
-    level: '',
-    description: ''
+    courseName: editingCourse?.courseName || '',
+    level: editingCourse?.level || defaultLevel,
+    description: editingCourse?.description || ''
   });
 
-  const [nivelPrincipal, setNivelPrincipal] = useState('');
+  const [nivelPrincipal, setNivelPrincipal] = useState(editingCourse?.level || defaultLevel);
   const [errores, setErrores] = useState({});
-  const [isSubmitting, setIsSubmitting] = useState(false); // ✅ nuevo
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleMainLevelChange = (e) => {
     const nivel = e.target.value;
@@ -50,20 +53,30 @@ const CourseForm = ({ onClose }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!validateForm()) return;
-  
+
     setIsSubmitting(true);
     const start = Date.now();
-  
+
     try {
-      await axios.post('http://localhost:3000/api/courses', formData);
+      if (isEditing) {
+        await updateCourse(editingCourse.id_course, formData);
+        toast.success("✅ Curso actualizado con éxito", {
+          className: 'toast-success'
+        });        
+      } else {
+        await axios.post('http://localhost:3000/api/courses', formData);
+        toast.success("✅ Curso registrado con éxito", {
+          className: 'toast-success'
+        });
+        
+      }
+
       const elapsed = Date.now() - start;
-  
-      // Esperar si la petición fue demasiado rápida (< 800ms)
       if (elapsed < 500) {
         await new Promise(resolve => setTimeout(resolve, 500 - elapsed));
       }
-  
-      toast.success("✅ Curso registrado con éxito");
+
+      if (onSaved) onSaved();
       onClose();
     } catch (error) {
       console.error("❌ Error al guardar curso:", error);
@@ -72,11 +85,16 @@ const CourseForm = ({ onClose }) => {
       setIsSubmitting(false);
     }
   };
-  
 
   return (
     <form onSubmit={handleSubmit} className="admin-form">
-      <h2>Agregar Curso</h2>
+      <h2>{isEditing ? "Editar Curso" : "Agregar Curso"}</h2>
+
+      {!isEditing && defaultLevel && (
+        <p style={{ fontStyle: 'italic', color: '#555', marginBottom: '1rem' }}>
+          Nivel seleccionado automáticamente: <strong>{defaultLevel}</strong>
+        </p>
+      )}
 
       <select name="level" value={formData.level} onChange={handleMainLevelChange} required>
         <option value="">-- Selecciona el nivel educativo --</option>
@@ -122,10 +140,11 @@ const CourseForm = ({ onClose }) => {
         >
           {isSubmitting ? (
             <>
-              <FaSpinner className="spinner" /> Creando Curso...
+              <FaSpinner className="spinner" />
+              {isEditing ? " Actualizando..." : " Creando Curso..."}
             </>
           ) : (
-            'Guardar Curso'
+            isEditing ? "Actualizar Curso" : "Guardar Curso"
           )}
         </button>
 

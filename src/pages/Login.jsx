@@ -74,17 +74,8 @@ const Login = () => {
       <div className="login-box">
           <img src={logo} alt="Logo Institución" className="login-logo" />
           <h1>Bienvenido!</h1>
-          <p className="subtitle">al Portal de Seguridad y Comunicación Escolar</p>
-
-          <ul className="features">
-            <li>✅ Retiro seguro con códigos QR</li>
-            <li>✅ Notificaciones inmediatas</li>
-            <li>✅ Gestión de permisos y autorizaciones</li>
-            <li>✅ Registro de asistencias automatizado</li>
-            <li>✅ Reporte y seguimiento de incidentes escolares</li>
-          </ul>
-
-
+          <p className="subtitle">Accede al portal de seguridad escolar con funciones 
+          inteligentes de comunicación, seguridad y control.</p>
           <form className="login-form" onSubmit={handleSubmit}>
             <div className="input-icon">
               <FaUser className="icon" />

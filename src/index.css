@@ -11,6 +11,29 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.toast-glass {
+  background: rgba(239, 47, 47, 0.15) !important;
+  backdrop-filter: blur(20px) !important;
+  -webkit-backdrop-filter: blur(20px) !important;
+  border: 1px solid rgba(87, 0, 0, 0.3);
+  color: #ffffff !important;
+  border-radius: 12px;
+  font-weight: 500;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+.toast-success {
+  background: rgba(0, 192, 166, 0.25) !important; /* Verde suave translúcido */
+  backdrop-filter: blur(20px) !important;
+  -webkit-backdrop-filter: blur(20px) !important;
+  border: 1px solid rgba(0, 40, 34, 0.25);
+  color: #ffffff !important;
+  font-weight: 500;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+
 body {
   margin: 0;
   min-width: 320px;

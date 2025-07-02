@@ -1,13 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import CourseForm from '../../../components/Admin/CourseForm';
 import CourseGroup from '../../../components/Admin/CourseGroup';
+import { FaLayerGroup } from 'react-icons/fa';
 import { getCourses, deleteCourse } from '../../../services/courseApi';
 import '../../../styles/administrative/courseScreen.css';
+import { toast } from 'react-toastify';
 
 const CourseScreen = () => {
   const [courses, setCourses] = useState([]);
   const [showForm, setShowForm] = useState(false);
   const [editingCourse, setEditingCourse] = useState(null);
+  const [selectedLevel, setSelectedLevel] = useState('');
 
   useEffect(() => {
     fetchCourses();
@@ -22,41 +25,59 @@ const CourseScreen = () => {
     }
   };
 
-  const handleAddClick = () => {
+  const handleAddClick = (level = '') => {
     setEditingCourse(null);
+    setSelectedLevel(level); // ✅ capturamos nivel
     setShowForm(true);
   };
 
   const handleEdit = (course) => {
     setEditingCourse(course);
+    setSelectedLevel(course.level || '');
     setShowForm(true);
   };
 
-  const handleDelete = async (id) => {
-    if (window.confirm('¿Estás seguro de eliminar este curso?')) {
-      try {
-        await deleteCourse(id);
-        await fetchCourses();
-        alert('✅ Curso eliminado');
-      } catch (err) {
-        console.error('❌ Error al eliminar curso:', err);
-        alert('Error al eliminar curso');
+  const handleDelete = (id) => {
+    toast.info(
+      <div>
+        ¿Estás seguro de eliminar este curso?
+        <div style={{ marginTop: '10px', display: 'flex', justifyContent: 'flex-end', gap: '8px' }}>
+          <button className="btn" onClick={() => confirmDelete(id)}>Sí</button>
+          <button className="btn btn-cancel" onClick={() => toast.dismiss()}>Cancelar</button>
+        </div>
+      </div>,
+      {
+        position: "top-center",
+        autoClose: false,
+        closeOnClick: false,
+        draggable: false,
+        className: "toast-glass" 
       }
+    );
+  };
+
+  const confirmDelete = async (id) => {
+    try {
+      await deleteCourse(id);
+      toast.dismiss();
+      toast.success("🗑️ Curso eliminado correctamente", { className: 'toast-success' });
+      fetchCourses();
+    } catch (err) {
+      console.error("❌ Error al eliminar curso:", err);
+      toast.error("❌ Hubo un error al eliminar el curso");
     }
   };
 
   const handleCloseForm = () => {
     setShowForm(false);
     setEditingCourse(null);
+    setSelectedLevel('');
   };
 
   return (
     <div className="course-screen">
       <div className="course-header">
-        <h2>Cursos / Paralelos</h2>
-        <button className="add-btn" onClick={handleAddClick}>
-          + Agregar Curso
-        </button>
+      <h2><FaLayerGroup /> Administracion de Cursos</h2>
       </div>
 
       <div className="course-list">
@@ -64,6 +85,7 @@ const CourseScreen = () => {
           courses={courses}
           onEdit={handleEdit}
           onDelete={handleDelete}
+          onAddClick={handleAddClick}
         />
       </div>
 
@@ -74,6 +96,7 @@ const CourseScreen = () => {
               onClose={handleCloseForm}
               onSaved={fetchCourses}
               editingCourse={editingCourse}
+              defaultLevel={selectedLevel}
             />
           </div>
         </div>
