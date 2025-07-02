@@ -2,9 +2,9 @@ import React from "react";
 
 const AccionesProfesor = ({ onShowInasistencias, onShowIncidentes,   onShowAtrasos, }) => (
   <div className="acciones-profesor">
-    <button className="accion-btn qr " onClick={() => alert("QR")}>
+    {/* <button className="accion-btn qr " onClick={() => alert("QR")}>
       Novedades
-    </button>
+    </button> */}
     <button className="accion-btn inasistencias" onClick={onShowInasistencias}>
       Inasistencias
     </button>
