@@ -18,8 +18,6 @@ import ModalHistorialIncidentes from "../../components/professor/modalHistorialI
 import ModalAtrasos from "../../components/professor/modalAtrasos";
 import FooterProfesor from "../../components/professor/footerProfessor";
 
-
-
 const ProfessorPage = () => {
   const navigate = useNavigate();
 
@@ -31,42 +29,49 @@ const ProfessorPage = () => {
   const [showIncidentes, setShowIncidentes] = useState(false);
   const [showAtrasos, setShowAtrasos] = useState(false);
   const [professorId, setProfessorId] = useState(null);
-  
+  const [isAuthorized, setIsAuthorized] = useState(false);
 
-  // Cargar cursos asignados al profesor
   useEffect(() => {
-  const user = JSON.parse(localStorage.getItem("user"));
+    const user = JSON.parse(localStorage.getItem("user"));
 
-  if (user && user.role === "professor") {
+    if (!user) {
+      navigate("/login");
+      return;
+    }
+
+    if (user.role !== "professor") {
+      navigate("/unauthorized");
+      return;
+    }
+
+    setIsAuthorized(true); // Usuario autorizado
+
     setProfessorId(user.roleId);
     getCoursesByProfessor(user.roleId)
       .then((data) => {
-        console.log("Cursos asignados al profesor:", data);
-
-        // ✅ Aquí se extrae solo la propiedad course de cada entrada del array
-        const formattedCourses = data.map(item => item.course);
-
-        setCourses(formattedCourses); // 👈 se pasa solo el array de cursos reales
+        const formattedCourses = data.map((item) => item.course);
+        setCourses(formattedCourses);
       })
       .catch((error) => console.error("Error al obtener cursos:", error));
-  }
-}, []);
-
+  }, [navigate]);
 
   const handleLogout = () => {
-    navigate("/");
+    localStorage.removeItem("user");
+    navigate("/login");
   };
 
   const handleCourseClick = (courseId) => {
     setSelectedCourse(courseId);
     getStudentsByCourse(courseId)
       .then((data) => {
-        console.log("Estudiantes recibidos:", data);
         setStudents(data);
         setShowModal(true);
       })
       .catch(console.error);
   };
+
+  // 🔐 Esperar validación
+  if (!isAuthorized) return null;
 
   return (
     <div className="parent">
@@ -81,46 +86,53 @@ const ProfessorPage = () => {
         </div>
       </div>
 
-     <div className="div3 p-4 bg-light d-flex flex-column justify-content-between">
-  <div className="mb-4">
-    <AccionesProfesor
-      onShowInasistencias={() => setShowInasistencias(true)}
-      onShowIncidentes={() => setShowIncidentes(true)}
-      onShowAtrasos={() => setShowAtrasos(true)} 
-    />
-  </div>
-  <EstudiantesSeguimiento />
-</div>
+      <div className="div3 p-4 bg-light d-flex flex-column justify-content-between">
+        <div className="mb-4">
+          <AccionesProfesor
+            onShowInasistencias={() => setShowInasistencias(true)}
+            onShowIncidentes={() => setShowIncidentes(true)}
+            onShowAtrasos={() => setShowAtrasos(true)}
+          />
+        </div>
+        <EstudiantesSeguimiento />
+      </div>
 
+      {showModal && (
+        <ModalEstudiantes
+          show={showModal}
+          onHide={() => setShowModal(false)}
+          students={students}
+          courseId={selectedCourse}
+        />
+      )}
 
-      <ModalEstudiantes
-        show={showModal}
-        onHide={() => setShowModal(false)}
-        students={students}
-        courseId={selectedCourse}
-      />
+      {showInasistencias && (
+        <ModalInasistencias
+          show={showInasistencias}
+          onHide={() => setShowInasistencias(false)}
+          courses={courses}
+          professorId={professorId}
+        />
+      )}
 
-      <ModalInasistencias
-        show={showInasistencias}
-        onHide={() => setShowInasistencias(false)}
-        courses={courses}
-        professorId={professorId}
-      />
+      {showIncidentes && (
+        <ModalHistorialIncidentes
+          show={showIncidentes}
+          onHide={() => setShowIncidentes(false)}
+          professorId={professorId}
+        />
+      )}
 
-      <ModalHistorialIncidentes
-        show={showIncidentes}
-        onHide={() => setShowIncidentes(false)}
-        professorId={professorId}
-      />
-            <ModalAtrasos
-        show={showAtrasos}
-        onHide={() => setShowAtrasos(false)}
-        courses={courses}
-        professorId={professorId}
-      />
+      {showAtrasos && (
+        <ModalAtrasos
+          show={showAtrasos}
+          onHide={() => setShowAtrasos(false)}
+          courses={courses}
+          professorId={professorId}
+        />
+      )}
 
       <FooterProfesor />
-
     </div>
   );
 };
