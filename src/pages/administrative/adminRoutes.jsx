@@ -5,6 +5,7 @@ import AdminDashboardLayout from '../../components/Admin/adminLayout';
 
 import AdminScreen from './pages/adminScreen';
 import CourseScreen from './pages/CourseScreen';
+import UserScreen from './pages/UserScreen'; // 👈 Nuevo import
 
 const AdministrativeRoutes = (
   <Route
@@ -20,6 +21,9 @@ const AdministrativeRoutes = (
 
     {/* Ruta Cursos: /admin/courses */}
     <Route path="courses" element={<CourseScreen />} />
+
+    {/* ✅ Ruta Usuarios: /admin/users */}
+    <Route path="users" element={<UserScreen />} />
   </Route>
 );
 

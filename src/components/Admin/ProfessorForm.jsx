@@ -7,7 +7,7 @@ import {
   handleUppercaseChange,
   validateEmail
 } from '../../services/validationService';
-import { getCourses } from '../../services/courseApi';
+import { getAllCourses } from '../../services/courseApi';
 import Select from 'react-select';
 import { FaSpinner } from 'react-icons/fa';
 

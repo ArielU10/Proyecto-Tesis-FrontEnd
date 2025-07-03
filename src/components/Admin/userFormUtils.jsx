@@ -27,7 +27,10 @@ export const handleSubmitByType = async (type, formData, setIsSubmitting, onClos
     const storedUser = JSON.parse(localStorage.getItem('user'));
     const token = storedUser?.token;
     if (!token) {
-      toast.error('❌ Token no encontrado. Por favor, inicia sesión nuevamente.');
+      toast.error('❌ Token no encontrado. Por favor, inicia sesión nuevamente.', {
+        className: 'toast-error'
+      });
+      
       return;
     }
 
@@ -41,7 +44,10 @@ export const handleSubmitByType = async (type, formData, setIsSubmitting, onClos
         email: formData.email,
         phone: formData.phone
       }, config);
-      toast.success('✅ Administrativo creado correctamente');
+      toast.success('✅ Administrativo creado correctamente', {
+        className: 'toast-success'
+      });
+      
     }
 
     if (type === 'professor') {
@@ -53,7 +59,10 @@ export const handleSubmitByType = async (type, formData, setIsSubmitting, onClos
         phone: formData.phone,
         courseIds: formData.courseIds || []
       }, config);
-      toast.success('✅ Profesor creado correctamente');
+      toast.success('✅ Profesor creado correctamente', {
+        className: 'toast-success'
+      });
+      
     }
 
     if (type === 'student') {
@@ -78,7 +87,10 @@ export const handleSubmitByType = async (type, formData, setIsSubmitting, onClos
         id_course: formData.id_course,
         id_legal_representative: repId
       }, config);
-      toast.success('✅ Estudiante y representante creados correctamente');
+      toast.success('✅ Estudiante y representante creados correctamente', {
+        className: 'toast-success'
+      });
+      
     }
 
     if (type === 'guard') {
@@ -89,7 +101,10 @@ export const handleSubmitByType = async (type, formData, setIsSubmitting, onClos
         email: formData.email,
         phone: formData.phone
       }, config);
-      toast.success('✅ Guardia creado correctamente');
+      toast.success('✅ Guardia creado correctamente', {
+        className: 'toast-success'
+      });
+      
     }
 
     onClose();
@@ -98,7 +113,10 @@ export const handleSubmitByType = async (type, formData, setIsSubmitting, onClos
   } catch (err) {
     console.error('❌ Error al crear usuario:', err);
     const msg = err.response?.data?.error || err.message;
-    toast.error(`❌ Error: ${msg}`);
+    toast.error(`❌ Error: ${msg}`, {
+      className: 'toast-error'
+    });
+    
   } finally {
     setIsSubmitting(false);
   }

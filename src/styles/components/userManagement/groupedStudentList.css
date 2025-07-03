@@ -1,0 +1,104 @@
+.grouped-student-list {
+  background: rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  padding: 1.5rem;
+  border-radius: 16px;
+  margin-bottom: 1.5rem; /* 👈 Separa los recuadros de cursos */
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+
+.course-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  margin-bottom: 1rem;
+  color: #facc15;
+  font-size: 1.25rem;
+  font-weight: 700;
+  transition: color 0.2s;
+}
+
+.course-header:hover {
+  color: #fde68a;
+}
+
+.course-title {
+  margin: 0;
+}
+
+.student-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding-left: 1.5rem;
+}
+
+.student-item {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(6px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 12px;
+  padding: 0.75rem 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: transform 0.2s;
+}
+
+.student-item:hover {
+  transform: translateY(-2px);
+}
+
+.student-name {
+  font-weight: 600;
+  font-size: 1rem;
+  color: #fff;
+}
+
+.student-actions {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.icon-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.1rem;
+  color: #ddd;
+  transition: color 0.2s ease;
+}
+
+.icon-btn:hover {
+  color: #38bdf8;
+}
+
+.no-students {
+  font-style: italic;
+  color: #ccc;
+  padding-left: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.grouped-level-block {
+  margin-bottom: 2rem;
+}
+
+.grouped-level-block h3 {
+  font-size: 1.4rem;
+  color: #fff;
+  margin-bottom: 1rem;
+  padding-left: 0.5rem;
+  border-left: 4px solid #facc15;
+}
+
+/* Layout responsive de cursos por nivel */
+.course-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.25rem;
+}

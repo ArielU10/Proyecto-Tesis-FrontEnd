@@ -1,29 +1,78 @@
 import axios from "axios";
 
-// URLs base para los endpoints
 const COURSE_API_URL = "http://localhost:3000/api/courses";
 const PROFESSOR_COURSES_API_URL = "http://localhost:3000/api/professor-courses";
 
 /**
- * Obtener todos los cursos (sin importar profesor)
+ * ✅ Obtener todos los cursos
  */
-export const getCourses = async () => {
+export const getAllCourses = async () => {
   try {
     const response = await axios.get(COURSE_API_URL);
     return response.data;
   } catch (error) {
-    console.error("Error al obtener los cursos:", error.response?.data || error.message);
-    return [];
+    console.error("Error al obtener cursos:", error.response?.data || error.message);
+    throw error;
   }
 };
 
 /**
- * Obtener cursos asignados a un profesor específico
- * @param {number} professorId - ID del profesor
+ * ✅ Obtener un curso por ID
+ */
+export const getCourseById = async (id) => {
+  try {
+    const response = await axios.get(`${COURSE_API_URL}/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error("Error al obtener curso:", error.response?.data || error.message);
+    throw error;
+  }
+};
+
+/**
+ * ✅ Crear nuevo curso
+ */
+export const createCourse = async (data) => {
+  try {
+    const response = await axios.post(COURSE_API_URL, data);
+    return response.data;
+  } catch (error) {
+    console.error("Error al crear curso:", error.response?.data || error.message);
+    throw error;
+  }
+};
+
+/**
+ * ✅ Actualizar curso
+ */
+export const updateCourse = async (id, data) => {
+  try {
+    const response = await axios.put(`${COURSE_API_URL}/${id}`, data);
+    return response.data;
+  } catch (error) {
+    console.error("Error al actualizar curso:", error.response?.data || error.message);
+    throw error;
+  }
+};
+
+/**
+ * ✅ Eliminar curso
+ */
+export const deleteCourse = async (id) => {
+  try {
+    const response = await axios.delete(`${COURSE_API_URL}/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error("Error al eliminar curso:", error.response?.data || error.message);
+    throw error;
+  }
+};
+
+/**
+ * ✅ Obtener cursos asignados a un profesor
  */
 export const getCoursesByProfessor = async (professorId) => {
   try {
-    console.log("professorId:", professorId); 
     const response = await axios.get(`${PROFESSOR_COURSES_API_URL}/${professorId}`);
     return response.data;
   } catch (error) {
@@ -33,31 +82,17 @@ export const getCoursesByProfessor = async (professorId) => {
 };
 
 /**
- * Actualizar un curso por su ID
- * @param {number} id - ID del curso
- * @param {object} data - Datos del curso a actualizar
+ * ✅ Asignar curso a profesor
  */
-export const updateCourse = async (id, data) => {
+export const assignCourseToProfessor = async ({ professorId, courseId }) => {
   try {
-    const response = await axios.put(`${COURSE_API_URL}/${id}`, data);
+    const response = await axios.post(PROFESSOR_COURSES_API_URL, {
+      professorId,
+      courseId,
+    });
     return response.data;
   } catch (error) {
-    console.error("Error al actualizar el curso:", error.response?.data || error.message);
-    throw error;
-  }
-};
-
-
-/**
- * Eliminar un curso por su ID
- * @param {number} courseId - ID del curso
- */
-export const deleteCourse = async (courseId) => {
-  try {
-    const response = await axios.delete(`${COURSE_API_URL}/${courseId}`);
-    return response.data;
-  } catch (error) {
-    console.error("Error al eliminar el curso:", error.response?.data || error.message);
+    console.error("Error al asignar curso:", error.response?.data || error.message);
     throw error;
   }
 };

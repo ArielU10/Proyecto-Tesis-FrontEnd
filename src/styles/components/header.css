@@ -5,10 +5,8 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-
   height: 60px; /* ✅ altura delgada */
   padding: 0 1.5rem;
-
   background: rgba(255, 255, 255, 0.05);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
@@ -77,25 +75,22 @@
 /* Menú desplegable */
 .user-dropdown-menu {
   position: absolute;
-  top: 60px; /* igual al alto del header */
+  top: 70px;
   right: 20px;
   width: 250px;
-  padding: 0.25rem 0;
+  padding: 0.5rem;
+
+  background: #ffffff;
+  color: #1a1a1a; /* ✅ texto principal negro */
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  z-index: 1000;
+
   display: flex;
   flex-direction: column;
-  overflow: hidden;
-  z-index: 9999;
-
-  /* 🎯 Fondo con más contraste para que el blur destaque */
-  background: rgba(118, 117, 117, 0.4);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 10px;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+  isolation: isolate;
 }
-
 
 .user-dropdown-menu button {
   background: none;
@@ -106,10 +101,10 @@
   text-align: left;
   font-size: 0.95rem;
   font-weight: 500;
-  color: white;
+  color: inherit; /* ✅ usa el color heredado del contenedor */
   transition: background-color 0.2s ease;
 }
 
 .user-dropdown-menu button:hover {
-  background: rgba(255, 255, 255, 0.15);
+  background-color: rgba(44, 0, 0, 0.05); /* ✅ efecto hover claro */
 }

@@ -42,6 +42,7 @@ const Header = () => {
     alert('🛠 Función de edición de perfil aún no implementada.');
   };
 
+
   return (
     <header className="admin-header">
       <input type="text" className="search-bar" placeholder="Buscar Estudiante" />

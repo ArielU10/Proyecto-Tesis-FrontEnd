@@ -11,6 +11,43 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* 🟢 CREAR - Curso registrado con éxito */
+.toast-success {
+  background: rgba(0, 192, 166, 0.25) !important;
+  backdrop-filter: blur(20px) !important;
+  -webkit-backdrop-filter: blur(20px) !important;
+  border: 1px solid rgba(0, 40, 34, 0.25);
+  color: #ffffff !important;
+  font-weight: 500;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+/* 🛠️ ACTUALIZAR - Curso actualizado correctamente */
+.toast-update {
+  background: rgba(45, 156, 219, 0.25) !important;
+  backdrop-filter: blur(20px) !important;
+  -webkit-backdrop-filter: blur(20px) !important;
+  border: 1px solid rgba(15, 58, 87, 0.3);
+  color: #ffffff !important;
+  font-weight: 500;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+/* 🗑️ ELIMINAR - Curso eliminado correctamente */
+.toast-delete {
+  background: rgba(235, 87, 87, 0.25) !important;
+  backdrop-filter: blur(20px) !important;
+  -webkit-backdrop-filter: blur(20px) !important;
+  border: 1px solid rgba(87, 0, 0, 0.3);
+  color: #ffffff !important;
+  font-weight: 500;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+/* ℹ️ CONFIRMACIÓN / AVISO */
 .toast-glass {
   background: rgba(239, 47, 47, 0.15) !important;
   backdrop-filter: blur(20px) !important;
@@ -22,16 +59,17 @@
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
 }
 
-.toast-success {
-  background: rgba(0, 192, 166, 0.25) !important; /* Verde suave translúcido */
+.toast-error {
+  background: rgba(235, 87, 87, 0.25) !important;
   backdrop-filter: blur(20px) !important;
   -webkit-backdrop-filter: blur(20px) !important;
-  border: 1px solid rgba(0, 40, 34, 0.25);
+  border: 1px solid rgba(87, 0, 0, 0.3);
   color: #ffffff !important;
   font-weight: 500;
   border-radius: 12px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
 }
+
 
 
 body {

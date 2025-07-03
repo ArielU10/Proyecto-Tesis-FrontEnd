@@ -60,15 +60,14 @@ const CourseForm = ({ onClose, onSaved, editingCourse, defaultLevel = '' }) => {
     try {
       if (isEditing) {
         await updateCourse(editingCourse.id_course, formData);
-        toast.success("✅ Curso actualizado con éxito", {
-          className: 'toast-success'
-        });        
+        toast.success("🛠️ Curso actualizado con éxito", {
+          className: 'toast-update'
+        });
       } else {
         await axios.post('http://localhost:3000/api/courses', formData);
         toast.success("✅ Curso registrado con éxito", {
           className: 'toast-success'
         });
-        
       }
 
       const elapsed = Date.now() - start;
@@ -80,7 +79,9 @@ const CourseForm = ({ onClose, onSaved, editingCourse, defaultLevel = '' }) => {
       onClose();
     } catch (error) {
       console.error("❌ Error al guardar curso:", error);
-      toast.error("❌ Hubo un error al guardar el curso.");
+      toast.error("❌ Hubo un error al guardar el curso.", {
+        className: 'toast-error'
+      });
     } finally {
       setIsSubmitting(false);
     }

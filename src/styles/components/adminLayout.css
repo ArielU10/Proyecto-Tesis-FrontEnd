@@ -1,9 +1,11 @@
+/* === ESTRUCTURA BASE === */
 .admin-grid {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-  padding-left: 200px; /* mismo ancho que el sidebar fijo */
-  background-image: url('/src/assets/bg1.png');
+  padding-left: 200px;
+  background-image: url('/src/assets/bg11.png');
+  /*background: linear-gradient(to bottom right, rgb(34, 35, 36), #ddd8d8);*/
   background-size: cover;
   background-repeat: no-repeat;
   overflow-x: hidden;
@@ -15,25 +17,45 @@
   flex: 1;
 }
 
-/* HEADER STICKY */
-.admin-header {
-  position: sticky;
-  top: 0;
-  z-index: 999;
-  background-image: url('/src/assets/bg1.png');
-  padding: 0.7rem 1.5rem;
-  border-bottom: 2px solid #d4af37;
-  backdrop-filter: blur(12px);
-}
-
-/* MAIN CONTENT */
+/* === MAIN CONTENT === */
 .main {
   flex: 1;
   padding: 2rem;
   overflow-y: auto;
-  color: white;
-  background-image: url('/src/assets/bg1.png');
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
+  color: inherit;
+}
+
+/* === TEMA CLARO === */
+body.light-mode .main,
+body.light-mode .admin-header {
+  color: #222222;
+  border-bottom-color: #ccc;
+  backdrop-filter: blur(8px);
+}
+
+body.light-mode .admin-grid {
+  background-color: rgba(255, 255, 255, 0.8);
+}
+
+body.light-mode .layout-content {
+  background-color: rgba(255, 255, 255, 0.5);
+}
+
+/* === TEMA OSCURO === */
+body.dark-mode .main,
+body.dark-mode .admin-header {
+  color: #ffffff;
+  border-bottom-color: #d4af37;
+  backdrop-filter: blur(12px);
+}
+
+body.dark-mode .admin-grid {
+  background-color: rgba(0, 0, 0, 0.6);
+}
+
+body.dark-mode .layout-content {
+  background-color: rgba(0, 0, 0, 0.3);
 }

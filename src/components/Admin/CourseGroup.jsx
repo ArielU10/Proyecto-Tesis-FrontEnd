@@ -1,5 +1,6 @@
 import React from 'react';
 import { FaEdit, FaTrash } from 'react-icons/fa';
+import { MdAddCircle } from 'react-icons/md';
 import '../../styles/administrative/courseGroup.css';
 
 const CourseGroup = ({ courses, onEdit, onDelete, onAddClick }) => {
@@ -10,6 +11,15 @@ const CourseGroup = ({ courses, onEdit, onDelete, onAddClick }) => {
     return acc;
   }, {});
 
+  // Definir jerarquía deseada
+  const nivelOrden = [
+    "Inicial",
+    "Basica Elemental",
+    "Basica Media",
+    "Colegio Basica",
+    "Bachillerato"
+  ];
+
   const sortCourses = (a, b) => {
     const numA = parseInt(a.courseName.match(/\d+/)) || 0;
     const numB = parseInt(b.courseName.match(/\d+/)) || 0;
@@ -19,32 +29,36 @@ const CourseGroup = ({ courses, onEdit, onDelete, onAddClick }) => {
 
   return (
     <div className="course-group-container">
-      {Object.entries(grouped).map(([level, levelCourses]) => (
-        <div key={level} className="course-level-section">
-          <div className="course-level-title-container">
-            <h3 className="course-level-title">{level}</h3>
-            <button className="add-btn" onClick={() => onAddClick(level)}>+ Agregar Curso</button>
-          </div>
-          <div className="course-cards">
-            {levelCourses.sort(sortCourses).map(course => (
-              <div key={course.id_course} className="course-card">
-                <div className="course-info">
-                  <p><strong>Grado:</strong> {course.courseName}</p>
-                  <p><strong>Paralelo:</strong> {course.description}</p>
+      {nivelOrden
+        .filter(nivel => grouped[nivel]) // solo niveles existentes
+        .map(level => (
+          <div key={level} className="course-level-section">
+            <div className="course-level-title-container">
+              <h3 className="course-level-title">{level}</h3>
+              <button className="plus-btn" title="Agregar curso" onClick={() => onAddClick(level)}>
+                <MdAddCircle />
+              </button>
+            </div>
+            <div className="course-cards">
+              {grouped[level].sort(sortCourses).map(course => (
+                <div key={course.id_course} className="course-card">
+                  <div className="course-info">
+                    <p><strong>Grado:</strong> {course.courseName}</p>
+                    <p><strong>Paralelo:</strong> {course.description}</p>
+                  </div>
+                  <div className="course-actions">
+                    <button onClick={() => onEdit(course)} className="edit-btn">
+                      <FaEdit />
+                    </button>
+                    <button onClick={() => onDelete(course.id_course)} className="delete-btn">
+                      <FaTrash />
+                    </button>
+                  </div>
                 </div>
-                <div className="course-actions">
-                  <button onClick={() => onEdit(course)} className="edit-btn">
-                    <FaEdit />
-                  </button>
-                  <button onClick={() => onDelete(course.id_course)} className="delete-btn">
-                    <FaTrash />
-                  </button>
-                </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
-        </div>
-      ))}
+        ))}
     </div>
   );
 };

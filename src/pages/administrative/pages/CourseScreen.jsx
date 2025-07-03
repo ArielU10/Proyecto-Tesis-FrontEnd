@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import CourseForm from '../../../components/Admin/CourseForm';
 import CourseGroup from '../../../components/Admin/CourseGroup';
 import { FaLayerGroup } from 'react-icons/fa';
-import { getCourses, deleteCourse } from '../../../services/courseApi';
+import { getAllCourses, deleteCourse } from '../../../services/courseApi';
 import '../../../styles/administrative/courseScreen.css';
 import { toast } from 'react-toastify';
 
@@ -18,7 +18,7 @@ const CourseScreen = () => {
 
   const fetchCourses = async () => {
     try {
-      const data = await getCourses();
+      const data = await getAllCourses();
       setCourses(data);
     } catch (error) {
       console.error('❌ Error al obtener cursos:', error);
@@ -60,11 +60,14 @@ const CourseScreen = () => {
     try {
       await deleteCourse(id);
       toast.dismiss();
-      toast.success("🗑️ Curso eliminado correctamente", { className: 'toast-success' });
+      toast.success("🗑️ Curso eliminado correctamente", { className: 'toast-delete' });
       fetchCourses();
     } catch (err) {
       console.error("❌ Error al eliminar curso:", err);
-      toast.error("❌ Hubo un error al eliminar el curso");
+      toast.error("❌ Hubo un error al eliminar el curso", {
+        className: 'toast-error'
+      });
+      
     }
   };
 
@@ -77,18 +80,30 @@ const CourseScreen = () => {
   return (
     <div className="course-screen">
       <div className="course-header">
-      <h2><FaLayerGroup /> Administracion de Cursos</h2>
+        <h2><FaLayerGroup /> Administración de Cursos</h2>
       </div>
-
+  
+      {/* ✅ Botón principal */}
+      <div className="main-add-button">
+        <button className="add-btn" onClick={() => handleAddClick()}>
+          + Agregar Curso
+        </button>
+      </div>
+  
+      {/* ✅ Lista de cursos o mensaje vacío */}
       <div className="course-list">
-        <CourseGroup
-          courses={courses}
-          onEdit={handleEdit}
-          onDelete={handleDelete}
-          onAddClick={handleAddClick}
-        />
+        {courses.length > 0 ? (
+          <CourseGroup
+            courses={courses}
+            onEdit={handleEdit}
+            onDelete={handleDelete}
+            onAddClick={handleAddClick}
+          />
+        ) : (
+          <p className="no-courses-message">No hay cursos disponibles.</p>
+        )}
       </div>
-
+  
       {showForm && (
         <div className="modal-overlay">
           <div className="modal-content">
@@ -103,6 +118,7 @@ const CourseScreen = () => {
       )}
     </div>
   );
+  
 };
 
 export default CourseScreen;

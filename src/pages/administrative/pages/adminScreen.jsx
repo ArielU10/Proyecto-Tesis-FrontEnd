@@ -6,6 +6,8 @@ import '../../../styles/administrative/adminScreen.css';
 import UserModal from '../../../components/Admin/userModal';
 import CourseForm from '../../../components/Admin/CourseForm'; // ✅ importar el formulario
 import { useAuth } from '../../../context/AuthContext';
+import { toast } from 'react-toastify'; 
+
 
 const AdminScreen = () => {
   // Modal usuario
@@ -35,14 +37,23 @@ const AdminScreen = () => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(courseFormData)
       });
+    
       if (!res.ok) throw new Error('Error al guardar curso');
-      alert('✅ Curso creado correctamente');
+    
+      toast.success("✅ Curso creado correctamente", {
+        className: "toast-success"
+      });
+    
       setShowCourseModal(false);
       setCourseFormData({ courseName: '', level: '', description: '' });
+    
     } catch (err) {
       console.error('❌ Error:', err);
-      alert('Error al guardar el curso');
+      toast.error("❌ Error al guardar el curso", {
+        className: "toast-error"
+      });
     }
+    
   };
 
 console.log("👀 Usuario desde contexto:", user);

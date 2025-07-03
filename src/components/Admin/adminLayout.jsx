@@ -12,8 +12,9 @@ const AdminDashboardLayout = () => {
         <Header />
         <main className="main">
           <Outlet /> {/* ✅ Aquí se renderizan las rutas hijas como adminScreen, CourseScreen */}
-          <Footer />  {/* ✅ Siempre visible debajo del contenido */}
+          
         </main>
+        <Footer />  {/* ✅ Siempre visible debajo del contenido */}
       </div>
     </div>
   );
