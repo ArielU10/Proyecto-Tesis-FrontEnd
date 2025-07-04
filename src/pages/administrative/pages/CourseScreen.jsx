@@ -1,11 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import CourseForm from '../../../components/Admin/CourseForm';
-import { getCourses } from "../../../services/courseApi";
-import '../../../styles/administrative/courseScreen.css'; // si usas uno dedicado
+import CourseGroup from '../../../components/Admin/CourseGroup';
+import { FaLayerGroup } from 'react-icons/fa';
+import { getAllCourses, deleteCourse } from '../../../services/courseApi';
+import '../../../styles/administrative/courseScreen.css';
+import { toast } from 'react-toastify';
 
 const CourseScreen = () => {
   const [courses, setCourses] = useState([]);
   const [showForm, setShowForm] = useState(false);
+  const [editingCourse, setEditingCourse] = useState(null);
+  const [selectedLevel, setSelectedLevel] = useState('');
 
   useEffect(() => {
     fetchCourses();
@@ -16,57 +21,104 @@ const CourseScreen = () => {
       const data = await getAllCourses();
       setCourses(data);
     } catch (error) {
-      console.error('Error al obtener cursos:', error);
+      console.error('❌ Error al obtener cursos:', error);
     }
   };
 
-  const handleAddClick = () => setShowForm(true);
-  const handleCloseForm = () => setShowForm(false);
+  const handleAddClick = (level = '') => {
+    setEditingCourse(null);
+    setSelectedLevel(level); // ✅ capturamos nivel
+    setShowForm(true);
+  };
+
+  const handleEdit = (course) => {
+    setEditingCourse(course);
+    setSelectedLevel(course.level || '');
+    setShowForm(true);
+  };
+
+  const handleDelete = (id) => {
+    toast.info(
+      <div>
+        ¿Estás seguro de eliminar este curso?
+        <div style={{ marginTop: '10px', display: 'flex', justifyContent: 'flex-end', gap: '8px' }}>
+          <button className="btn" onClick={() => confirmDelete(id)}>Sí</button>
+          <button className="btn btn-cancel" onClick={() => toast.dismiss()}>Cancelar</button>
+        </div>
+      </div>,
+      {
+        position: "top-center",
+        autoClose: false,
+        closeOnClick: false,
+        draggable: false,
+        className: "toast-glass" 
+      }
+    );
+  };
+
+  const confirmDelete = async (id) => {
+    try {
+      await deleteCourse(id);
+      toast.dismiss();
+      toast.success("🗑️ Curso eliminado correctamente", { className: 'toast-delete' });
+      fetchCourses();
+    } catch (err) {
+      console.error("❌ Error al eliminar curso:", err);
+      toast.error("❌ Hubo un error al eliminar el curso", {
+        className: 'toast-error'
+      });
+      
+    }
+  };
+
+  const handleCloseForm = () => {
+    setShowForm(false);
+    setEditingCourse(null);
+    setSelectedLevel('');
+  };
 
   return (
     <div className="course-screen">
       <div className="course-header">
-        <h2>Cursos / Paralelos</h2>
-        <button className="add-btn" onClick={handleAddClick}>+ Agregar Curso</button>
+        <h2><FaLayerGroup /> Administración de Cursos</h2>
       </div>
-
-      <div className="course-table">
-        <table>
-          <thead>
-            <tr>
-              <th>Grado</th>
-              <th>Nivel</th>
-              <th>Paralelo</th>
-              {/* <th>Acciones</th> (para futuro) */}
-            </tr>
-          </thead>
-          <tbody>
-            {courses.length > 0 ? (
-              courses.map((course) => (
-                <tr key={course.id}>
-                  <td>{course.courseName}</td>
-                  <td>{course.level}</td>
-                  <td>{course.description}</td>
-                </tr>
-              ))
-            ) : (
-              <tr>
-                <td colSpan="3">No hay cursos registrados.</td>
-              </tr>
-            )}
-          </tbody>
-        </table>
+  
+      {/* ✅ Botón principal */}
+      <div className="main-add-button">
+        <button className="add-btn" onClick={() => handleAddClick()}>
+          + Agregar Curso
+        </button>
       </div>
-
+  
+      {/* ✅ Lista de cursos o mensaje vacío */}
+      <div className="course-list">
+        {courses.length > 0 ? (
+          <CourseGroup
+            courses={courses}
+            onEdit={handleEdit}
+            onDelete={handleDelete}
+            onAddClick={handleAddClick}
+          />
+        ) : (
+          <p className="no-courses-message">No hay cursos disponibles.</p>
+        )}
+      </div>
+  
       {showForm && (
         <div className="modal-overlay">
           <div className="modal-content">
-            <CourseForm onClose={handleCloseForm} onSaved={fetchCourses} />
+            <CourseForm
+              onClose={handleCloseForm}
+              onSaved={fetchCourses}
+              editingCourse={editingCourse}
+              defaultLevel={selectedLevel}
+            />
           </div>
         </div>
       )}
     </div>
   );
+  
 };
 
 export default CourseScreen;

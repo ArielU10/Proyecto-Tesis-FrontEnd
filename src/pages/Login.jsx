@@ -10,8 +10,12 @@ import img2 from '../assets/sliderLogin/img2.jpg';
 import img3 from '../assets/sliderLogin/img3.jpg';
 import img4 from '../assets/sliderLogin/img4.jpg';
 import img5 from '../assets/sliderLogin/img5.jpg';
+import { FaFacebookF, FaInstagram, FaXTwitter, FaTiktok, FaWhatsapp } from 'react-icons/fa6';
+import { FaUser, FaLock } from 'react-icons/fa';
+
 
 const images = [img1, img2, img3, img4, img5];
+
 
 const Login = () => {
   const navigate = useNavigate();
@@ -38,13 +42,8 @@ const Login = () => {
       });
 
       const { user, token } = response.data;
-      console.log('📦 response.data:', response.data);
-      console.log('🧠 Usuario recibido del backend:', user);
-
-      // Guarda directamente el usuario completo, ya incluye nombre y apellido
       login(user, token);
 
-      // Redirección según rol
       switch (user.role) {
         case 'administrative':
           navigate('/admin');
@@ -55,10 +54,12 @@ const Login = () => {
         case 'legal_representative':
           navigate('/legal-representantive/');
           break;
+        case 'guard':
+          navigate('/guard/home');
+          break;
         default:
           alert('Rol no reconocido');
       }
-
     } catch (err) {
       const backendMessage = err.response?.data?.message || 'Error desconocido';
       alert(backendMessage);
@@ -67,38 +68,67 @@ const Login = () => {
   };
 
   return (
-    <div className="login-page">
-      <div className="login-left">
-        <img src={logo} alt="Logo Institución" className="login-logo" />
-        <h1>Bienvenido</h1>
-        <p className="subtitle">al Portal de Seguridad y Comunicación Escolar</p>
-        <ul className="features">
-          <li>✅ Retiro seguro con códigos QR</li>
-          <li>✅ Notificaciones inmediatas</li>
-          <li>✅ Gestión de permisos y autorizaciones</li>
-        </ul>
-        <form className="login-form" onSubmit={handleSubmit}>
-          <input
-            type="text"
-            placeholder="Nombre de Usuario"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-          <input
-            type="password"
-            placeholder="Contraseña"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-          <button type="submit">Iniciar sesión</button>
-        </form>
-      </div>
-      <div className="login-right">
-        <img src={images[currentImage]} alt="Slide" className="slider-image" />
+    <div className="login-full">
+      <img src={images[currentImage]} alt="Fondo Login" className="login-bg" />
+      <div className="login-center">
+      <div className="login-box">
+          <img src={logo} alt="Logo Institución" className="login-logo" />
+          <h1>Bienvenido!</h1>
+          <p className="subtitle">Accede al portal de seguridad escolar con funciones 
+          inteligentes de comunicación, seguridad y control.</p>
+          <form className="login-form" onSubmit={handleSubmit}>
+            <div className="input-icon">
+              <FaUser className="icon" />
+              <input
+                type="text"
+                placeholder="Nombre de Usuario"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
+            </div>
+
+            <div className="input-icon">
+              <FaLock className="icon" />
+              <input
+                type="password"
+                placeholder="Contraseña"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
+            </div>
+
+            <button type="submit">Iniciar sesión</button>
+            <p className="forgot-password">¿Olvidaste tu contraseña?</p>
+            <p className="slogan">Soy Nazareno, soy triunfador!</p>
+            
+          </form>
+          <div className="login-social-icons">
+            <a href="https://wa.me/593998000597" target="_blank" rel="noopener noreferrer" data-tooltip="Contáctanos por WhatsApp">
+              <FaWhatsapp />
+            </a>
+            <a href="https://facebook.com/UnidadEducativaJesusDeNazareth" target="_blank" rel="noopener noreferrer" data-tooltip="Visítanos en Facebook">
+              <FaFacebookF />
+            </a>
+            <a href="#" target="_blank" rel="noopener noreferrer" data-tooltip="Síguenos en X">
+              <FaXTwitter />
+            </a>
+            <a href="#" target="_blank" rel="noopener noreferrer" data-tooltip="Míranos en Instagram">
+              <FaInstagram />
+            </a>
+            <a href="#" target="_blank" rel="noopener noreferrer" data-tooltip="Síguenos en TikTok">
+              <FaTiktok />
+            </a>
+          </div>
+          
+        </div>
+  
+
+
       </div>
     </div>
+    
   );
 };
 

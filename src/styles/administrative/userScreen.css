@@ -1,0 +1,52 @@
+.user-screen-container {
+    padding: 2rem;
+  }
+  
+  .user-header h2 {
+    font-size: 2.2rem;
+    font-weight: bold;
+    color: #ffffff; /* vino o blanco, según fondo */
+    text-shadow: 3px 3px 5px rgba(255, 0, 0, 0.3);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  
+  /* Contenedor general de la lista de usuarios */
+  .user-list-section {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  
+  /* Agrupación opcional por categoría (como cursos o niveles) */
+  .user-group-title {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #d4af37;
+    margin-top: 1rem;
+  }
+  
+  /* Responsive para cards */
+  .user-card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
+  }
+  
+  /* Animación opcional al cargar */
+  .fade-in {
+    animation: fadeIn 0.4s ease-in-out;
+  }
+  
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  

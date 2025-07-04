@@ -14,7 +14,7 @@ const AdministrativeForm = ({ formData, onChange, onSubmit, onCancel, isSubmitti
 
   return (
     <form onSubmit={onSubmit} className="admin-form">
-      <h2>Registrar Administrativo</h2>
+      <h2>Datos del Administrativo</h2>
 
       <input
         type="text"
@@ -115,10 +115,10 @@ const AdministrativeForm = ({ formData, onChange, onSubmit, onCancel, isSubmitti
         >
           {isSubmitting ? (
             <>
-              <FaSpinner className="spinner" /> Creando administrativo...
+              <FaSpinner className="spinner" /> Creando Administrativo...
             </>
           ) : (
-            'Guardar'
+            'Registrar Administrativo'
           )}
         </button>
 

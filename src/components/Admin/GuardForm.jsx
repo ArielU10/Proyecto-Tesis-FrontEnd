@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from 'react';
-import '../../styles/components/userForms.css';
+import React, { useState } from 'react';
 import {
   validateCedula,
   validatePhone,
@@ -7,51 +6,14 @@ import {
   handleUppercaseChange,
   validateEmail
 } from '../../services/validationService';
-import { getAllCourses } from '../../services/courseApi';
-import Select from 'react-select';
 import { FaSpinner } from 'react-icons/fa';
 
-const ProfessorForm = ({ formData, onChange, onSubmit, onCancel, isSubmitting }) => {
+const GuardForm = ({ formData, onChange, onSubmit, onCancel, isSubmitting }) => {
   const [errors, setErrors] = useState({});
-  const [courses, setCourses] = useState([]);
-  const [selectedLevel, setSelectedLevel] = useState('');
-
-  const niveles = [
-    'Inicial',
-    'Basica Elemental',
-    'Basica Media',
-    'Colegio Basica',
-    'Bachillerato'
-  ];
-
-  useEffect(() => {
-    const fetchCourses = async () => {
-      const allCourses = await getCourses();
-      setCourses(allCourses);
-    };
-    fetchCourses();
-  }, []);
-
-  const selectedCourseObjects = (formData.courseIds || []).map(id => {
-    const course = courses.find(c => c.id_course === id);
-    return course ? {
-      value: course.id_course,
-      label: `${course.courseName} - ${course.description}`
-    } : null;
-  }).filter(Boolean);
-
-  const filteredCourses = selectedLevel
-    ? courses.filter(course => course.level === selectedLevel && !formData.courseIds?.includes(course.id_course))
-    : courses.filter(course => !formData.courseIds?.includes(course.id_course));
-
-  const filteredOptions = filteredCourses.map(course => ({
-    value: course.id_course,
-    label: `${course.courseName} - ${course.description}`
-  }));
 
   return (
     <form onSubmit={onSubmit} className="admin-form">
-      <h2>Datos del Profesor</h2>
+      <h2>Registrar Guardia</h2>
 
       <input
         type="text"
@@ -77,7 +39,7 @@ const ProfessorForm = ({ formData, onChange, onSubmit, onCancel, isSubmitting })
         className="full-width"
         type="text"
         name="identification"
-        placeholder="Cédula o Identificación"
+        placeholder="Cédula (10 dígitos)"
         value={formData.identification}
         onChange={onChange}
         onKeyPress={(e) => { if (!/[0-9]/.test(e.key)) e.preventDefault(); }}
@@ -92,7 +54,6 @@ const ProfessorForm = ({ formData, onChange, onSubmit, onCancel, isSubmitting })
         required
       />
       {errors.identification && <p className="error-message full-width">{errors.identification}</p>}
-
 
       <input
         className="full-width"
@@ -112,7 +73,6 @@ const ProfessorForm = ({ formData, onChange, onSubmit, onCancel, isSubmitting })
       />
       {errors.email && <p className="error-message full-width">{errors.email}</p>}
 
-
       <div className="full-width" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
         <span style={{ whiteSpace: 'nowrap' }}>+593</span>
         <input
@@ -131,7 +91,7 @@ const ProfessorForm = ({ formData, onChange, onSubmit, onCancel, isSubmitting })
               const isValid = validatePhone(formData.phone);
               setErrors((prev) => ({
                 ...prev,
-                phone: isValid ? '' : 'Número incorrecto (debe contener 9 dígitos)'
+                phone: isValid ? '' : 'Número incorrecto (9 dígitos)'
               }));
             }
           }}
@@ -140,32 +100,7 @@ const ProfessorForm = ({ formData, onChange, onSubmit, onCancel, isSubmitting })
       </div>
       {errors.phone && <p className="error-message full-width">{errors.phone}</p>}
 
-
-      <label style={{ marginTop: '1rem' }}>Filtrar por Nivel Educativo:</label>
-      <select
-        value={selectedLevel}
-        onChange={(e) => setSelectedLevel(e.target.value)}
-      >
-        <option value="">-- Mostrar todos --</option>
-        {niveles.map((nivel, index) => (
-          <option key={index} value={nivel}>{nivel}</option>
-        ))}
-      </select>
-
-      <label style={{ marginTop: '1rem' }}>Asignar Cursos:</label>
-      <Select
-        isMulti
-        name="courseIds"
-        options={[...filteredOptions, ...selectedCourseObjects]}
-        value={selectedCourseObjects}
-        onChange={(selectedOptions) => {
-          const selectedIds = selectedOptions.map(option => option.value);
-          onChange({ target: { name: 'courseIds', value: selectedIds } });
-        }}
-        placeholder="Selecciona uno o varios cursos..."
-      />
-
-      <div style={{ display: 'flex', gap: '1rem', marginTop: '1rem' }}>
+      <div style={{ display: 'flex', gap: '1rem', marginTop: '1rem', gridColumn: 'span 2' }}>
         <button
           type="submit"
           disabled={isSubmitting}
@@ -173,17 +108,17 @@ const ProfessorForm = ({ formData, onChange, onSubmit, onCancel, isSubmitting })
         >
           {isSubmitting ? (
             <>
-              <FaSpinner className="spinner" /> Creando Profesor...
+              <FaSpinner className="spinner" /> Creando personal de Seguridad...
             </>
           ) : (
-            'Registrar Profesor'
+            'Registrar Guardia'
           )}
         </button>
 
         <button
           type="button"
-          onClick={onCancel}
           className="btn btn-cancel"
+          onClick={onCancel}
           disabled={isSubmitting}
         >
           Cancelar
@@ -193,4 +128,4 @@ const ProfessorForm = ({ formData, onChange, onSubmit, onCancel, isSubmitting })
   );
 };
 
-export default ProfessorForm;
+export default GuardForm;

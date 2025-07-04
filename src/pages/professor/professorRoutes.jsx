@@ -1,6 +1,6 @@
 import { Route } from "react-router-dom";
 import ProtectedRoute from "../../components/ProtectedRoute";
-import ProfessorPage from "./ProfessorPage";
+import ProfessorPage from "./professorPage";
 
 const ProfessorRoutes = [
   <Route
