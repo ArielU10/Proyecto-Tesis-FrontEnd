@@ -1,4 +1,3 @@
-// src/App.jsx
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
@@ -7,8 +6,8 @@ import 'react-toastify/dist/ReactToastify.css';
 import Login from './pages/Login';
 import LegalRepresentativeRoutes from './pages/legalRepresentantive/routes';
 import AdministrativeRoutes from './pages/administrative/adminRoutes';
-import ProfessorPage from './pages/professor/professorPage';
-import ModalIncidente from "./components/professor/modalIncidente";
+import GuardRoutes from './pages/guard/guardRoutes'; 
+import ProfessorRoutes from './pages/professor/professorRoutes';
 
 function App() {
   return (
@@ -16,11 +15,10 @@ function App() {
       <Routes>
         <Route path="/" element={<Login />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/professor" element={<ProfessorPage />} />
-        <Route path="/professor/incident/:studentId/:courseId" element={<ModalIncidente />} />
-
         {LegalRepresentativeRoutes}
         {AdministrativeRoutes}
+        {GuardRoutes}
+        {ProfessorRoutes}
       </Routes>
 
       <ToastContainer 

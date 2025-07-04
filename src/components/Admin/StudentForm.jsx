@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import '../../styles/components/studentForm.css';
+import '../../styles/components/userForms.css';
 import axios from 'axios';
 import {
   validateCedula,
   validatePhone,
   handleLetterInput,
-  handleUppercaseChange
+  handleUppercaseChange,
+  validateEmail
 } from '../../services/validationService';
+import { FaSpinner } from 'react-icons/fa';
 
-const StudentForm = ({ formData, onChange, onSubmit, onCancel }) => {
+const StudentForm = ({ formData, onChange, onSubmit, onCancel, isSubmitting }) => {
   const [courses, setCourses] = useState([]);
   const [errors, setErrors] = useState({});
   const [selectedLevel, setSelectedLevel] = useState('');
@@ -35,7 +37,7 @@ const StudentForm = ({ formData, onChange, onSubmit, onCancel }) => {
 
   return (
     <form onSubmit={onSubmit} className="admin-form">
-      <h2>Registrar Estudiante</h2>
+      <h2>Datos del Estudiante</h2>
 
       <input
         type="text"
@@ -65,7 +67,14 @@ const StudentForm = ({ formData, onChange, onSubmit, onCancel }) => {
         required
       />
 
+      <select name="status" value={formData.status} onChange={onChange} required>
+        <option value="">-- Estado --</option>
+        <option value="active">Activo</option>
+        <option value="inactive">Inactivo</option>
+      </select>
+
       <input
+        className="full-width"
         type="text"
         name="identityCard"
         placeholder="Cédula del estudiante"
@@ -82,13 +91,10 @@ const StudentForm = ({ formData, onChange, onSubmit, onCancel }) => {
         maxLength={10}
         required
       />
-      {errors.identityCard && <p className="error-message">{errors.identityCard}</p>}
-
-      <select name="status" value={formData.status} onChange={onChange} required>
-        <option value="">-- Estado --</option>
-        <option value="active">Activo</option>
-        <option value="inactive">Inactivo</option>
-      </select>
+      {errors.identityCard && (
+        <p className="error-message full-width">{errors.identityCard}</p>
+      )}
+    
 
       <label style={{ marginTop: '1rem' }}>Nivel Educativo:</label>
       <select
@@ -123,7 +129,7 @@ const StudentForm = ({ formData, onChange, onSubmit, onCancel }) => {
         ))}
       </select>
 
-      <h3>Datos del Representante Legal</h3>
+      <h2>Datos del Representante Legal</h2>
 
       <input
         type="text"
@@ -146,6 +152,7 @@ const StudentForm = ({ formData, onChange, onSubmit, onCancel }) => {
       />
 
       <input
+        className="full-width"
         type="text"
         name="rep_identification"
         placeholder="Cédula del representante"
@@ -162,9 +169,12 @@ const StudentForm = ({ formData, onChange, onSubmit, onCancel }) => {
         maxLength={10}
         required
       />
-      {errors.rep_identification && <p className="error-message">{errors.rep_identification}</p>}
+      {errors.rep_identification && (
+        <p className="error-message full-width">{errors.rep_identification}</p>
+      )}
 
-      <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+
+      <div className="full-width" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
         <span style={{ whiteSpace: 'nowrap' }}>+593</span>
         <input
           type="text"
@@ -188,16 +198,29 @@ const StudentForm = ({ formData, onChange, onSubmit, onCancel }) => {
           required
         />
       </div>
-      {errors.rep_phone && <p className="error-message">{errors.rep_phone}</p>}
+      {errors.rep_phone && <p className="error-message full-width">{errors.rep_phone}</p>}
+
 
       <input
+        className="full-width"
         type="email"
         name="rep_email"
         placeholder="Correo electrónico"
         value={formData.rep_email}
         onChange={onChange}
+        onBlur={() => {
+          const isValid = validateEmail(formData.rep_email);
+          setErrors((prev) => ({
+            ...prev,
+            rep_email: isValid ? '' : 'Correo electrónico no válido'
+          }));
+        }}
         required
       />
+      {errors.rep_email && (
+        <p className="error-message full-width">{errors.rep_email}</p>
+      )}
+
 
       <input
         type="text"
@@ -209,8 +232,28 @@ const StudentForm = ({ formData, onChange, onSubmit, onCancel }) => {
       />
 
       <div style={{ display: 'flex', gap: '1rem', marginTop: '1rem' }}>
-        <button type="submit">Guardar</button>
-        <button type="button" onClick={onCancel}>Cancelar</button>
+        <button
+          type="submit"
+          disabled={isSubmitting}
+          className={`btn ${isSubmitting ? 'btn-loading' : 'btn-guardar'}`}
+        >
+          {isSubmitting ? (
+            <>
+              <FaSpinner className="spinner" /> Creando Estudiante...
+            </>
+          ) : (
+            'Registrar Estudiante'
+          )}
+        </button>
+
+        <button
+          type="button"
+          onClick={onCancel}
+          className="btn btn-cancel"
+          disabled={isSubmitting}
+        >
+          Cancelar
+        </button>
       </div>
     </form>
   );

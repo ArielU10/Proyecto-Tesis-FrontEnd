@@ -47,7 +47,7 @@ const ModalBusqueda = ({ show, onHide, students }) => {
                   </div>
                   {expandedIndex === index && (
                     <div className="student-info">
-                      <div><strong>Cédula:</strong> {student.identityCard}</div>
+                      {/* <div><strong>Cédula:</strong> {student.identityCard}</div> */}
                       <div><strong>Curso:</strong> {student.Course?.courseName || "No asignado"}</div>
                       <div className="representative">
                         <strong>Representante Legal:</strong>

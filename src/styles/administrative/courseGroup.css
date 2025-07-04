@@ -1,0 +1,135 @@
+/* 📦 CONTENEDOR GENERAL */
+.course-group-container {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+/* 🧱 SECCIÓN POR NIVEL EDUCATIVO */
+.course-level-section {
+  padding: 1.5rem;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* 🏷️ TÍTULO DEL NIVEL */
+.course-level-title-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+.course-level-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #7f0d1e; /* Vino */
+}
+
+/* 🎴 TARJETAS DE CURSOS EN 2 COLUMNAS AUTOMÁTICAS */
+.course-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+/* 💳 TARJETA INDIVIDUAL DE CURSO */
+.course-card {
+  background: rgba(255, 255, 255, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  color: #333;
+  border-radius: 12px;
+  padding: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: transform 0.2s ease;
+}
+.course-card:hover {
+  transform: scale(1.01);
+}
+
+/* 📄 INFORMACIÓN DEL CURSO */
+.course-info p {
+  margin: 0.2rem 0;
+}
+
+/* Botón EDITAR - azul blur */
+
+.course-actions {
+  display: flex;
+  flex-direction: row;  /* 👈 Alineación horizontal */
+  gap: 0.5rem;           /* 👈 Espacio entre botones */
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.edit-btn {
+  background-color: rgb(245, 253, 255);
+  color: rgb(2, 128, 151);
+  border: 2px solid rgba(1, 62, 127, 0.25);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(6px);
+  padding: 10px;
+  border-radius: 10px;
+  font-size: 1.1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+.edit-btn:hover {
+  background-color: rgba(0, 193, 251, 0.15);
+  color: white;
+}
+
+/* Botón ELIMINAR - rojo blur */
+.delete-btn {
+  background-color: rgb(255, 243, 243);
+  color: #a81120;
+  border: 2px solid rgba(130, 2, 15, 0.25);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(6px);
+  padding: 10px;
+  border-radius: 10px;
+  font-size: 1.1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+.delete-btn:hover {
+  background-color: rgba(164, 3, 19, 0.15);
+  color: white;
+}
+
+/* Botón agregar - verde blur */
+.plus-btn {
+  background-color: #d9fff3;
+  color: #006a49;
+  border: 2px solid rgba(0, 35, 26, 0.25);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  padding: 10px;
+  border-radius: 10px;
+  font-size: 1.1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+.plus-btn:hover {
+  background-color: rgba(0, 252, 164, 0.15);
+  color: white;
+}
+

@@ -1,0 +1,151 @@
+/* 🎯 Contenedor principal del formulario */
+.admin-form {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    padding: 1.5rem;
+    background-color: #fff;
+    border-radius: 1rem;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    max-height: 90vh;
+    overflow-y: auto;
+    width: 100%;
+    box-sizing: border-box;
+    max-width: 700px;
+    margin: auto;
+  }
+  
+  /* 🧾 Títulos */
+  .admin-form h2,
+  .admin-form h3 {
+    text-align: center;
+    color: #2c3e50;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    grid-column: span 2;
+  }
+  
+  /* ✏️ Inputs y selects */
+  .admin-form input,
+  .admin-form select {
+    padding: 0.8rem;
+    border: 1px solid #ccc;
+    border-radius: 0.5rem;
+    font-size: 1rem;
+    width: 100%;
+    box-sizing: border-box;
+    transition: border-color 0.2s ease;
+    grid-column: span 1;
+  }
+  
+  /* ✨ Efecto al enfocar */
+  .admin-form input:focus,
+  .admin-form select:focus {
+    outline: none;
+    border-color: #3498db;
+    box-shadow: 0 0 5px rgba(52, 152, 219, 0.3);
+  }
+  
+  /* 🏷️ Etiquetas */
+  .admin-form label {
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 0.3rem;
+    grid-column: span 1;
+  }
+  
+  /* 🔴 Mensajes de error */
+  .error-message {
+    color: red;
+    font-size: 0.85rem;
+    margin-top: -0.4rem;
+    margin-bottom: 0.5rem;
+    grid-column: span 1;
+  }
+  
+  /* 🧩 Botón base */
+  .btn {
+    padding: 0.8rem 1.2rem;
+    font-size: 1rem;
+    font-weight: bold;
+    border: none;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  /* ✅ Guardar */
+  .btn-guardar {
+    background-color: #0c8768;
+    color: white;
+  }
+  
+  .btn-guardar:hover {
+    background-color: #9ef2dd;
+  }
+  
+  /* ⏳ Estado de envío */
+  .btn-loading {
+    background-color: #999999;
+    color: white;
+    cursor: not-allowed;
+  }
+  
+  /* ❌ Cancelar */
+  .btn-cancel {
+    background-color: #7e190e;
+    color: white;
+  }
+  
+  .btn-cancel:hover {
+    background-color: #f18a7f;
+  }
+  
+  /* 🔄 Spinner de carga */
+  .spinner {
+    margin-right: 8px;
+    animation: spin 1s linear infinite;
+    vertical-align: middle;
+  }
+  
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+
+  
+  /* 🖥️ Responsive: dos columnas en pantallas grandes */
+  @media (min-width: 768px) {
+    .admin-form {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    /* Forzar ciertos campos a ocupar toda la fila */
+    .full-width {
+        grid-column: span 2 !important;
+    }
+    
+    .admin-form input,
+    .admin-form select,
+    .admin-form label {
+      grid-column: span 1;
+      margin-bottom: 0.5rem;
+    }
+  
+    .admin-form > div {
+      grid-column: span 2;
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+    }
+  
+    .admin-form h2,
+    .admin-form h3 {
+      grid-column: span 2;
+    }
+  
+    .error-message {
+      grid-column: span 1;
+    }
+  }
+  
