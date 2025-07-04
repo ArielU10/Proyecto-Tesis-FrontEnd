@@ -3,7 +3,6 @@ import UserCard from "./UserCard";
 import UserDetailModal from "./UserDetailModal";
 import GroupedStudentList from "./GroupedStudentList";
 
-
 import {
   getAllAdministratives,
   updateAdministrative,
@@ -20,17 +19,28 @@ import {
   deleteGuard,
 } from "../../../services/guardApi";
 import { getAllCourses } from "../../../services/courseApi";
+import { getStudentsByCourse } from "../../../services/studentApi";
 
 import "../../../styles/components/userManagement/userList.css";
 import { toast } from "react-toastify";
 
 const levelOrder = [
-    "Inicial",
-    "Basica Elemental",
-    "Basica Media",
-    "Colegio Basica",
-    "Bachillerato"
+  "Inicial",
+  "Basica Elemental",
+  "Basica Media",
+  "Colegio Basica",
+  "Bachillerato",
 ];
+
+// 👉 función para ordenar por paralelo A-Z, si están en mismo grado
+const extractCourseData = (name, parallel) => {
+  const numberMatch = name.match(/\d+/);
+  const number = numberMatch ? parseInt(numberMatch[0]) : 0;
+  return {
+    number,
+    letter: parallel || "",
+  };
+};
 
 const UserList = ({ activeTab }) => {
   const [data, setData] = useState([]);
@@ -54,24 +64,38 @@ const UserList = ({ activeTab }) => {
         setCourses([]);
       } else if (activeTab === "student") {
         const courseList = await getAllCourses();
-
-        // Agrupar por nivel
         const grouped = {};
+
         for (const course of courseList) {
-          if (!grouped[course.level]) {
-            grouped[course.level] = [];
+          if (!grouped[course.level]) grouped[course.level] = [];
+
+          try {
+            const students = await getStudentsByCourse(course.id_course);
+            grouped[course.level].push({ ...course, students });
+          } catch (err) {
+            if (err.response?.status === 404) {
+              grouped[course.level].push({ ...course, students: [] });
+            } else {
+              console.error(`❌ Error trayendo estudiantes del curso ${course.id_course}:`, err.message);
+            }
           }
-          grouped[course.level].push(course);
         }
 
-        // Ordenar cursos por courseName dentro de cada nivel
+        // Ordenar los cursos por número y paralelo
         for (const level in grouped) {
-          grouped[level].sort((a, b) => a.courseName.localeCompare(b.courseName));
+          grouped[level].sort((a, b) => {
+            const aData = extractCourseData(a.courseName, a.description);
+            const bData = extractCourseData(b.courseName, b.description);
+
+            if (aData.number !== bData.number) {
+              return aData.number - bData.number;
+            }
+            return aData.letter.localeCompare(bData.letter);
+          });
         }
 
-        // Convertir a array ordenado por la jerarquía deseada
         const finalGrouped = levelOrder
-          .filter((level) => grouped[level]) // solo los niveles que existan
+          .filter((level) => grouped[level])
           .map((level) => ({
             level,
             courses: grouped[level],
@@ -85,7 +109,7 @@ const UserList = ({ activeTab }) => {
       }
     } catch (error) {
       console.error("Error al cargar usuarios:", error);
-      toast.error("❌ Error al cargar usuarios");
+      toast.error("❌ Error al cargar usuarios", { className: "toast-error" });
     }
   };
 
@@ -107,14 +131,16 @@ const UserList = ({ activeTab }) => {
           await deleteProfessor(user.id_professor);
         } else if (activeTab === "guard") {
           await deleteGuard(user.id_guard);
+        } else if (activeTab === "student") {
+          await deleteStudent(user.id_student);
         }
 
-        toast.success("✅ Usuario eliminado");
+        toast.success("✅ Usuario eliminado", { className: "toast-delete" });
         fetchData();
       }
     } catch (err) {
       console.error("❌ Error al eliminar:", err);
-      toast.error("Error al eliminar usuario");
+      toast.error("Error al eliminar usuario", { className: "toast-error" });
     }
   };
 
@@ -126,14 +152,16 @@ const UserList = ({ activeTab }) => {
         await updateProfessor(updatedData.id_professor, updatedData);
       } else if (activeTab === "guard") {
         await updateGuard(updatedData.id_guard, updatedData);
+      } else if (activeTab === "student") {
+        await updateStudent(updatedData.id_student, updatedData);
       }
 
-      toast.success("✅ Usuario actualizado");
+      toast.success("✅ Usuario actualizado", { className: "toast-update" });
       setModalOpen(false);
       fetchData();
     } catch (err) {
       console.error("❌ Error al actualizar:", err);
-      toast.error("Error al actualizar usuario");
+      toast.error("Error al actualizar usuario", { className: "toast-error" });
     }
   };
 
@@ -158,18 +186,17 @@ const UserList = ({ activeTab }) => {
             <div key={group.level} className="grouped-level-block">
               <h3>{group.level}</h3>
               <div className="courses-grid">
-            {group.courses.map((course) => (
-                <GroupedStudentList
-                key={course.id_course}
-                course={course}
-                students={[]}
-                onEdit={handleEdit}
-                onDelete={handleDelete}
-                onView={handleView}
-                />
-            ))}
-            </div>
-
+                {group.courses.map((course) => (
+                  <GroupedStudentList
+                    key={course.id_course}
+                    course={course}
+                    students={course.students}
+                    onEdit={handleEdit}
+                    onDelete={handleDelete}
+                    onView={handleView}
+                  />
+                ))}
+              </div>
             </div>
           ))}
         </div>

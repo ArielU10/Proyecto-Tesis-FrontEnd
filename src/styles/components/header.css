@@ -106,5 +106,5 @@
 }
 
 .user-dropdown-menu button:hover {
-  background-color: rgba(44, 0, 0, 0.05); /* ✅ efecto hover claro */
+  background-color: rgba(255, 0, 0, 0.05); /* ✅ efecto hover claro */
 }
