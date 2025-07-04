@@ -16,7 +16,7 @@ export const getStudentsByCourse = async (courseId) => {
 
 export const searchStudentsByLastNameAndProfessor = async (apellido, id_professor) => {
   try {
-    const response = await axios.get(`${BASE_URL}/search/${apellido}/${id_professor}`);
+    const response = await axios.get(`${BASE_URL}/students/search/${apellido}/${id_professor}`);
     return response.data;
   } catch (error) {
     console.error("Error en búsqueda de estudiantes:", error);

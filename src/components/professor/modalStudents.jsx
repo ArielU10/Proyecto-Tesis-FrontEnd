@@ -26,7 +26,9 @@ const ModalEstudiantes = ({ show, onHide, students, courseId }) => {
       if (show && courseId && idProfessor) {
         try {
           const respuesta = await checkAsistenciaTomada(courseId, idProfessor);
-          setAsistenciaTomada(respuesta === true || respuesta?.alreadyTaken === true);
+          setAsistenciaTomada(
+            respuesta === true || respuesta?.alreadyTaken === true
+          );
         } catch (error) {
           console.error("Error al verificar si ya se tomó asistencia:", error);
         }
@@ -77,7 +79,9 @@ const ModalEstudiantes = ({ show, onHide, students, courseId }) => {
       toast.success("Asistencias registradas correctamente.");
 
       const respuesta = await checkAsistenciaTomada(courseId, idProfessor);
-      setAsistenciaTomada(respuesta === true || respuesta?.alreadyTaken === true);
+      setAsistenciaTomada(
+        respuesta === true || respuesta?.alreadyTaken === true
+      );
 
       setAsistencias({});
     } catch (error) {
@@ -97,9 +101,13 @@ const ModalEstudiantes = ({ show, onHide, students, courseId }) => {
     <>
       <div className="modal-overlay">
         <div className="modal-container">
+          {/* Botón de cerrar */}
+          <button className="close-button" onClick={onHide}>
+            ×
+          </button>
+
           <div className="modal-header">
             <h2>Estudiantes del Curso</h2>
-            <button className="close-button" onClick={onHide}>×</button>
           </div>
 
           <div className="modal-body">
@@ -123,7 +131,9 @@ const ModalEstudiantes = ({ show, onHide, students, courseId }) => {
                               ? "btn success"
                               : "btn outline-success"
                           }
-                          onClick={() => handleAsistencia(student.id_student, "present")}
+                          onClick={() =>
+                            handleAsistencia(student.id_student, "present")
+                          }
                         >
                           Asiste
                         </button>
@@ -133,7 +143,9 @@ const ModalEstudiantes = ({ show, onHide, students, courseId }) => {
                               ? "btn warning"
                               : "btn outline-warning"
                           }
-                          onClick={() => handleAsistencia(student.id_student, "absent")}
+                          onClick={() =>
+                            handleAsistencia(student.id_student, "absent")
+                          }
                         >
                           Falta
                         </button>
@@ -143,7 +155,9 @@ const ModalEstudiantes = ({ show, onHide, students, courseId }) => {
                               ? "btn info"
                               : "btn outline-info"
                           }
-                          onClick={() => handleAsistencia(student.id_student, "late")}
+                          onClick={() =>
+                            handleAsistencia(student.id_student, "late")
+                          }
                         >
                           Atraso
                         </button>

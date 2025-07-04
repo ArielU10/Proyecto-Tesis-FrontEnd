@@ -17,7 +17,9 @@
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  position: relative; 
 }
+
 
 /* HEADER y FOOTER */
 .modal-header,
@@ -46,10 +48,15 @@
 
 /* Botón cerrar */
 .close-button {
+  position: absolute;
+  top: 1rem;
+  right: 1.5rem;
   background: none;
   border: none;
   font-size: 1.5rem;
   cursor: pointer;
+  color: #000000;
+  z-index: 10;
 }
 
 /* FORMULARIO */
