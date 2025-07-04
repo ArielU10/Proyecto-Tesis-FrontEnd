@@ -22,10 +22,18 @@ export const getProfessorById = async (id) => {
     return null;
   }
 };
-// Actualizar solo el teléfono
 export const updateProfessorPhone = async (id, data) => {
   try {
-    const response = await axios.put(`http://localhost:3000/api/professors/${id}`, data);
+    const response = await axios.put(
+      `http://localhost:3000/api/professors/${id}/phone`,
+      data,
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          "Content-Type": "application/json"
+        }
+      }
+    );
     return response.data;
   } catch (error) {
     console.error("Error al actualizar el teléfono del profesor:", error.response?.data || error.message);
