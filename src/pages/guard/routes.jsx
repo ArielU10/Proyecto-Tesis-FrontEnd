@@ -1,15 +1,15 @@
-import { Route } from 'react-router-dom';
-import ProtectedRoute from '@/components/ProtectedRoute';
-import { NavigationProvider } from '@/context/NavigationContext';
-
-import GuardLayout from '@/components/guard/guardLayout';
-import GuardsApp from './pages/Main';
-import GuardQRPage from './pages/GuardQRPage';
+import { Route } from 'react-router-dom'
+import GuardLayout from '../../components/guard/GuardLayout'
+import Home from './pages/Home'
+import QRScan from './pages/qrScan'
+import StudentDetails from './pages/studentDetails'
+import ProtectedRoute from '../../components/ProtectedRoute'
+import { NavigationProvider } from '../../context/NavigationContext'
 
 const GuardRoutes = [
   <Route
-    key="guard-layout"
-    path="/guardias"
+    key="layout"
+    path="/guard"
     element={
       <ProtectedRoute allowedRoles={['guard']}>
         <NavigationProvider>
@@ -18,14 +18,10 @@ const GuardRoutes = [
       </ProtectedRoute>
     }
   >
-    <Route index element={<GuardsApp />} />
-  </Route>,
+    <Route index element={<Home />} />
+    <Route path="qrScan" element={<QRScan />} />
+    <Route path="student/:token" element={<StudentDetails />} />
+  </Route>
+]
 
-  <Route
-    key="guard-qr"
-    path="/guardias/validar/:token"
-    element={<GuardQRPage />}
-  />
-];
-
-export default GuardRoutes;
+export default GuardRoutes

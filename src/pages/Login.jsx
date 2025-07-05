@@ -55,7 +55,7 @@ const Login = () => {
           navigate('/legal-representantive/');
           break;
         case 'guard':
-          navigate('/guard/home');
+          navigate('/guard');
           break;
         default:
           alert('Rol no reconocido');

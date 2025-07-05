@@ -60,8 +60,8 @@ const LegalRepresentativeLayout = () => {
         
         <footer className="footer">
           <div className="footer-content">
-            <span className="footer-text">JESUS DE NAZARETH</span>
-            <span className="footer-text">TODOS LOS DERECHOS RESERVADOS</span>
+            <span className="representative-footer-text">JESUS DE NAZARETH</span>
+            <span className="representative-footer-text">TODOS LOS DERECHOS RESERVADOS</span>
           </div>
         </footer>
       </div>

@@ -6,7 +6,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import Login from './pages/Login';
 import LegalRepresentativeRoutes from './pages/legalRepresentantive/routes';
 import AdministrativeRoutes from './pages/administrative/adminRoutes';
-import GuardRoutes from './pages/guard/guardRoutes'; 
+import GuardRoutes from './pages/guard/routes';
 import ProfessorRoutes from './pages/professor/professorRoutes';
 
 function App() {
