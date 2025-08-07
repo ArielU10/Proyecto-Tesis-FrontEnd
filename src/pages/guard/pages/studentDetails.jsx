@@ -1,26 +1,63 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { useAuth } from '../../../context/AuthContext'
 import { useLocation } from 'react-router-dom'
+import axios from 'axios'
 
 const StudentDetails = () => {
     const location = useLocation()
-    const [student, setStudent] = useState<any>(location.state?.student || null)
+    const params = useParams()
+    const [student, setStudent] = useState(location.state?.student || null)
     const [loading, setLoading] = useState(true)
-    const [error, setError] = useState<string | null>(null)
+    const [error, setError] = useState(null)
     const { user } = useAuth()
     const navigate = useNavigate()
 
     useEffect(() => {
-        if (student) {
+        if (location.state?.student) {
+            setStudent(location.state.student)
             setLoading(false)
-        } else {
-            setError('No se pudo cargar la información del estudiante.')
+            return
         }
-    }, [student])
+        if (params.token && !student) {
+            loadStudentData(params.token)
+        } else if (!params.token) {
+            setError('No se encontró información del estudiante.')
+            setLoading(false)
+        }
+    }, [location.state?.student, params.token, student])
+
+    const loadStudentData = async (token) => {
+        try {
+            setLoading(true)
+            setError(null)
+            
+            const response = await axios.get(
+                `http://localhost:3000/api/guards/qr-token/${token}/validate`,
+                {
+                    headers: {
+                        Authorization: `Bearer ${user?.token}`,
+                    },
+                }
+            )
+
+            if (response.data.valid && response.data.student) {
+                setStudent(response.data.student)
+            } else {
+                setError('No se pudo validar la información del estudiante.')
+            }
+        } catch (err) {
+            console.error('Error loading student data:', err)
+            const errorMessage = err.response?.data?.message || 'Error cargando información del estudiante.'
+            setError(errorMessage)
+        } finally {
+            setLoading(false)
+        }
+    }
 
     const handleGoBack = () => {
-        navigate(-1)
+        navigate('/guard', { replace: true })
     }
 
     if (loading) {
@@ -52,13 +89,11 @@ const StudentDetails = () => {
 
     return (
         <div className="guard-content-container">
-            {/* Status Badge */}
             <div className="status-badge success">
                 <span className="status-icon">✓</span>
                 <span className="status-text">Estudiante Autorizado</span>
             </div>
 
-            {/* Student Card */}
             <div className="student-card">
                 <div className="student-header">
                     <div className="student-avatar">
@@ -76,7 +111,6 @@ const StudentDetails = () => {
                     </div>
                 </div>
 
-                {/* Student Details */}
                 <div className="details-section">
                     <h3 className="section-title">Información del Estudiante</h3>
                     <div className="details-grid">
@@ -95,7 +129,6 @@ const StudentDetails = () => {
                     </div>
                 </div>
 
-                {/* Legal Representative Details */}
                 <div className="details-section">
                     <h3 className="section-title">Representante Legal</h3>
                     <div className="details-grid">
@@ -114,7 +147,6 @@ const StudentDetails = () => {
                     </div>
                 </div>
 
-                {/* Action Buttons */}
                 <div className="action-buttons">
                     <button className="guard-button secondary" onClick={handleGoBack}>
                         <span>←</span>
