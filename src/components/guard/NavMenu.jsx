@@ -9,21 +9,14 @@ const NavMenu = () => {
 
   const handleLogout = () => {
     
-    // Ejemplo básico:
-    localStorage.removeItem('authToken') // Si usas token
-    localStorage.removeItem('user') // Si guardas datos del usuario
-    
-    // O si usas sessionStorage:
-    // sessionStorage.clear()
-    
+    localStorage.removeItem('authToken')
+    localStorage.removeItem('user')
     // Cerrar el menú
     setOpen(false)
     
     // Redirigir al login
-    navigate('/login') // Ajusta la ruta según tu aplicación
+    navigate('/login')
     
-    // Opcional: Mostrar mensaje de confirmación
-    // alert('Sesión cerrada correctamente')
   }
 
   const navItems = [
@@ -33,10 +26,12 @@ const NavMenu = () => {
 
   return (
     <div className="nav-menu">
+      {/* Menú hamburguesa para móviles */}
       <button className="menu-toggle" onClick={toggleMenu}>
         ☰
       </button>
 
+      {/* Menú móvil */}
       <nav className={`mobile-nav ${open ? 'active' : ''}`}>
         <ul>
           {navItems.map((item) => (
@@ -51,13 +46,26 @@ const NavMenu = () => {
             </li>
           ))}
           <li className="nav-separator"></li>
-          
-          {/* Botón de salir */}
           <li>
-            <button 
-              className="nav-item logout-btn"
-              onClick={handleLogout}
-            >
+            <button className="nav-item logout-btn" onClick={handleLogout}>
+              Salir
+            </button>
+          </li>
+        </ul>
+      </nav>
+
+      {/* Menú de escritorio */}
+      <nav className="desktop-nav">
+        <ul className="desktop-nav-list">
+          {navItems.map((item) => (
+            <li key={item.path}>
+              <NavLink to={item.path} className="nav-item">
+                {item.label}
+              </NavLink>
+            </li>
+          ))}
+          <li>
+            <button className="header-logout" onClick={handleLogout}>
               Salir
             </button>
           </li>
