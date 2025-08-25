@@ -124,25 +124,24 @@ const UserList = ({ activeTab }) => {
 
   const handleDelete = async (user) => {
     try {
-      if (window.confirm("¿Estás seguro de eliminar este usuario?")) {
-        if (activeTab === "administrative") {
-          await deleteAdministrative(user.id_administrative);
-        } else if (activeTab === "professor") {
-          await deleteProfessor(user.id_professor);
-        } else if (activeTab === "guard") {
-          await deleteGuard(user.id_guard);
-        } else if (activeTab === "student") {
-          await deleteStudent(user.id_student);
-        }
-
-        toast.success("✅ Usuario eliminado", { className: "toast-delete" });
-        fetchData();
+      if (activeTab === "administrative") {
+        await deleteAdministrative(user.id_administrative);
+      } else if (activeTab === "professor") {
+        await deleteProfessor(user.id_professor);
+      } else if (activeTab === "guard") {
+        await deleteGuard(user.id_guard);
+      } else if (activeTab === "student") {
+        await deleteStudent(user.id_student);
       }
+  
+      toast.success("✅ Usuario eliminado", { className: "toast-delete" });
+      fetchData();
     } catch (err) {
       console.error("❌ Error al eliminar:", err);
       toast.error("Error al eliminar usuario", { className: "toast-error" });
     }
   };
+  
 
   const handleUpdate = async (updatedData) => {
     try {
@@ -181,11 +180,11 @@ const UserList = ({ activeTab }) => {
       />
 
       {activeTab === "student" ? (
-        <div className="user-list-section">
+        <div className="ul-section">
           {courses.map((group) => (
-            <div key={group.level} className="grouped-level-block">
+            <div key={group.level} className="ul-level-block">
               <h3>{group.level}</h3>
-              <div className="courses-grid">
+              <div className="ul-courses-grid">
                 {group.courses.map((course) => (
                   <GroupedStudentList
                     key={course.id_course}
@@ -201,7 +200,7 @@ const UserList = ({ activeTab }) => {
           ))}
         </div>
       ) : (
-        <div className="user-card-grid">
+        <div className="ul-card-grid">
           {data.map((user) => (
             <UserCard
               key={user.id_user || user.id}

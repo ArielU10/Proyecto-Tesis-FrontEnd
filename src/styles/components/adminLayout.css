@@ -1,15 +1,30 @@
 /* === ESTRUCTURA BASE === */
 .admin-grid {
+  position: relative;
   display: flex;
   flex-direction: column;
   min-height: 100vh;
   padding-left: 200px;
-  background-image: url('/src/assets/bg11.png');
-  /*background: linear-gradient(to bottom right, rgb(34, 35, 36), #ddd8d8);*/
+  overflow-x: hidden;
+  z-index: 0;
+}
+
+/* Capa difuminada */
+.admin-grid::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-image: url('/src/assets/bg10.png');
   background-size: cover;
   background-repeat: no-repeat;
-  overflow-x: hidden;
+  background-position: center;
+  filter: blur(10px); 
+  z-index: -1;
 }
+
 
 .layout-content {
   display: flex;
@@ -33,7 +48,7 @@ body.light-mode .main,
 body.light-mode .admin-header {
   color: #222222;
   border-bottom-color: #ccc;
-  backdrop-filter: blur(8px);
+  /*backdrop-filter: blur(8px);*/
 }
 
 body.light-mode .admin-grid {
@@ -42,20 +57,4 @@ body.light-mode .admin-grid {
 
 body.light-mode .layout-content {
   background-color: rgba(255, 255, 255, 0.5);
-}
-
-/* === TEMA OSCURO === */
-body.dark-mode .main,
-body.dark-mode .admin-header {
-  color: #ffffff;
-  border-bottom-color: #d4af37;
-  backdrop-filter: blur(12px);
-}
-
-body.dark-mode .admin-grid {
-  background-color: rgba(0, 0, 0, 0.6);
-}
-
-body.dark-mode .layout-content {
-  background-color: rgba(0, 0, 0, 0.3);
 }

@@ -1,145 +1,318 @@
 .admin-screen-container {
-    background-color: white;
-    width: 100%;
-    min-height: auto;
-    padding: 2rem;
-    box-sizing: border-box;
-  }
+  background-color: rgb(255, 255, 255);
+  width: 100%;
+  min-height: auto;
+  padding: 1.5rem;
+  box-sizing: border-box;
+}
 
-  .admin-screen-layout {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    grid-template-rows: auto auto;
-    gap: 1.5rem;
-    padding: 2rem;
-  }
-  
-  /* Posicionamiento de cada bloque */
-  .welcome {
-    grid-column: 1 / span 2;
-    grid-row: 1;
-    background-color: #eab308; /* Amarillo */
-  }
-  
-  .acciones {
-    grid-column: 3;
-    grid-row: 1 ;
-    background-color: #ffffff; /* Lila claro */
-    color: #ffffff;
-  }
-  
-  .informacion {
-    grid-column: 3;
-    grid-row: 2 / span 2;
-    background-color: #ffffff; /* Puedes usar el mismo lila o uno más suave */
-    color: #ffffff;
-  }
-  
-  .card-boton {
-    background: rgba(255, 0, 0, 0.1);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    border-radius: 16px;
-    padding: 1.5rem;
-    text-align: center;
-    font-weight: bold;
-    color: #ffffff;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
-  }
-  
-  .card-boton:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
-    background: rgba(116, 0, 0, 0.2);
-  }
-  
-  
-  .card-boton:active {
-    transform: scale(0.97);
-  }
-  
-  
-  /* Estilo base para todas las cajas */
-  .box {
-    padding: 1.5rem;
-    border-radius: 10px;
-    border: 3px solid #770521;
-    font-weight: bold;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-  }
+.admin-screen-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr 350px;
+  grid-template-rows: auto auto;           /* solo 2 filas: welcome y botones */
+  gap: 1.5rem;
+  padding: 1.5rem;
+  max-width: 1400px;
+  margin: 0 auto;
+  align-items: start;                       /* asegura estirado hacia arriba */
+}
 
-  .welcome {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    /*background: rgba(234, 179, 8, 0.3);*/
-    background: rgba(173, 160, 105, 0.3); /* Amarillo con transparencia */
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    border: 2px solid rgba(234, 179, 8, 0.4); /* Borde amarillo tenue */
-    /*color: #1a1a1a;*/
-    color: #ffffff;
-  }  
-  
-  .welcome-text {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-  }
-  
-  .welcome-text h2 {
-    font-size: 1.5rem;
-    margin-bottom: 0.2rem;
-    font-weight: bold;
-  }
-  
-  .welcome-text ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-  }
-  
-  .welcome-text li {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    font-weight: 500;
-  }
-  
-  .welcome-avatar {
-    width: 200px;
-    height: 200px;
-    background-color: white;
-    border: 2px solid rgba(220, 5, 5, 0.2);
-    border-radius: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-shrink: 0;
-    box-shadow: 0 0 8px rgba(0, 0, 0, 0.1); /* Opcional */
-  }
-  
-  .welcome-avatar img {
-    width: 200px;
-    height: auto;
-  }
 
-  .acciones,
-.informacion{
+/* Posicionamiento de cada bloque */
+.welcome {
+  grid-column: 1 / span 2;
+  grid-row: 1;
+  background-color: #eab308;
+}
+
+.acciones {
+  grid-column: 3;
+  grid-row: 1;
+  background-color: #ffffff;
+  color: #333;
+  min-height: 120px;
+}
+
+.informacion {
+  grid-column: 3;            /* columna del calendario */
+  grid-row: 1 / span 2;      /* 🔹 ocupa filas 1 y 2 (de welcome hasta botones) */
   background: rgba(210, 207, 207, 0.1);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
-  border-radius: 16px;
-  border: 2px solid rgba(220, 5, 5, 0.2);
+  border-radius: 12px;
+  border: 2px solid #eab308;
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  overflow: hidden;          /* para que el contenido se ajuste */
+  padding: 0;
+  min-height: unset;         /* 🔹 quita altura fija */
+  align-self: stretch;       /* 🔹 que se estire en la pista vertical */
 }
 
+
+/* Nueva área para los botones */
+.buttons-grid {
+  grid-column: 1 / span 2;
+  grid-row: 2;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* Solo 2 columnas para 2 botones */
+  gap: 2rem; /* Más espacio entre botones */
+  align-content: start;
+}
+
+.card-boton {
+  background: rgba(255, 0, 0, 0.1);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 16px;
+  padding: 1.5rem;
+  text-align: center;
+  font-weight: bold;
+  color: #ffffff;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.8rem;
+  font-size: 1.1rem;
+  height: 120px; /* Más alto */
+  min-width: 280px; /* Más ancho */
+}
+
+.card-boton:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+  background: rgba(116, 0, 0, 0.2);
+}
+
+.card-boton:active {
+  transform: scale(0.97);
+}
+
+/* Iconos más grandes en los botones */
+.card-boton svg {
+  font-size: 1.4rem;
+}
+
+/* Estilo base para todas las cajas */
+.box {
+  padding: 2rem; /* Más padding interno */
+  border-radius: 16px; /* Border-radius unificado */
+  border: 2px solid #770521;
+  font-weight: bold;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.welcome {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(173, 160, 105, 0.3);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 2px solid rgba(234, 179, 8, 0.4);
+  color: #ffffff;
+  min-height: 180px;
+  padding: 2rem; /* Más padding interno */
+}  
+
+.welcome-text {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem; /* Más espacio entre elementos */
+  flex: 1;
+  padding-right: 2rem; /* Espacio entre texto y avatar */
+}
+
+.welcome-text h2 {
+  font-size: 1.3rem;
+  margin-bottom: 0.2rem;
+  font-weight: bold;
+}
+
+.welcome-text ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.welcome-text li {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem; /* Más espacio entre icono y texto */
+  font-weight: 500;
+  font-size: 0.9rem;
+  margin-bottom: 0.3rem; /* Espaciado entre elementos de la lista */
+}
+
+.welcome-avatar {
+  width: 150px;
+  height: 150px;
+  background-color: white;
+  border: 2px solid rgba(220, 5, 5, 0.2);
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-shrink: 0;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+}
+
+.welcome-avatar img {
+  width: 150px;
+  height: auto;
+}
+
+/* Avatar con iniciales en welcome - Glassmorphism vino y dorado */
+.welcome-avatar.welcome-initials {
+  width: 150px;
+  height: 150px;
+  background: rgba(119, 5, 33, 0.7);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 3px solid rgba(240, 207, 107, 0.8);
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-shrink: 0;
+  box-shadow: 0 0 12px rgba(119, 5, 33, 0.4);
+  transition: all 0.3s ease;
+}
+
+.welcome-avatar.welcome-initials:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 20px rgba(119, 5, 33, 0.6);
+  border-color: rgba(240, 207, 107, 1);
+}
+
+.welcome-initials-text {
+  color: #f0cf6b;
+  font-weight: 700;
+  font-size: 2.5rem;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.7);
+  letter-spacing: 2px;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+/* Responsive para welcome avatar con iniciales */
+@media (max-width: 768px) {
+  .welcome-avatar.welcome-initials {
+    width: 120px;
+    height: 120px;
+    border-width: 2px;
+  }
   
+  .welcome-initials-text {
+    font-size: 2rem;
+    letter-spacing: 1px;
+  }
+}
+
+@media (max-width: 480px) {
+  .welcome-avatar.welcome-initials {
+    width: 100px;
+    height: 100px;
+  }
   
+  .welcome-initials-text {
+    font-size: 1.5rem;
+  }
+}
+
+.acciones,
+.informacion {
+  background: rgba(210, 207, 207, 0.1);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-radius: 12px;
+  border: 2px solid rgba(220, 5, 5, 0.2);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  overflow: visible; /* Para que el calendario glassmorphism se vea correctamente */
+  padding: 0; /* Sin padding para que el calendario maneje su propio espaciado */
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+  .admin-screen-layout {
+    grid-template-columns: 1fr 300px; /* Calendario más pequeño en tablets */
+    grid-template-areas: 
+      "welcome calendar"
+      "buttons calendar";
+  }
+  
+  .welcome {
+    grid-area: welcome;
+  }
+  
+  .informacion {
+    grid-area: calendar;
+  }
+  
+  .buttons-grid {
+    grid-area: buttons;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .admin-screen-layout {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto auto; /* 3 filas en mobile */
+    grid-template-areas: 
+      "welcome"
+      "calendar"
+      "buttons";
+    gap: 1.2rem;
+    padding: 1rem;
+  }
+  
+  .welcome {
+    grid-area: welcome;
+    padding: 1.5rem;
+  }
+  
+  .welcome-text {
+    padding-right: 1rem;
+  }
+  
+  .informacion {
+    grid-area: calendar;
+    min-height: 280px; /* Más compacto en mobile */
+    align-self: auto; /* Reset align-self en mobile */
+  }
+  
+  .buttons-grid {
+    grid-area: buttons;
+    grid-template-columns: 1fr;
+    gap: 1.2rem;
+  }
+  
+  .card-boton {
+    height: 100px;
+    font-size: 1rem;
+    padding: 1.2rem;
+    min-width: auto;
+  }
+  
+  .card-boton svg {
+    font-size: 1.2rem;
+  }
+  
+  .welcome-avatar {
+    width: 120px;
+    height: 120px;
+  }
+  
+  .welcome-avatar img {
+    width: 120px;
+  }
+  
+  .welcome-text h2 {
+    font-size: 1.1rem;
+  }
+}

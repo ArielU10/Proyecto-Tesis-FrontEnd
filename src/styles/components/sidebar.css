@@ -5,12 +5,10 @@
     left: 0;
     width: 200px;
     height: calc(98vh);
-  
-    background: rgba(119, 5, 33, 0.4);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
+    background: rgba(82, 3, 23, 0.4);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
     color: white;
-  
     padding: 2rem 1rem;
     display: flex;
     flex-direction: column;

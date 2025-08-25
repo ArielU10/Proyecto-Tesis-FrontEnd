@@ -1,13 +1,12 @@
 import React, { useState } from 'react';
 import AdminDashboardLayout from '../../../components/Admin/adminLayout';
 import { FaQrcode, FaBell, FaClipboardCheck, FaUserPlus, FaBookOpen, FaExclamationTriangle, FaChartBar } from "react-icons/fa";
-import userAvatar from '../../../assets/avatarMujer.png';
 import '../../../styles/administrative/adminScreen.css';
 import UserModal from '../../../components/Admin/userModal';
-import CourseForm from '../../../components/Admin/CourseForm'; // ✅ importar el formulario
+import CourseForm from '../../../components/Admin/CourseForm';
+import Calendar from '../../../components/Admin/Calendar';
 import { useAuth } from '../../../context/AuthContext';
 import { toast } from 'react-toastify'; 
-
 
 const AdminScreen = () => {
   // Modal usuario
@@ -53,11 +52,27 @@ const AdminScreen = () => {
         className: "toast-error"
       });
     }
-    
   };
 
-console.log("👀 Usuario desde contexto:", user);
+  // Función para obtener las iniciales del usuario
+  const getUserInitials = () => {
+    if (!user) return 'U';
+    
+    const firstName = user.firstName || user.name || '';
+    const lastName = user.lastName || '';
+    
+    const firstInitial = firstName.charAt(0).toUpperCase() || '';
+    const lastInitial = lastName.charAt(0).toUpperCase() || '';
+    
+    // Si solo hay un nombre, tomar las primeras dos letras
+    if (!lastInitial && firstName.length > 1) {
+      return (firstInitial + firstName.charAt(1).toUpperCase());
+    }
+    
+    return firstInitial + lastInitial || 'U';
+  };
 
+  console.log("👀 Usuario desde contexto:", user);
 
   return (
     <>
@@ -91,26 +106,28 @@ console.log("👀 Usuario desde contexto:", user);
                 <li><FaClipboardCheck /> Gestión eficiente de permisos y autorizaciones</li>
               </ul>
             </div>
-            <div className="welcome-avatar">
-              <img src={userAvatar} alt="Avatar" />
+            <div className="welcome-avatar welcome-initials">
+              <span className="welcome-initials-text">
+                {getUserInitials()}
+              </span>
             </div>
           </div>
 
-          {/* Secciones de Acciones y Recientes */}
-          <div className="acciones box">Acciones</div>
-          <div className="informacion box">Recientes</div>
-
-          {/* Botones de acciones principales */}
-          <div className="card-boton" onClick={() => setShowCourseModal(true)}>
-            <FaBookOpen /> Agregar Curso
+          {/* 📅 Calendario movido arriba */}
+          <div className="informacion box">
+            <Calendar />
           </div>
 
-          <div className="card-boton" onClick={() => setModalOpen(true)}>
-            <FaUserPlus /> Agregar Usuario
-          </div>
+          {/* Grid de botones de acciones principales */}
+          <div className="buttons-grid">
+            <div className="card-boton" onClick={() => setShowCourseModal(true)}>
+              <FaBookOpen /> Agregar Curso
+            </div>
 
-          <div className="card-boton"><FaExclamationTriangle /> Agregar Incidente</div>
-          <div className="card-boton"><FaChartBar /> Ver Reportes</div>
+            <div className="card-boton" onClick={() => setModalOpen(true)}>
+              <FaUserPlus /> Agregar Usuario
+            </div>
+          </div>
 
         </div>
     </>

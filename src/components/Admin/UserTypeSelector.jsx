@@ -9,7 +9,7 @@ const UserTypeSelector = ({ onSelect, onCancel }) => (
       <button onClick={() => onSelect('student')}>Estudiante + Padre de Familia</button>
       <button onClick={() => onSelect('guard')}>Personal de Seguridad</button>
     </div>
-    <button className="close-btn" onClick={onCancel}>Cancelar</button>
+    <button className="close-btn-user" onClick={onCancel}>Cancelar</button>
   </>
 );
 

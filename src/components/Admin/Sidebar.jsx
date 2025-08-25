@@ -15,6 +15,7 @@ const Sidebar = () => {
             <li>
               <NavLink
                 to="/admin"
+                end 
                 className={({ isActive }) =>
                   isActive || location.pathname === '/admin'
                     ? 'sidebar-link active'
@@ -26,18 +27,19 @@ const Sidebar = () => {
             </li>
             <li>
               <NavLink
-                to="/admin/attendance"
+                to="/admin/asistencias"
                 className={({ isActive }) => (isActive ? 'sidebar-link active' : 'sidebar-link')}
               >
-                Registro de Asistencias
+                Registro de Asistencias diario
               </NavLink>
             </li>
+
             <li>
               <NavLink
                 to="/admin/incidents"
                 className={({ isActive }) => (isActive ? 'sidebar-link active' : 'sidebar-link')}
               >
-                Faltas y Observaciones
+                Incidentes y Observaciones
               </NavLink>
             </li>
             <li>

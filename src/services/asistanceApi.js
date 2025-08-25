@@ -35,3 +35,15 @@ export const checkAsistenciaTomada = async (id_course, id_professor) => {
   const data = await res.json();
   return data=== true;;
 };
+
+export const getTodayAsistancesByCourse = async (courseId) => {
+  try {
+    const response = await axios.get(
+      `http://localhost:3000/api/asistances/course/${courseId}/statuses/hoy?statuses=late,absent`
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error al obtener asistencias de hoy:", error);
+    return [];
+  }
+};

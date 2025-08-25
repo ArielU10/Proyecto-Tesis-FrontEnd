@@ -1,0 +1,170 @@
+.asistencias-screen {
+    padding: 2rem;
+    background-color: #f9f9f9;
+  }
+  
+  .titulo-pantalla {
+    font-size: 1.8rem;
+    margin-bottom: 2rem;
+    color: #222;
+  }
+  
+  .course-card {
+    background-color: #fff;
+    border: 2px solid #ddd;
+    border-radius: 12px;
+    margin-bottom: 1.5rem;
+    padding: 1.2rem;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    transition: all 0.3s ease-in-out;
+  }
+  
+  .course-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+  }
+  
+  .course-header h3 {
+    margin: 0;
+    font-size: 1.3rem;
+    color: #333;
+  }
+  
+  .toggle-button {
+    padding: 0.5rem 1rem;
+    background-color: #004d7a;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-weight: 500;
+    cursor: pointer;
+  }
+  
+  .toggle-button:hover {
+    background-color: #006bb3;
+  }
+  
+  .asistencias-container {
+    margin-top: 1rem;
+  }
+  
+  .loading-text,
+  .mensaje-vacio {
+    font-style: italic;
+    color: #777;
+  }
+  
+  .asistencias-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+  }
+  
+  .asistencias-table th,
+  .asistencias-table td {
+    padding: 0.75rem;
+    border: 1px solid #ccc;
+    text-align: left;
+  }
+  
+  .asistencias-table th {
+    background-color: #f1f1f1;
+    color: #444;
+  }
+  
+  .asistencias-table td.late {
+    background-color: #fff3cd;
+    color: #856404;
+  }
+  
+  .asistencias-table td.absent {
+    background-color: #f8d7da;
+    color: #721c24;
+  }
+  
+  /* Reutilizamos clases ya existentes en CourseScreen y CourseGroup */
+
+.asistencias-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+  }
+  
+  .asistencias-table th,
+  .asistencias-table td {
+    padding: 0.75rem;
+    border: 1px solid #ccc;
+    text-align: left;
+  }
+  
+  .asistencias-table th {
+    background-color: #f1f1f1;
+    color: #444;
+  }
+  
+  .asistencias-table td.late {
+    background-color: #fff3cd;
+    color: #856404;
+  }
+  
+  .asistencias-table td.absent {
+    background-color: #f8d7da;
+    color: #721c24;
+  }
+  
+  .loading-text,
+  .no-courses-message {
+    font-style: italic;
+    font-size: 1.2rem;
+    text-align: center;
+    margin: 1rem 0;
+    color: #7f0d1e;
+  }
+  
+  .asistencias-container {
+    margin-top: 1rem;
+  }
+  .asistencias-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+  }
+  
+  .asistencias-table th,
+  .asistencias-table td {
+    padding: 0.75rem;
+    border: 1px solid #ccc;
+    text-align: left;
+  }
+  
+  .asistencias-table th {
+    background-color: #f1f1f1;
+    color: #444;
+  }
+  
+  .asistencias-table td.late {
+    background-color: #fff3cd;
+    color: #856404;
+  }
+  
+  .asistencias-table td.absent {
+    background-color: #f8d7da;
+    color: #721c24;
+  }
+  
+  .loading-text,
+  .no-courses-message {
+    font-style: italic;
+    font-size: 1.2rem;
+    text-align: center;
+    margin: 1rem 0;
+    color: #7f0d1e;
+  }
+  
+  .asistencias-container {
+    margin-top: 1rem;
+  }
+  
+  

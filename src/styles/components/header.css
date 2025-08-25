@@ -1,11 +1,11 @@
 .admin-header {
   position: sticky;
   top: 0;
-  z-index: 999; /* ✅ por encima del resto */
+  z-index: 999;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  height: 60px; /* ✅ altura delgada */
+  height: 60px;
   padding: 0 1.5rem;
   background: rgba(255, 255, 255, 0.05);
   backdrop-filter: blur(12px);
@@ -13,7 +13,6 @@
   border-bottom: 2px solid rgba(255, 255, 255, 0.2);
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
 }
-
 
 .search-bar {
   padding: 0.5rem 2rem;
@@ -24,12 +23,13 @@
   background: rgba(255, 255, 255, 0.1);
   border: 1px solid rgba(255, 255, 255, 0.3);
   border-radius: 12px;
+  -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
   box-shadow: 0 0 8px rgba(255, 255, 255, 0.1);
 }
 
 .search-bar::placeholder {
-  color: #a0a0a0;
+  color: #670909;
   font-weight: 500;
   opacity: 0.9;
 }
@@ -46,12 +46,13 @@
 
 .profile-button:hover {
   background-color: rgba(255, 255, 255, 0.1);
+  -webkit-backdrop-filter: blur(6px);
   backdrop-filter: blur(6px);
 }
 
 .username {
   font-weight: 600;
-  color: #ffffff;
+  color: #f0cf6b;
 }
 
 .user-avatar-circle {
@@ -72,6 +73,39 @@
   height: auto;
 }
 
+/* Avatar con iniciales - Glassmorphism vino y dorado */
+.user-avatar-circle.user-initials {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 2px solid rgba(240, 207, 107, 0.8);
+  background: rgba(119, 5, 33, 0.7);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 0 8px rgba(119, 5, 33, 0.4);
+  transition: all 0.3s ease;
+  overflow: visible;
+}
+
+.user-avatar-circle.user-initials:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 12px rgba(119, 5, 33, 0.6);
+  border-color: rgba(240, 207, 107, 1);
+}
+
+.initials-text {
+  color: #f0cf6b;
+  font-weight: 700;
+  font-size: 14px;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
+  letter-spacing: 0.5px;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
 /* Menú desplegable */
 .user-dropdown-menu {
   position: absolute;
@@ -81,7 +115,7 @@
   padding: 0.5rem;
 
   background: #ffffff;
-  color: #1a1a1a; /* ✅ texto principal negro */
+  color: #1a1a1a;
   border: 1px solid rgba(0, 0, 0, 0.08);
   border-radius: 12px;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
@@ -101,10 +135,34 @@
   text-align: left;
   font-size: 0.95rem;
   font-weight: 500;
-  color: inherit; /* ✅ usa el color heredado del contenedor */
+  color: inherit;
   transition: background-color 0.2s ease;
+  border-radius: 8px;
 }
 
 .user-dropdown-menu button:hover {
-  background-color: rgba(255, 0, 0, 0.05); /* ✅ efecto hover claro */
+  background-color: rgba(255, 0, 0, 0.05);
+}
+
+/* Responsive para iniciales */
+@media (max-width: 768px) {
+  .user-avatar-circle.user-initials {
+    width: 35px;
+    height: 35px;
+  }
+  
+  .initials-text {
+    font-size: 12px;
+  }
+  
+  .search-bar {
+    width: 300px;
+    margin-left: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .search-bar {
+    display: none;
+  }
 }

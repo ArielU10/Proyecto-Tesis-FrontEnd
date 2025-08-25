@@ -26,7 +26,7 @@ const ProfessorForm = ({ formData, onChange, onSubmit, onCancel, isSubmitting })
 
   useEffect(() => {
     const fetchCourses = async () => {
-      const allCourses = await getCourses();
+      const allCourses = await getAllCourses();
       setCourses(allCourses);
     };
     fetchCourses();
